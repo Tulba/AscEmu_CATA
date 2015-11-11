@@ -2,15 +2,13 @@
 ﻿
 `master (4.3.4)`[![master Build Status](https://travis-ci.org/AscEmu/AscEmu_CATA.svg?branch=master)](https://travis-ci.org/AscEmu/AscEmu_CATA)
 
-</a>
+##No support! Use one of our stable projects!
 
 ## Introduction
 AscEmu is derived from ArcEmu to keep up the Antrix-Ascent-Arcemu way of Framework.
 We focus on optimizing the codebase and improving the ingame functionality.
 
 You can help us by contributing. It is completely open source and can be used by everyone.
-
-##No support! Use one of our stable projects!
 
 ## Contributing
 Feel free to contribute any corrections but please make shure it is useful.
