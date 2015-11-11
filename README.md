@@ -1,10 +1,7 @@
 ﻿# ![logo](http://ascemu.org/style/img/logo.png)
 ﻿
-`master (3.3.5)`[![master Build Status](https://travis-ci.org/AscEmu/AscEmu.svg?branch=master)](https://travis-ci.org/AscEmu/AscEmu)
+`master (4.3.4)`[![master Build Status](https://travis-ci.org/AscEmu/AscEmu_CATA.svg?branch=master)](https://travis-ci.org/AscEmu/AscEmu_CATA)
 
-`coverity check`<a href="https://scan.coverity.com/projects/4747">
-  <img alt="Coverity Scan Build Status"
-       src="https://scan.coverity.com/projects/4747/badge.svg"/>
 </a>
 
 ## Introduction
@@ -13,6 +10,7 @@ We focus on optimizing the codebase and improving the ingame functionality.
 
 You can help us by contributing. It is completely open source and can be used by everyone.
 
+##No support! Use one of our stable projects!
 
 ## Contributing
 Feel free to contribute any corrections but please make shure it is useful.
@@ -29,15 +27,12 @@ Anything else like "fun-content" is NOT useful!
 ## Install
 HowTo install (detailed guides on our wiki)
 * [Windows](http://www.ascemu.org//wiki/index.php?title=3.3.5_Windows)
-* [Ubuntu](http://www.ascemu.org/wiki/index.php?title=3.3.5_Ubuntu)
-* [Mac OSX](http://www.ascemu.org/wiki/index.php?title=3.3.5_Mac_OSX) (outdated)
 
 
 ## Links
 * [Web](http://www.ascemu.org)
 * [Forums](http://www.board.ascemu.org)
 * [Wiki](http://www.ascemu.org/wiki/)
-* [Doxygen](http://www.ascemu.org/doxygen/)
 * [World DB](http://www.board.ascemu.org/filebase/index.php/FileList/1-Database/)
 
 
