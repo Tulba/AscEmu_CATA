@@ -1,7 +1,7 @@
 # Copyright (C) 2014-2015 AscEmu Team <http://www.ascemu.org>
 
 # set up our project name
-project(Ascemu)
+project(AscemuCATA)
 
 # check we are using a proper cmake-version
 cmake_minimum_required(VERSION 2.8)
