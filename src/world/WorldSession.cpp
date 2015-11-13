@@ -1,22 +1,22 @@
 /*
- * AscEmu Framework based on ArcEmu MMORPG Server
- * Copyright (C) 2014-2015 AscEmu Team <http://www.ascemu.org/>
- * Copyright (C) 2008-2012 ArcEmu Team <http://www.ArcEmu.org/>
- * Copyright (C) 2005-2007 Ascent Team
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU Affero General Public License for more details.
- *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program. If not, see <http://www.gnu.org/licenses/>.
- */
+* AscEmu Framework based on ArcEmu MMORPG Server
+* Copyright (C) 2014-2015 AscEmu Team <http://www.ascemu.org/>
+* Copyright (C) 2008-2012 ArcEmu Team <http://www.ArcEmu.org/>
+* Copyright (C) 2005-2007 Ascent Team
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU Affero General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+* GNU Affero General Public License for more details.
+*
+* You should have received a copy of the GNU Affero General Public License
+* along with this program. If not, see <http://www.gnu.org/licenses/>.
+*/
 
 #include "FastQueue.h"
 #include "Threading/Mutex.h"
@@ -26,35 +26,29 @@
 OpcodeHandler WorldPacketHandlers[NUM_MSG_TYPES];
 
 WorldSession::WorldSession(uint32 id, std::string Name, WorldSocket* sock) :
-    m_loggingInPlayer(NULL),
-    m_currMsTime(getMSTime()),
-    bDeleted(false),
-    m_moveDelayTime(0),
-    m_clientTimeDelay(0),
-    m_bIsWLevelSet(false),
-    _player(NULL),
-    _socket(sock),
-    _accountId(id),
-    _accountName(Name),
-    has_level_55_char(false),
-    _side(-1),
-    _logoutTime(0),
-    permissions(NULL),
-    permissioncount(0),
-    _loggingOut(false),
-    LoggingOut(false),
-    instanceId(0),
-    _updatecount(0),
-    floodLines(0),
-    floodTime(UNIXTIME),
-    language(0),
-    m_lastPing(0),
-    m_wLevel(0),
-    _accountFlags(0),
-    has_dk(false),
-    _latency(0),
-    client_build(0),
-    m_muted(0)
+m_loggingInPlayer(NULL),
+m_currMsTime(getMSTime()),
+bDeleted(false),
+m_moveDelayTime(0),
+m_clientTimeDelay(0),
+m_bIsWLevelSet(false),
+_player(NULL),
+_socket(sock),
+_accountId(id),
+_accountName(Name),
+has_level_55_char(false),
+_side(-1),
+_logoutTime(0),
+permissions(NULL),
+permissioncount(0),
+_loggingOut(false),
+LoggingOut(false),
+instanceId(0),
+_updatecount(0),
+floodLines(0),
+floodTime(UNIXTIME),
+language(0),
+m_muted(0)
 {
     memset(movement_packet, 0, sizeof(movement_packet));
 
@@ -62,6 +56,7 @@ WorldSession::WorldSession(uint32 id, std::string Name, WorldSocket* sock) :
 
     for (uint8 x = 0; x < 8; x++)
         sAccountData[x].data = NULL;
+
 }
 
 WorldSession::~WorldSession()
@@ -133,11 +128,11 @@ int WorldSession::Update(uint32 InstanceID)
             _logoutTime = m_currMsTime + PLAYER_LOGOUT_DELAY;
 
         /*
-           if (_player && _player->DuelingWith)
-           _player->EndDuel(DUEL_WINNER_RETREAT);
+        if (_player && _player->DuelingWith)
+        _player->EndDuel(DUEL_WINNER_RETREAT);
 
-           bDeleted = true; LogoutPlayer(true); // 1 - Delete session
-           completely. return 1; */
+        bDeleted = true; LogoutPlayer(true); // 1 - Delete session
+        completely. return 1; */
 
     }
 
@@ -263,12 +258,12 @@ void WorldSession::LogoutPlayer(bool Save)
             {
                 switch (obj->GetTypeId())
                 {
-                    case TYPEID_UNIT:
-                        static_cast <Creature*>(obj)->loot.looters.erase(_player->GetLowGUID());
-                        break;
-                    case TYPEID_GAMEOBJECT:
-                        static_cast <GameObject*>(obj)->loot.looters.erase(_player->GetLowGUID());
-                        break;
+                case TYPEID_UNIT:
+                    static_cast <Creature*>(obj)->loot.looters.erase(_player->GetLowGUID());
+                    break;
+                case TYPEID_GAMEOBJECT:
+                    static_cast <GameObject*>(obj)->loot.looters.erase(_player->GetLowGUID());
+                    break;
                 }
             }
         }
@@ -544,6 +539,13 @@ void WorldSession::InitPacketHandlerTable()
 
     WorldPacketHandlers[CMSG_REALM_SPLIT].handler = &WorldSession::HandleRealmSplitOpcode;
     WorldPacketHandlers[CMSG_REALM_SPLIT].status = STATUS_AUTHED;
+
+    // 4.3.4 login
+    WorldPacketHandlers[CMSG_LOAD_SCREEN].handler = &WorldSession::HandleLoadScreenOpcode;
+    WorldPacketHandlers[CMSG_LOAD_SCREEN].status = STATUS_AUTHED;
+
+    WorldPacketHandlers[CMSG_READY_FOR_ACCOUNT_DATA_TIMES].handler = &WorldSession::HandleReadyForAccountDataTimesOpcode;
+    WorldPacketHandlers[CMSG_READY_FOR_ACCOUNT_DATA_TIMES].status = STATUS_AUTHED;
 
     // Queries
     WorldPacketHandlers[MSG_CORPSE_QUERY].handler = &WorldSession::HandleCorpseQueryOpcode;
@@ -934,8 +936,10 @@ void WorldSession::InitPacketHandlerTable()
     WorldPacketHandlers[CMSG_GMTICKETSYSTEM_TOGGLE].handler = &WorldSession::HandleGMTicketToggleSystemStatusOpcode;
 
     // Lag report
+    /* needs to be fixed this interrupts character screen 4.3.4
     WorldPacketHandlers[CMSG_GM_REPORT_LAG].handler = &WorldSession::HandleReportLag;
     WorldPacketHandlers[CMSG_GM_REPORT_LAG].status = STATUS_LOGGEDIN;
+    */
 
     // Meeting Stone / Instances
     WorldPacketHandlers[CMSG_SUMMON_RESPONSE].handler = &WorldSession::HandleSummonResponseOpcode;
@@ -1062,17 +1066,17 @@ void SessionLogWriter::writefromsession(WorldSession* session, const char* forma
     time_t t = UNIXTIME;
     tm* aTm = localtime(&t);
     snprintf(out, 32768, "[%-4d-%02d-%02d %02d:%02d:%02d] ",
-             aTm->tm_year + 1900, aTm->tm_mon + 1, aTm->tm_mday, aTm->tm_hour,
-             aTm->tm_min, aTm->tm_sec);
+        aTm->tm_year + 1900, aTm->tm_mon + 1, aTm->tm_mday, aTm->tm_hour,
+        aTm->tm_min, aTm->tm_sec);
     size_t l = strlen(out);
 
     snprintf(&out[l], 32768 - l, "Account %u [%s], IP %s, Player %s :: ",
-             (unsigned int)session->GetAccountId(),
-             session->GetAccountName().c_str(),
-             session->GetSocket() ? session->GetSocket()->GetRemoteIP().
-             c_str() : "NOIP",
-             session->GetPlayer() ? session->GetPlayer()->
-             GetName() : "nologin");
+        (unsigned int)session->GetAccountId(),
+        session->GetAccountName().c_str(),
+        session->GetSocket() ? session->GetSocket()->GetRemoteIP().
+        c_str() : "NOIP",
+        session->GetPlayer() ? session->GetPlayer()->
+        GetName() : "nologin");
 
     l = strlen(out);
     vsnprintf(&out[l], 32768 - l, format, ap);
@@ -1117,10 +1121,10 @@ void WorldSession::Delete()
 }
 
 /*
-   2008/10/04 MultiLanguages on each player session. LocalizedWorldSrv
-   translating core message from sql. LocalizedMapName translating MAP Title
-   from sql. LocalizedBroadCast translating new broadcast system from sql.
-   Full merged from p2wow 's branch (p2branch). cebernic@gmail.com */
+2008/10/04 MultiLanguages on each player session. LocalizedWorldSrv
+translating core message from sql. LocalizedMapName translating MAP Title
+from sql. LocalizedBroadCast translating new broadcast system from sql.
+Full merged from p2wow 's branch (p2branch). cebernic@gmail.com */
 
 char szError[64];
 
@@ -1429,15 +1433,15 @@ void WorldSession::SendMOTD()
         }
         pos = nextpos + 1;
     }
-        if (pos < str_motd.length())
-        {
-            data << str_motd.substr(pos);
-            ++linecount;
-        }
+    if (pos < str_motd.length())
+    {
+        data << str_motd.substr(pos);
+        ++linecount;
+    }
 
-        data.put(0, linecount);
+    data.put(0, linecount);
 
-        SendPacket(&data);
+    SendPacket(&data);
 }
 
 void WorldSession::HandleEquipmentSetUse(WorldPacket& data)

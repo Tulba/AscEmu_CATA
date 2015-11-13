@@ -34,6 +34,7 @@
 #define WORLDSOCKET_SENDBUF_SIZE 131078
 #define WORLDSOCKET_RECVBUF_SIZE 16384
 
+class WorldPacket;
 class SocketHandler;
 class WorldSession;
 
@@ -55,8 +56,8 @@ class SERVER_DECL WorldSocket : public Socket
         inline void SendPacket(WorldPacket* packet) { if (!packet) return; OutPacket(packet->GetOpcode(), packet->size(), (packet->size() ? (const void*)packet->contents() : NULL)); }
         inline void SendPacket(StackBufferBase* packet) { if (!packet) return; OutPacket(packet->GetOpcode(), packet->GetSize(), (packet->GetSize() ? (const void*)packet->GetBufferPointer() : NULL)); }
 
-        void  OutPacket(uint16 opcode, size_t len, const void* data);
-        OUTPACKET_RESULT  _OutPacket(uint16 opcode, size_t len, const void* data);
+        void  OutPacket(uint32 opcode, size_t len, const void* data);
+        OUTPACKET_RESULT  _OutPacket(uint32 opcode, size_t len, const void* data);
 
         inline uint32 GetLatency() { return _latency; }
 
@@ -67,7 +68,11 @@ class SERVER_DECL WorldSocket : public Socket
 
         void OnRead();
         void OnConnect();
+        void OnConnectTwo();
         void OnDisconnect();
+
+        void SendAuthResponseError(uint8 code);
+        void HandleWoWConnection(WorldPacket* recvPacket);
 
         inline void SetSession(WorldSession* session) { mSession = session; }
         inline WorldSession* GetSession() { return mSession; }
@@ -89,6 +94,7 @@ class SERVER_DECL WorldSocket : public Socket
         uint32 mClientSeed;
         uint32 mClientBuild;
         uint32 mRequestID;
+        uint8 AuthDigest[20];
 
         WorldSession* mSession;
         WorldPacket* pAuthenticationPacket;
@@ -103,11 +109,12 @@ class SERVER_DECL WorldSocket : public Socket
 };
 
 
+
 static inline void FastGUIDPack(ByteBuffer & buf, const uint64 & oldguid)
 {
     // hehe speed freaks
     uint8 guidmask = 0;
-    uint8 guidfields[9] = {0, 0, 0, 0, 0, 0, 0, 0};
+    uint8 guidfields[9] = { 0, 0, 0, 0, 0, 0, 0, 0 };
 
     int j = 1;
     uint8* test = (uint8*)&oldguid;
@@ -229,3 +236,4 @@ static inline unsigned int FastGUIDPack(const uint64 & oldguid, unsigned char* b
 }
 
 #endif
+

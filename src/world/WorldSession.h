@@ -768,6 +768,10 @@ class SERVER_DECL WorldSession
         void HandleCalendarEventStatus(WorldPacket& recv_data);
         void HandleCalendarEventModeratorStatus(WorldPacket& recv_data);
 
+        // 4.3.4
+        void HandleReadyForAccountDataTimesOpcode(WorldPacket & recv_data);
+        void HandleLoadScreenOpcode(WorldPacket & recv_data);
+
     public:
 
         void SendInventoryList(Creature* pCreature);

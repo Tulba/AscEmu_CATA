@@ -156,8 +156,7 @@ bool ChatHandler::HandleRenameAllCharacter(const char* args, WorldSession* m_ses
                 ++uCount;
             }
 
-        }
-        while(result->NextRow());
+        } while (result->NextRow());
         delete result;
     }
 
@@ -184,185 +183,306 @@ void WorldSession::CharacterEnumProc(QueryResult* result)
 
     uint32 start_time = getMSTime();
 
-    player_item items[23];
+    player_item items[INVENTORY_SLOT_BAG_END];
     int8 slot;
+    int8 containerslot;
     uint32 i;
     ItemPrototype* proto;
     QueryResult* res;
-    CreatureInfo* info = NULL;
+    uint32 num = 0;
     uint8 race;
+    uint32 MaxAvailCharLevel = 0;
     has_dk = false;
     _side = -1; // side should be set on every enumeration for safety
 
-    uint32 numchar;
+    uint32 packetSize = 0;
 
     if (result)
-        numchar = result->GetRowCount();
+        packetSize = result->GetRowCount() * 200;
     else
-        numchar = 0;
+        packetSize = 270;
 
-    // should be more than enough.. 200 bytes per char..
-    WorldPacket data(SMSG_CHAR_ENUM, 1 + numchar * 200);
+    WorldPacket data(SMSG_CHAR_ENUM, packetSize);
 
-    // parse m_characters and build a mighty packet of
-    // characters to send to the client.
-    data << uint8(numchar);
+    ByteBuffer buffer;
+
+    data.writeBits(0, 23);
+    data.writeBit(1);
+    data.writeBits(result ? result->GetRowCount() : 0, 17);
 
     if (result)
     {
-        uint64 guid;
+        //uint64 guid;
         uint8 Class;
-        uint32 bytes2;
-        uint32 flags;
-        uint32 banned;
+        uint32 playerBytes2;
+        //uint32 flags;
+        //uint32 banned;
+        //uint32 ForceRename;
         Field* fields;
-        uint32 petLevel = 0;
+
+        std::string name;
+        uint32 playerBytes;
+        uint8 gender;
+        uint8 level;
+        uint32 zone; // zoneId
+        uint32 mapId;
+        float x;
+        float y;
+        float z;
+        uint32 guildId;
+        uint32 playerFlags;
+        uint32 atLoginFlags;
+        uint8 skin, face, hairStyle, hairColor, facialHair;
+
         do
         {
+            //uint8 guid[8];
             fields = result->Fetch();
+            uint64 guid;
+            //uint64 oldGuid = fields[0].GetUInt32(); // uint64 or uint32?
+            guid = MAKE_NEW_GUID(fields[0].GetUInt32(), 0, 0x000); // 4.3.4
+            name = fields[7].GetString(); // 4.3.4
+            race = fields[2].GetUInt8(); // 4.3.4
+            Class = fields[3].GetUInt8(); // 4.3.4
+            gender = fields[4].GetUInt8(); // 4.3.4
 
-            guid = fields[0].GetUInt64();
-            bytes2 = fields[6].GetUInt32();
-            Class = fields[3].GetUInt8();
-            flags = fields[17].GetUInt32();
-            race = fields[2].GetUInt8();
+            uint8 guid_a[8];
+            *(uint64*)guid_a = MAKE_NEW_GUID(fields[0].GetUInt32(), 0, 0x000);
+
+            uint32 _GID = fields[18].GetUInt32(); // guildId // 4.3.4
+
+            uint8 guidb[8];
+            *(uint64*)guidb = MAKE_NEW_GUID(_GID, 0, _GID ? uint32(0x1FF) : 0);
+
+            //uint64 guidb = MAKE_NEW_GUID(fields[13].GetUInt32(), 0, guildId ? uint32(0x1FF) : 0);
+
+            uint8 guidb0, guidb1, guidb2, guidb3, guidb4, guidb5, guidb6, guidb7, guid0, guid1, guid2, guid3, guid4, guid5, guid6, guid7;
+
+            guidb0 = guidb[0];
+            guidb1 = guidb[1];
+            guidb2 = guidb[2];
+            guidb3 = guidb[3];
+            guidb4 = guidb[4];
+            guidb5 = guidb[5];
+            guidb6 = guidb[6];
+            guidb7 = guidb[7];
+
+            guid0 = guid_a[0];
+            guid1 = guid_a[1];
+            guid2 = guid_a[2];
+            guid3 = guid_a[3];
+            guid4 = guid_a[4];
+            guid5 = guid_a[5];
+            guid6 = guid_a[6];
+            guid7 = guid_a[7];
+
+
+
+            data.writeBit(guid3);
+            data.writeBit(guidb1);
+            data.writeBit(guidb7);
+            data.writeBit(guidb2);
+            data.writeBits(uint32(name.length()), 7);
+            data.writeBit(guid4);
+            data.writeBit(guid7);
+            data.writeBit(guidb3);
+            data.writeBit(guid5);
+            data.writeBit(guidb6);
+            data.writeBit(guid1);
+            data.writeBit(guidb5);
+            data.writeBit(guidb4);
+            data.writeBit(fields[15].GetUInt32() & 0x20); // atLoginFlags & 0x20 = AT_LOGIN_FIRST (trinitycore) // not 4.3.4, what to do?
+            data.writeBit(guid0);
+            data.writeBit(guid2);
+            data.writeBit(guid6);
+            data.writeBit(guidb0);
+
 
             if (_side < 0)
             {
                 // work out the side
-                static uint8 sides[RACE_DRAENEI + 1] = {0, 0, 1, 0, 0, 1, 1, 0, 1, 0, 1, 0};
+                static uint8 sides[RACE_DRAENEI + 2] = { 0, 0, 1, 0, 0, 1, 1, 0, 1, 0, 1, 0, 0 };
                 _side = sides[race];
             }
 
             // Death Knight starting information
             // Note: To change what level is required to make a dk change the >= 55 to something.
             // For example >=80 would require a level 80 to create a DK
-            has_level_55_char = has_level_55_char || (fields[1].GetUInt8() >= 55);
+            has_level_55_char = has_level_55_char || (fields[7].GetUInt8() >= 55);
             has_dk = has_dk || (Class == 6);
 
-            /* build character enum, w0000t :p */
-            data << uint64(guid);                        //guid
-            data << fields[7].GetString();                //name
-            data << uint8(race);                        //race
-            data << uint8(Class);                        //class
-            data << uint8(fields[4].GetUInt8());        //gender
-            data << uint32(fields[5].GetUInt32());        //PLAYER_BYTES
-            data << uint8(bytes2 & 0xFF);                //facial hair
-            data << uint8(fields[1].GetUInt8());        //Level
-            data << uint32(fields[12].GetUInt32());        //zoneid
-            data << uint32(fields[11].GetUInt32());        //Mapid
-            data << float(fields[8].GetFloat());        //X
-            data << float(fields[9].GetFloat());        //Y
-            data << float(fields[10].GetFloat());        //Z
-            data << uint32(fields[18].GetUInt32());        //GuildID
 
-            banned = fields[13].GetUInt32();
-            uint32 char_flags = 0;
+            playerBytes = fields[5].GetUInt32(); // 4.3.4
+            playerBytes2 = fields[6].GetUInt32(); // 4.3.4
 
-            if (banned && (banned < 10 || banned > (uint32)UNIXTIME))
-                char_flags |= 0x01000000;    //Character is banned
-            if (fields[15].GetUInt32() != 0)
-                char_flags |= 0x00002000;    //Character is dead
-            if (flags & PLAYER_FLAG_NOHELM)
-                char_flags |= 0x00000400;    //Helm not displayed
-            if (flags & PLAYER_FLAG_NOCLOAK)
-                char_flags |= 0x00000800;    //Cloak not displayed
-            if (fields[16].GetUInt32() == 1)
-                char_flags |= 0x00004000;    //Character has to be renamed before logging in
+            skin = uint8(playerBytes & 0xFF); // 4.3.4
+            face = uint8((playerBytes >> 8) & 0xFF); // 4.3.4
+            hairStyle = uint8((playerBytes >> 16) & 0xFF); // 4.3.4
+            hairColor = uint8((playerBytes >> 24) & 0xFF); // 4.3.4
+            facialHair = uint8(playerBytes2 & 0xFF); // 4.3.4
 
-            data << uint32(char_flags);
+            level = fields[1].GetUInt8(); // 4.3.4
+            zone = fields[12].GetUInt16(); // 4.3.4 // zoneId
+            mapId = uint32(fields[11].GetUInt16()); // 4.3.4
+            x = fields[8].GetFloat(); // 4.3.4
+            y = fields[9].GetFloat(); // 4.3.4
+            z = fields[10].GetFloat(); // 4.3.4
+            guildId = fields[18].GetUInt32(); // 4.3.4
+            playerFlags = fields[14].GetUInt32(); // 4.3.4
+            //atLoginFlags = fields[15].GetUInt32();
+            atLoginFlags = 0;
 
-            switch (fields[16].GetUInt32())
-            {
-                case LOGIN_CUSTOMIZE_LOOKS:
-                    data << uint32(CHAR_CUSTOMIZE_FLAG_CUSTOMIZE);  //Character recustomization flag
-                    break;
-                case LOGIN_CUSTOMIZE_RACE:
-                    data << uint32(CHAR_CUSTOMIZE_FLAG_RACE);       //Character recustomization + race flag
-                    break;
-                case LOGIN_CUSTOMIZE_FACTION:
-                    data << uint32(CHAR_CUSTOMIZE_FLAG_FACTION); //Character recustomization + race + faction flag
-                    break;
-                default:
-                     data << uint32(CHAR_CUSTOMIZE_FLAG_NONE);       //Character recustomization no flag set
-            }
+            uint32 charFlags = 0;
 
-            data << uint8(0);                //Unknown 3.2.0
+            // implement banned flag
+            // flags from 3.3.5a, maybe have changed
 
-            if (Class == WARLOCK || Class == HUNTER)
-            {
-                res = CharacterDatabase.Query("SELECT entry, level FROM playerpets WHERE ownerguid = %u AND MOD(active, 10) = 1 AND alive = TRUE;", Arcemu::Util::GUID_LOPART(guid));
+            /* if(atLoginFlags != 0)
+            char_flags |= 0x00002000;	//Character is dead
+            if(flags & PLAYER_FLAG_NOHELM)
+            char_flags |= 0x00000400;	//Helm not displayed
+            if(flags & PLAYER_FLAG_NOCLOAK)
+            char_flags |= 0x00000800;	//Cloak not displayed*/
 
-                if (res)
-                {
-                    petLevel = res->Fetch()[1].GetUInt32();
-                    info = CreatureNameStorage.LookupEntry(res->Fetch()[0].GetUInt32());
-                    delete res;
-                }
-                else
-                    info = NULL;
-            }
-            else
-                info = NULL;
 
-            if (info)
-            {
-                data << uint32(info->Male_DisplayID);
-                data << uint32(petLevel);
-                data << uint32(info->Family);
-            }
-            else
-            {
-                data << uint32(0);
-                data << uint32(0);
-                data << uint32(0);
-            }
+            // toDo: show pet
 
-            res = CharacterDatabase.Query("SELECT slot, entry, enchantments FROM playeritems WHERE ownerguid=%u AND containerslot = '-1' AND slot BETWEEN '0' AND '22'", Arcemu::Util::GUID_LOPART(guid));
+            uint32 petDisplayId = 0;
+            uint32 petLevel = 0;
+            uint32 petFamily = 0;
 
-            memset(items, 0, sizeof(player_item) * 23);
+            buffer << uint8(Class);
+
+            res = CharacterDatabase.Query("SELECT containerslot, slot, entry, enchantments FROM playeritems WHERE ownerguid=%u and containerslot=-1 and slot < 23", Arcemu::Util::GUID_LOPART(guid));
+
+            memset(items, 0, sizeof(items));
             uint32 enchantid;
-            EnchantEntry* enc;
+            EnchantEntry * enc;
             if (res)
             {
                 do
                 {
-                    slot = res->Fetch()[0].GetInt8();
-                    proto = ItemPrototypeStorage.LookupEntry(res->Fetch()[1].GetUInt32());
-                    if (proto)
+                    containerslot = res->Fetch()[0].GetInt8();
+                    slot = res->Fetch()[1].GetInt8();
+                    if (containerslot == -1 && slot < INVENTORY_SLOT_BAG_END && slot >= EQUIPMENT_SLOT_START)
                     {
-                        items[slot].displayid = proto->DisplayInfoID;
-                        items[slot].invtype = static_cast<uint8>(proto->InventoryType);
-
-                        // weapon glows
-                        if (slot == EQUIPMENT_SLOT_MAINHAND || slot == EQUIPMENT_SLOT_OFFHAND)
+                        proto = ItemPrototypeStorage.LookupEntry(res->Fetch()[2].GetUInt32());
+                        if (proto)
                         {
-                            // get enchant visual ID
-                            const char* enchant_field = res->Fetch()[2].GetString();
-                            if (sscanf(enchant_field , "%u,0,0;" , (unsigned int*)&enchantid) == 1 && enchantid > 0)
+                            if (!(slot == EQUIPMENT_SLOT_HEAD && (playerFlags & (uint32)PLAYER_FLAG_NOHELM) != 0) &&
+                                !(slot == EQUIPMENT_SLOT_BACK && (playerFlags & (uint32)PLAYER_FLAG_NOCLOAK) != 0))
                             {
-                                enc = dbcEnchant.LookupEntryForced(enchantid);
-                                if (enc != NULL)
-                                    items[slot].enchantment = enc->visual;
+                                items[slot].displayid = proto->DisplayInfoID;
+                                items[slot].invtype = proto->InventoryType;
+                                // weapon glows
+                                if (slot == EQUIPMENT_SLOT_MAINHAND || slot == EQUIPMENT_SLOT_OFFHAND)
+                                {
+                                    // get enchant visual ID
+                                    const char * enchant_field = res->Fetch()[3].GetString();
+                                    if (sscanf(enchant_field, "%u,0,0;", (unsigned int *)&enchantid) == 1 && enchantid > 0)
+                                    {
+                                        enc = dbcEnchant.LookupEntry(enchantid);
+                                        if (enc != NULL)
+                                            items[slot].enchantment = enc->visual;
+                                        else
+                                            items[slot].enchantment = 0;;
+                                    }
+                                }
                             }
                         }
                     }
-                }
-                while(res->NextRow());
+                } while (res->NextRow());
                 delete res;
+                res = NULL;
             }
 
-            for (i = 0; i < INVENTORY_SLOT_BAG_END; ++i)
+            for (i = 0; i < INVENTORY_SLOT_BAG_END; ++i) //23 * 5 bytes
             {
-                data << uint32(items[i].displayid);
-                data << uint8(items[i].invtype);
-                data << uint32(items[i].enchantment);
+                buffer << uint8(items[i].invtype);
+                buffer << uint32(items[i].displayid);
+                buffer << uint32(items[i].enchantment);
             }
-        }
-        while(result->NextRow());
-    }
 
-    Log.Debug("Character Enum", "Built in %u ms.", getMSTime() - start_time);
+            buffer << uint32(petFamily);
+
+            //buffer.WriteByteSeq(guidb[2]);
+            buffer.WriteByteSeq(guidb2);
+
+            //buffer << uint8(slot);
+            buffer << uint8(0);
+            buffer << uint8(hairStyle);
+
+            //buffer.WriteByteSeq(guidb[3]);
+            buffer.WriteByteSeq(guidb3);
+
+            buffer << uint32(petDisplayId);
+            buffer << uint32(charFlags);
+            buffer << uint8(hairColor);
+
+            //buffer.WriteByteSeq(guid[4]);
+            buffer.WriteByteSeq(guid4);
+
+            buffer << uint32(mapId);
+
+            //buffer.WriteByteSeq(guidb[5]);
+            buffer.WriteByteSeq(guidb5);
+
+            buffer << float(z);
+
+            //buffer.WriteByteSeq(guidb[6]);
+            buffer.WriteByteSeq(guidb6);
+
+            buffer << uint32(petLevel);
+
+            //buffer.WriteByteSeq(guid[3]);
+            buffer.WriteByteSeq(guid3);
+
+            buffer << float(y);
+            buffer << uint32(0x00000000); // customizationFlag (toDo: implement)
+            buffer << uint8(facialHair);
+
+            //buffer.WriteByteSeq(guid[7]);
+            buffer.WriteByteSeq(guid7);
+
+            buffer << uint8(gender);
+            buffer.append(name.c_str(), name.length());
+            buffer << uint8(face);
+
+            /*buffer.WriteByteSeq(guid[0]);
+            buffer.WriteByteSeq(guid[2]);
+            buffer.WriteByteSeq(guidb[1]);
+            buffer.WriteByteSeq(guidb[7]);*/
+
+            buffer.WriteByteSeq(guid0);
+            buffer.WriteByteSeq(guid2);
+            buffer.WriteByteSeq(guidb1);
+            buffer.WriteByteSeq(guidb7);
+
+            buffer << float(x);                                    // X
+            buffer << uint8(skin);                                 // Skin
+            buffer << uint8(race);                                 // Race
+            buffer << uint8(level);                                // Level
+
+            /*buffer.WriteByteSeq(guid[6]);
+            buffer.WriteByteSeq(guidb[4]);
+            buffer.WriteByteSeq(guidb[0]);
+            buffer.WriteByteSeq(guid[5]);
+            buffer.WriteByteSeq(guid[1]);*/
+
+            buffer.WriteByteSeq(guid6);
+            buffer.WriteByteSeq(guidb4);
+            buffer.WriteByteSeq(guidb0);
+            buffer.WriteByteSeq(guid5);
+            buffer.WriteByteSeq(guid1);
+
+            buffer << uint32(zone);
+        } while (result->NextRow()); // end do while
+
+        data.flushBits();
+        data.append(buffer);
+
+    } // end if
+
     SendPacket(&data);
 }
 
@@ -407,6 +527,7 @@ void WorldSession::HandleCharCreateOpcode(WorldPacket& recv_data)
     recv_data >> name >> race >> class_;
     recv_data.rpos(0);
 
+
     LoginErrorCode res = VerifyName(name.c_str(), name.length());
     if (res != E_CHAR_NAME_SUCCESS)
     {
@@ -449,8 +570,8 @@ void WorldSession::HandleCharCreateOpcode(WorldPacket& recv_data)
     }
 
     // Check if player got Death Knight already on this realm.
-    if (Config.OptionalConfig.GetBoolDefault("ClassOptions" , "DeathKnightLimit" , true) && has_dk
-            && (class_ == DEATHKNIGHT))
+    if (Config.OptionalConfig.GetBoolDefault("ClassOptions", "DeathKnightLimit", true) && has_dk
+        && (class_ == DEATHKNIGHT))
     {
         OutPacket(SMSG_CHAR_CREATE, 1, CHAR_CREATE_UNIQUE_CLASS_LIMIT);
         return;
@@ -500,8 +621,8 @@ void WorldSession::HandleCharCreateOpcode(WorldPacket& recv_data)
 
     //Check if player has a level 55 or higher character on this realm and allow him to create DK.
     //This check can be turned off in optional.conf
-    if (Config.OptionalConfig.GetBoolDefault("ClassOptions" , "DeathKnightPreReq" , false) && !has_level_55_char
-            && (class_ == DEATHKNIGHT))
+    if (Config.OptionalConfig.GetBoolDefault("ClassOptions", "DeathKnightPreReq", false) && !has_level_55_char
+        && (class_ == DEATHKNIGHT))
     {
         pNewChar->ok_to_remove = true;
         delete pNewChar;
@@ -509,18 +630,18 @@ void WorldSession::HandleCharCreateOpcode(WorldPacket& recv_data)
         WorldPacket data(1);
         data.SetOpcode(SMSG_CHAR_CREATE);
         data << (uint8)56 + 1; // This errorcode is not the actual one. Need to find a real error code.
-        SendPacket(&data);
+        SendPacket( &data );
         */
         OutPacket(SMSG_CHAR_CREATE, 1, CHAR_CREATE_LEVEL_REQUIREMENT);
         return;
     }
 
     pNewChar->UnSetBanned();
-    pNewChar->addSpell(22027);      // Remove Insignia
+    pNewChar->addSpell(22027);	  // Remove Insignia
 
     if (pNewChar->getClass() == WARLOCK)
     {
-        pNewChar->AddSummonSpell(416, 3110);        // imp fireball
+        pNewChar->AddSummonSpell(416, 3110);		// imp fireball
         pNewChar->AddSummonSpell(417, 19505);
         pNewChar->AddSummonSpell(1860, 3716);
         pNewChar->AddSummonSpell(1863, 7814);
@@ -528,7 +649,7 @@ void WorldSession::HandleCharCreateOpcode(WorldPacket& recv_data)
 
     pNewChar->SaveToDB(true);
 
-    PlayerInfo* pn = new PlayerInfo ;
+    PlayerInfo* pn = new PlayerInfo;
     pn->guid = pNewChar->GetLowGUID();
     pn->name = strdup(pNewChar->GetName());
     pn->cl = pNewChar->getClass();
@@ -544,15 +665,6 @@ void WorldSession::HandleCharCreateOpcode(WorldPacket& recv_data)
     pn->guildMember = NULL;
     pn->lastOnline = UNIXTIME;
     objmgr.AddPlayerInfo(pn);
-
-    // This is a cataclysm feature
-    /*if (pNewChar->getClass() == HUNTER)
-    {
-        uint32 entry = 3122;
-        if (pNewChar->GetTeam() == TEAM_ALLIANCE)
-            entry = 69;
-        objmgr.CreateCharCreationPet(entry, pNewChar->GetLowGUID());
-    }*/
 
     pNewChar->ok_to_remove = true;
     delete  pNewChar;
@@ -620,7 +732,7 @@ uint8 WorldSession::DeleteCharacter(uint32 guid)
         }
 
         /*if (_socket != NULL)
-            sPlrLog.write("Account: %s | IP: %s >> Deleted player %s", GetAccountName().c_str(), GetSocket()->GetRemoteIP().c_str(), name.c_str());*/
+        sPlrLog.write("Account: %s | IP: %s >> Deleted player %s", GetAccountName().c_str(), GetSocket()->GetRemoteIP().c_str(), name.c_str());*/
 
         sPlrLog.writefromsession(this, "deleted character %s (GUID: %u)", name.c_str(), (uint32)guid);
 
@@ -724,12 +836,36 @@ void WorldSession::HandleCharRenameOpcode(WorldPacket& recv_data)
 
 void WorldSession::HandlePlayerLoginOpcode(WorldPacket& recv_data)
 {
-    CHECK_PACKET_SIZE(recv_data, 8);
-    uint64 playerGuid = 0;
+    //CHECK_PACKET_SIZE(recv_data, 8); // do we need this?
+    //uint64 playerGuid = *(uint8*)playerGuid;
 
     LOG_DEBUG("WORLD: Recvd Player Logon Message");
 
-    recv_data >> playerGuid; // this is the GUID selected by the player
+    //recv_data >> playerGuid; // this is the GUID selected by the player
+
+    // 15595
+    uint8 playerGuid[8];
+
+    playerGuid[2] = recv_data.readBit();
+    playerGuid[3] = recv_data.readBit();
+    playerGuid[0] = recv_data.readBit();
+    playerGuid[6] = recv_data.readBit();
+    playerGuid[4] = recv_data.readBit();
+    playerGuid[5] = recv_data.readBit();
+    playerGuid[1] = recv_data.readBit();
+    playerGuid[7] = recv_data.readBit();
+
+    recv_data.ReadByteSeq(playerGuid[2]);
+    recv_data.ReadByteSeq(playerGuid[7]);
+    recv_data.ReadByteSeq(playerGuid[0]);
+    recv_data.ReadByteSeq(playerGuid[3]);
+    recv_data.ReadByteSeq(playerGuid[5]);
+    recv_data.ReadByteSeq(playerGuid[6]);
+    recv_data.ReadByteSeq(playerGuid[1]);
+    recv_data.ReadByteSeq(playerGuid[4]);
+
+    uint64 pGuid = *(uint64*)playerGuid;
+
     if (objmgr.GetPlayer((uint32)playerGuid) != NULL || m_loggingInPlayer || _player)
     {
         // A character with that name already exists 0x3E
@@ -738,8 +874,11 @@ void WorldSession::HandlePlayerLoginOpcode(WorldPacket& recv_data)
         return;
     }
 
+    // we make sure the guid is the correct one
+    //printf("guid: %d\n", Arcemu::Util::GUID_LOPART(pGuid));
+
     AsyncQuery* q = new AsyncQuery(new SQLClassCallbackP0<WorldSession>(this, &WorldSession::LoadPlayerFromDBProc));
-    q->AddQuery("SELECT guid,class FROM characters WHERE guid = %u AND login_flags = %u", playerGuid, (uint32)LOGIN_NO_FLAG); // 0
+    q->AddQuery("SELECT guid,class FROM characters WHERE guid = %u AND forced_rename_pending = 0", Arcemu::Util::GUID_LOPART(pGuid)); // 0
     CharacterDatabase.QueueAsyncQuery(q);
 }
 
@@ -753,7 +892,7 @@ void WorldSession::LoadPlayerFromDBProc(QueryResultVector& results)
     }
 
     QueryResult* result = results[0].result;
-    if (! result)
+    if (!result)
     {
         Log.Error("WorldSession::LoadPlayerFromDBProc", "Player login query failed!");
         uint8 respons = E_CHAR_LOGIN_NO_CHARACTER;
@@ -768,38 +907,38 @@ void WorldSession::LoadPlayerFromDBProc(QueryResultVector& results)
 
     Player* plr = NULL;
 
-    switch(_class)
+    switch (_class)
     {
-        case WARRIOR:
-            plr = new Warrior(playerGuid);
-            break;
-        case PALADIN:
-            plr = new Paladin(playerGuid);
-            break;
-        case HUNTER:
-            plr = new Hunter(playerGuid);
-            break;
-        case ROGUE:
-            plr = new Rogue(playerGuid);
-            break;
-        case PRIEST:
-            plr = new Priest(playerGuid);
-            break;
-        case DEATHKNIGHT:
-            plr = new DeathKnight(playerGuid);
-            break;
-        case SHAMAN:
-            plr = new Shaman(playerGuid);
-            break;
-        case MAGE:
-            plr = new Mage(playerGuid);
-            break;
-        case WARLOCK:
-            plr = new Warlock(playerGuid);
-            break;
-        case DRUID:
-            plr = new Druid(playerGuid);
-            break;
+    case WARRIOR:
+        plr = new Warrior(playerGuid);
+        break;
+    case PALADIN:
+        plr = new Paladin(playerGuid);
+        break;
+    case HUNTER:
+        plr = new Hunter(playerGuid);
+        break;
+    case ROGUE:
+        plr = new Rogue(playerGuid);
+        break;
+    case PRIEST:
+        plr = new Priest(playerGuid);
+        break;
+    case DEATHKNIGHT:
+        plr = new DeathKnight(playerGuid);
+        break;
+    case SHAMAN:
+        plr = new Shaman(playerGuid);
+        break;
+    case MAGE:
+        plr = new Mage(playerGuid);
+        break;
+    case WARLOCK:
+        plr = new Warlock(playerGuid);
+        break;
+    case DRUID:
+        plr = new Druid(playerGuid);
+        break;
     }
 
     if (plr == NULL)
@@ -831,7 +970,7 @@ void WorldSession::FullLogin(Player* plr)
     {
         // Don't allow player to login into a bg that has ended or is full
         if (mgr->m_battleground->HasEnded() == true ||
-                mgr->m_battleground->HasFreeSlots(plr->GetTeamInitial(), mgr->m_battleground->GetType() == false))
+            mgr->m_battleground->HasFreeSlots(plr->GetTeamInitial(), mgr->m_battleground->GetType() == false))
         {
             mgr = NULL;
         }
@@ -967,7 +1106,7 @@ void WorldSession::FullLogin(Player* plr)
     SendAccountDataTimes(PER_CHARACTER_CACHE_MASK);
 
     // Set TIME OF LOGIN
-    CharacterDatabase.Execute("UPDATE characters SET online = 1 WHERE guid = %u" , plr->GetLowGUID());
+    CharacterDatabase.Execute("UPDATE characters SET online = 1 WHERE guid = %u", plr->GetLowGUID());
 
     bool enter_world = true;
 
@@ -1024,8 +1163,8 @@ void WorldSession::FullLogin(Player* plr)
 
         if (sWorld.m_AdditionalFun)    //cebernic: tells people who 's newbie :D
         {
-            const int classtext[] = {0, 5, 6, 8, 9, 11, 0, 4, 3, 7, 0, 10};
-            sWorld.SendLocalizedWorldText(true, "{65}", classtext[(uint32)plr->getClass() ] , plr->GetName() , (plr->IsTeamHorde() ? "{63}" : "{64}"));
+            const int classtext[] = { 0, 5, 6, 8, 9, 11, 0, 4, 3, 7, 0, 10 };
+            sWorld.SendLocalizedWorldText(true, "{65}", classtext[(uint32)plr->getClass()], plr->GetName(), (plr->IsTeamHorde() ? "{63}" : "{64}"));
         }
 
     }
@@ -1081,7 +1220,7 @@ void WorldSession::FullLogin(Player* plr)
     _player->BroadcastMessage("Build hash: %s%s", MSG_COLOR_CYAN, BUILD_HASH_STR);
     // Shows Online players, and connection peak
     _player->BroadcastMessage("Online Players: %s%u |rPeak: %s%u|r Accepted Connections: %s%u",
-                              MSG_COLOR_SEXGREEN, sWorld.GetSessionCount(), MSG_COLOR_SEXBLUE, sWorld.PeakSessionCount, MSG_COLOR_SEXBLUE, sWorld.mAcceptedConnections);
+        MSG_COLOR_SEXGREEN, sWorld.GetSessionCount(), MSG_COLOR_SEXBLUE, sWorld.PeakSessionCount, MSG_COLOR_SEXBLUE, sWorld.mAcceptedConnections);
 
     // Shows Server uptime
     _player->BroadcastMessage("Server Uptime: |r%s", sWorld.GetUptimeString().c_str());
@@ -1274,4 +1413,15 @@ void WorldSession::HandleCharFactionOrRaceChange(WorldPacket& recv_data)
     data << uint8(facialHair);
     data << uint8(race);
     SendPacket(&data);
+}
+
+// We do not do anything with this opcode...
+void WorldSession::HandleLoadScreenOpcode(WorldPacket & recv_data)
+{
+    // empty opcode
+    // printf("LOAD SCREEN OPCODE\n");
+    uint32 mapId;
+
+    recv_data >> mapId;
+    recv_data.readBit();
 }
