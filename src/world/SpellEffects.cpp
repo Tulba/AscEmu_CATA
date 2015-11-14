@@ -5450,11 +5450,7 @@ void Spell::SpellEffectRestorePowerPct(uint32 i)
         return;
 
     uint32 power_type = GetProto()->EffectMiscValue[i];
-    if (power_type > POWER_TYPE_HAPPINESS)
-    {
-        LOG_ERROR("Unhandled power type %u in %s, report this line to devs.", power_type, __FUNCTION__);
-        return;
-    }
+
 
     uint32 amount = damage * unitTarget->GetMaxPower(power_type) / 100;
     u_caster->Energize(unitTarget, GetProto()->Id, amount, power_type);

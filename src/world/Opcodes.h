@@ -88,8 +88,8 @@ enum Opcodes
     SMSG_GAMESPEED_SET                              = 0x047,
     CMSG_SERVERTIME                                 = 0x048,
     SMSG_SERVERTIME                                 = 0x049,
-    CMSG_NAME_QUERY                                 = 0x050,
-    SMSG_NAME_QUERY_RESPONSE                        = 0x051,
+
+
     CMSG_PET_NAME_QUERY                             = 0x052,
     SMSG_PET_NAME_QUERY_RESPONSE                    = 0x053,
     CMSG_GUILD_QUERY                                = 0x054,
@@ -455,7 +455,7 @@ enum Opcodes
     SMSG_AURACASTLOG_OBSOLETE                       = 0x1D1,
     CMSG_RECLAIM_CORPSE                             = 0x1D2,
     CMSG_WRAP_ITEM                                  = 0x1D3,
-    SMSG_LEVELUP_INFO                               = 0x1D4,
+
     MSG_MINIMAP_PING                                = 0x1D5,
     SMSG_RESISTLOG                                  = 0x1D6,
     SMSG_ENCHANTMENTLOG                             = 0x1D7,
@@ -682,7 +682,6 @@ enum Opcodes
     CMSG_SET_ACTIONBAR_TOGGLES                      = 0x2BF,
     UMSG_DELETE_GUILD_CHARTER                       = 0x2C0,
     MSG_PETITION_RENAME                             = 0x2C1,
-    SMSG_INIT_WORLD_STATES                          = 0x2C2,
 
     CMSG_ITEM_NAME_QUERY                            = 0x2C4,
     SMSG_ITEM_NAME_QUERY_RESPONSE                   = 0x2C5,
@@ -1390,6 +1389,11 @@ enum Opcodes
     SMSG_ITEM_TIME_UPDATE = 0x2407,
     CMSG_INSPECT_HONOR_STATS = 0x791E, // 15595
     SMSG_INSPECT_HONOR_STATS = 0x79A5, // 15595
+
+    SMSG_LEVELUP_INFO = 0x0435, // 15595
+    CMSG_NAME_QUERY = 0x2224, // 15595
+    SMSG_NAME_QUERY_RESPONSE = 0x6E04, // 15595
+    SMSG_INIT_WORLD_STATES = 0x4C15, // 15595
 
     NUM_MSG_TYPES = 0xFFFF   // End of Opcodes
 };

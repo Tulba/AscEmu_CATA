@@ -80,14 +80,16 @@ void Player::Gossip_SendPOI(float X, float Y, uint32 Icon, uint32 Flags, uint32 
 
 void Player::SendLevelupInfo(uint32 level, uint32 Hp, uint32 Mana, uint32 Stat0, uint32 Stat1, uint32 Stat2, uint32 Stat3, uint32 Stat4)
 {
-    WorldPacket data(SMSG_LEVELUP_INFO, 14 * 4);
+    WorldPacket data(SMSG_LEVELUP_INFO, 4 + 4 + 5 * 4 + 5 * 4);
 
     data << uint32(level);
     data << uint32(Hp);
     data << uint32(Mana);
 
-    for (int i = 0; i < 6; ++i)
-        data << uint32(0);
+    data << uint32(0);
+    data << uint32(0);
+    data << uint32(0);
+    data << uint32(0);
 
     data << uint32(Stat0);
     data << uint32(Stat1);
@@ -768,7 +770,7 @@ void Player::SendTotemCreated(uint8 slot, uint64 GUID, uint32 duration, uint32 s
 
 void Player::SendInitialWorldstates()
 {
-    WorldPacket data(SMSG_INIT_WORLD_STATES, 100);
+    WorldPacket data(SMSG_INIT_WORLD_STATES, (4 + 4 + 4 + 2 + 8 * 8));
 
     m_mapMgr->GetWorldStatesHandler().BuildInitWorldStatesForZone(m_zoneId, m_AreaID, data);
     m_session->SendPacket(&data);

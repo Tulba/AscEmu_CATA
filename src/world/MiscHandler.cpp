@@ -892,7 +892,7 @@ void WorldSession::HandleLogoutRequestOpcode(WorldPacket& recv_data)
 {
     CHECK_INWORLD_RETURN
 
-        Player* pPlayer = GetPlayer();
+    Player* pPlayer = GetPlayer();
     WorldPacket data(SMSG_LOGOUT_RESPONSE, 5);
 
     LOG_DEBUG("WORLD: Recvd CMSG_LOGOUT_REQUEST Message");
@@ -902,7 +902,8 @@ void WorldSession::HandleLogoutRequestOpcode(WorldPacket& recv_data)
         if (!sHookInterface.OnLogoutRequest(pPlayer))
         {
             // Declined Logout Request
-            data << uint32(1) << uint8(0);
+            data << uint32(1);
+            data << uint8(0);
             SendPacket(&data);
             return;
         }
@@ -917,7 +918,8 @@ void WorldSession::HandleLogoutRequestOpcode(WorldPacket& recv_data)
         if (pPlayer->CombatStatus.IsInCombat() ||	//can't quit still in combat
             pPlayer->DuelingWith != NULL)			//can't quit still dueling or attacking
         {
-            data << uint32(1) << uint8(0);
+            data << uint32(1);
+            data << uint8(0);
             SendPacket(&data);
             return;
         }

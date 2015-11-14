@@ -27,7 +27,6 @@
 //////////////////////////////////////////////////////////////////////////////////////////
 void WorldSession::HandleNameQueryOpcode(WorldPacket& recv_data)
 {
-    CHECK_PACKET_SIZE(recv_data, 8);
     uint64 guid;
     recv_data >> guid;
 
@@ -38,15 +37,16 @@ void WorldSession::HandleNameQueryOpcode(WorldPacket& recv_data)
 
     LOG_DEBUG("Received CMSG_NAME_QUERY for: %s", pn->name);
 
-    WoWGuid pguid((uint64)pn->guid); //VLack: The usual new style guid handling on 3.1.2
-    WorldPacket data(SMSG_NAME_QUERY_RESPONSE, strlen(pn->name) + 35);
-    //    data << pn->guid << uint32(0);    //highguid
-    data << pguid << uint8(0); //VLack: usual, new-style guid with an uint8
+    WoWGuid pguid((uint64)pn->guid);                                    //VLack: The usual new style guid handling on 3.1.2
+    WorldPacket data(SMSG_NAME_QUERY_RESPONSE, (8 + 1 + 1 + 1 + 1 + 1 + 10));
+    data << pguid;
+    data << uint8(0);
     data << pn->name;
-    data << uint8(0);       // this is a string showed besides players name (eg. in combat log), a custom title ?
-    data << uint8(pn->race) << uint8(pn->gender) << uint8(pn->cl);
-    //    data << uint8(0);            // 2.4.0, why do i get the feeling blizz is adding custom classes or custom titles? (same thing in who list)
-    data << uint8(0); //VLack: tell the server this name is not declined... (3.1 fix?)
+    data << uint8(0);           // Realm name
+    data << uint8(pn->race);
+    data << uint8(pn->gender);
+    data << uint8(pn->cl);
+    data << uint8(0);           // Check if name is decline (0 = not declined, 1 = declined)
     SendPacket(&data);
 }
 

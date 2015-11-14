@@ -2500,9 +2500,6 @@ bool Spell::HasPower()
         case POWER_TYPE_ENERGY:
         {	powerField = UNIT_FIELD_POWER4;						}
         break;
-        case POWER_TYPE_HAPPINESS:
-        {	powerField = UNIT_FIELD_POWER5;						}
-        break;
 
         case POWER_TYPE_RUNES:
         {
@@ -2642,9 +2639,7 @@ bool Spell::TakePower()
         case POWER_TYPE_ENERGY:
         {	powerField = UNIT_FIELD_POWER4;						}
         break;
-        case POWER_TYPE_HAPPINESS:
-        {	powerField = UNIT_FIELD_POWER5;						}
-        break;
+
 
         case POWER_TYPE_RUNES:
         {

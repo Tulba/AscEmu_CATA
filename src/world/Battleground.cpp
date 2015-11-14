@@ -834,12 +834,11 @@ Creature* CBattleground::SpawnSpiritGuide(float x, float y, float z, float o, ui
     pCreature->SetMaxHealth(10000);
     pCreature->SetMaxPower(POWER_TYPE_MANA, 4868);
     pCreature->SetMaxPower(POWER_TYPE_FOCUS, 200);
-    pCreature->SetMaxPower(POWER_TYPE_HAPPINESS, 2000000);
 
     pCreature->SetHealth(100000);
     pCreature->SetPower(POWER_TYPE_MANA, 4868);
     pCreature->SetPower(POWER_TYPE_FOCUS, 200);
-    pCreature->SetPower(POWER_TYPE_HAPPINESS, 2000000);
+
 
     pCreature->setLevel(60);
     pCreature->SetFaction(84 - horde);

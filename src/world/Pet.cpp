@@ -209,8 +209,7 @@ bool Pet::CreateAsSummon(uint32 entry, CreatureInfo* ci, Creature* created_from_
         SetCombatReach(created_from_creature->GetCombatReach());
 
         SetUInt32Value(UNIT_FIELD_FLAGS, UNIT_FLAG_PVP_ATTACKABLE | UNIT_FLAG_COMBAT);  // why combat ??
-        SetPower(POWER_TYPE_HAPPINESS, PET_HAPPINESS_UPDATE_VALUE >> 1);                //happiness
-        SetMaxPower(POWER_TYPE_HAPPINESS, 1000000);
+
         SetUInt32Value(UNIT_FIELD_PETEXPERIENCE, 0);
         SetUInt32Value(UNIT_FIELD_PETNEXTLEVELEXP, GetNextLevelXP(level));
         SetPower(POWER_TYPE_FOCUS, 100);                                                // Focus
@@ -335,7 +334,7 @@ void Pet::Update(unsigned long time_passed)
             int32 burn = 1042;          //Based on WoWWiki pet looses 50 happiness over 6 min => 1042 every 7.5 s
             if (CombatStatus.IsInCombat())
                 burn >>= 1;             //in combat reduce burn by half (guessed)
-            ModPower(POWER_TYPE_HAPPINESS, -burn);
+
             m_HappinessTimer = PET_HAPPINESS_UPDATE_TIMER;  // reset timer
         }
         else if (!IsInBg())
@@ -661,8 +660,7 @@ void Pet::LoadFromDB(Player* owner, PlayerPet* pi)
         SetBoundingRadius(proto->BoundingRadius);
         SetCombatReach(proto->CombatReach);
         SetUInt32Value(UNIT_FIELD_FLAGS, UNIT_FLAG_PVP_ATTACKABLE | UNIT_FLAG_COMBAT);      // why combat ??
-        SetPower(POWER_TYPE_HAPPINESS, PET_HAPPINESS_UPDATE_VALUE >> 1);                    //happiness
-        SetMaxPower(POWER_TYPE_HAPPINESS, 1000000);
+
         SetUInt32Value(UNIT_FIELD_PETEXPERIENCE, mPi->xp);
         SetUInt32Value(UNIT_FIELD_PETNEXTLEVELEXP, GetNextLevelXP(mPi->level));
         SetUInt32Value(UNIT_FIELD_BYTES_2, 1);
@@ -697,7 +695,7 @@ void Pet::LoadFromDB(Player* owner, PlayerPet* pi)
     SetTPs(static_cast<uint8>(mPi->talentpoints));
     SetPower(GetPowerType(), mPi->current_power);
     SetHealth(mPi->current_hp);
-    SetPower(POWER_TYPE_HAPPINESS, mPi->current_happiness);
+
 
     if (mPi->renamable == 0)
         SetByte(UNIT_FIELD_BYTES_2, 2, PET_RENAME_NOT_ALLOWED);
@@ -854,7 +852,6 @@ void Pet::UpdatePetInfo(bool bSetToOffline)
     player_pet->current_power = GetPower(GetPowerType());
     player_pet->talentpoints = GetTPs();
     player_pet->current_hp = GetHealth();
-    player_pet->current_happiness = GetPower(POWER_TYPE_HAPPINESS);
 
     uint32 renamable = GetByte(UNIT_FIELD_BYTES_2, 2);
 
@@ -2148,11 +2145,7 @@ void Pet::Die(Unit* pAttacker, uint32 damage, uint32 spellid)
         //PET DEATH HANDLING
         Pet* pPet = this;
 
-        // dying pet looses 1 happiness level (not in BG)
-        if (!pPet->IsSummonedPet() && !pPet->IsInBg())
-        {
-            pPet->ModPower(POWER_TYPE_HAPPINESS, -PET_HAPPINESS_UPDATE_VALUE);
-        }
+
         pPet->DelayedRemove(false);
     }   //////////////////////////////////////////////////////////////////////////////////////////
 
