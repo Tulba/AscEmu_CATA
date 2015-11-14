@@ -1757,7 +1757,7 @@ void Player::smsg_InitialSpells()
 
 void Player::smsg_TalentsInfo(bool SendPetTalents)
 {
-    WorldPacket data(SMSG_TALENTS_INFO, 1000);
+    WorldPacket data(SMSG_TALENTS_INFO, 50);
     data << uint8(SendPetTalents ? 1 : 0);
     if (SendPetTalents)
     {
@@ -11901,9 +11901,10 @@ data << uint32(0xFFFFFFFF); //maybe a terminator like a null terminated string ?
 
 void Player::UpdatePowerAmm()
 {
-    WorldPacket data(SMSG_POWER_UPDATE, 5);
+    WorldPacket data(SMSG_POWER_UPDATE);
     FastGUIDPack(data, GetGUID());
-    data << uint8(GetPowerType());
+    data << uint8(1);
+    data << int8(8);    // eclipse?
     data << GetUInt32Value(UNIT_FIELD_POWER1 + GetPowerType());
     SendMessageToSet(&data, true);
 }

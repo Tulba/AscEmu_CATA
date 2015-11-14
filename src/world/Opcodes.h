@@ -143,7 +143,7 @@ enum Opcodes
     SMSG_GUILD_COMMAND_RESULT                       = 0x093,
     UMSG_UPDATE_GUILD                               = 0x094,
     CMSG_MESSAGECHAT                                = 0x095,
-    SMSG_MESSAGECHAT                                = 0x096,
+
     CMSG_JOIN_CHANNEL                               = 0x097,
     CMSG_LEAVE_CHANNEL                              = 0x098,
     SMSG_CHANNEL_NOTIFY                             = 0x099,
@@ -244,14 +244,14 @@ enum Opcodes
     SMSG_TRIGGER_CINEMATIC                          = 0x0FA,
     CMSG_NEXT_CINEMATIC_CAMERA                      = 0x0FB,
     CMSG_COMPLETE_CINEMATIC                         = 0x0FC,
-    SMSG_TUTORIAL_FLAGS                             = 0x0FD,
+
     CMSG_TUTORIAL_FLAG                              = 0x0FE,
     CMSG_TUTORIAL_CLEAR                             = 0x0FF,
     CMSG_TUTORIAL_RESET                             = 0x100,
     CMSG_STANDSTATECHANGE                           = 0x101,
     CMSG_EMOTE                                      = 0x102,
     SMSG_EMOTE                                      = 0x103,
-    CMSG_TEXT_EMOTE                                 = 0x104,
+
     SMSG_TEXT_EMOTE                                 = 0x105,
     CMSG_AUTOEQUIP_GROUND_ITEM                      = 0x106,
     CMSG_AUTOSTORE_GROUND_ITEM                      = 0x107,
@@ -281,23 +281,23 @@ enum Opcodes
     CMSG_SET_TRADE_GOLD                             = 0x11F,
     SMSG_TRADE_STATUS                               = 0x120,
     SMSG_TRADE_STATUS_EXTENDED                      = 0x121,
-    SMSG_INITIALIZE_FACTIONS                        = 0x122,
+
     SMSG_SET_FACTION_VISIBLE                        = 0x123,
     SMSG_SET_FACTION_STANDING                       = 0x124,
     CMSG_SET_FACTION_ATWAR                          = 0x125,
     CMSG_SET_FACTION_CHEAT                          = 0x126,
-    SMSG_SET_PROFICIENCY                            = 0x127,
+
     CMSG_SET_ACTION_BUTTON                          = 0x128,
-    SMSG_ACTION_BUTTONS                             = 0x129,
-    SMSG_INITIAL_SPELLS                             = 0x12A,
+
+
     SMSG_LEARNED_SPELL                              = 0x12B,
     SMSG_SUPERCEDED_SPELL                           = 0x12C,
     CMSG_NEW_SPELL_SLOT                             = 0x12D,
     CMSG_CAST_SPELL                                 = 0x12E,
     CMSG_CANCEL_CAST                                = 0x12F,
     SMSG_CAST_FAILED                                = 0x130,
-    SMSG_SPELL_START                                = 0x131,
-    SMSG_SPELL_GO                                   = 0x132,
+
+
     SMSG_SPELL_FAILURE                              = 0x133,
     SMSG_SPELL_COOLDOWN                             = 0x134,
     SMSG_COOLDOWN_EVENT                             = 0x135,
@@ -331,7 +331,7 @@ enum Opcodes
     SMSG_BREAK_TARGET                               = 0x152,
     CMSG_SAVE_PLAYER                                = 0x153,
     CMSG_SETDEATHBINDPOINT                          = 0x154,
-    SMSG_BINDPOINTUPDATE                            = 0x155,
+
     CMSG_GETDEATHBINDZONE                           = 0x156,
     SMSG_BINDZONEREPLY                              = 0x157,
     SMSG_PLAYERBOUND                                = 0x158,
@@ -475,14 +475,14 @@ enum Opcodes
     SMSG_INVALID_PROMOTION_CODE                     = 0x1E7,
     MSG_GM_BIND_OTHER                               = 0x1E8,
     MSG_GM_SUMMON                                   = 0x1E9,
-    SMSG_ITEM_TIME_UPDATE                           = 0x1EA,
+
     SMSG_ITEM_ENCHANT_TIME_UPDATE                   = 0x1EB,
     MSG_GM_SHOWLABEL                                = 0x1EF,
     CMSG_PET_CAST_SPELL                             = 0x1F0,
     MSG_SAVE_GUILD_EMBLEM                           = 0x1F1,
     MSG_TABARDVENDOR_ACTIVATE                       = 0x1F2,
     SMSG_PARTYKILLLOG                               = 0x1F5,
-    SMSG_COMPRESSED_UPDATE_OBJECT                   = 0x1F6,
+
     SMSG_PLAY_SPELL_IMPACT                          = 0x1F7,
     SMSG_EXPLORATION_EXPERIENCE                     = 0x1F8,
     CMSG_GM_SET_SECURITY_GROUP                      = 0x1F9,
@@ -683,7 +683,7 @@ enum Opcodes
     UMSG_DELETE_GUILD_CHARTER                       = 0x2C0,
     MSG_PETITION_RENAME                             = 0x2C1,
     SMSG_INIT_WORLD_STATES                          = 0x2C2,
-    SMSG_UPDATE_WORLD_STATE                         = 0x2C3,
+
     CMSG_ITEM_NAME_QUERY                            = 0x2C4,
     SMSG_ITEM_NAME_QUERY_RESPONSE                   = 0x2C5,
     SMSG_PET_ACTION_FEEDBACK                        = 0x2C6,
@@ -732,7 +732,7 @@ enum Opcodes
     SMSG_PET_UNLEARN_CONFIRM                        = 0x2F1,
     SMSG_PARTY_MEMBER_STATS_FULL                    = 0x2F2,
     CMSG_PET_SPELL_AUTOCAST                         = 0x2F3,
-    SMSG_WEATHER                                    = 0x2F4,
+
     SMSG_PLAY_TIME_WARNING                          = 0x2F5,
     SMSG_MINIGAME_SETUP                             = 0x2F6,
     SMSG_MINIGAME_STATE                             = 0x2F7,
@@ -785,9 +785,9 @@ enum Opcodes
     SMSG_GHOSTEE_GONE                               = 0x326,
     CMSG_GM_UPDATE_TICKET_STATUS                    = 0x327,
     SMSG_GM_TICKET_STATUS_UPDATE                    = 0x328,
-    MSG_SET_DUNGEON_DIFFICULTY                      = 0x329,
+
     CMSG_GMSURVEY_SUBMIT                            = 0x32A,
-    SMSG_UPDATE_INSTANCE_OWNERSHIP                  = 0x32B,
+
     CMSG_IGNORE_KNOCKBACK_CHEAT                     = 0x32C,
     SMSG_CHAT_PLAYER_AMBIGUOUS                      = 0x32D,
     MSG_DELAY_GHOST_TELEPORT                        = 0x32E,
@@ -805,7 +805,7 @@ enum Opcodes
     SMSG_DEFENSE_MESSAGE                            = 0x33A,
     SMSG_INSTANCE_DIFFICULTY                        = 0x33B,
     MSG_GM_RESETINSTANCELIMIT                       = 0x33C,
-    SMSG_MOTD                                       = 0x33D,
+
     SMSG_MOVE_SET_FLIGHT_OBSOLETE                   = 0x33E,
     SMSG_MOVE_UNSET_FLIGHT_OBSOLETE                 = 0x33F,
     CMSG_MOVE_FLIGHT_ACK_OBSOLETE                   = 0x340,
@@ -941,7 +941,7 @@ enum Opcodes
     MSG_RAID_READY_CHECK_FINISHED                   = 0x3C6,
     CMSG_COMPLAIN                                   = 0x3C7,
     SMSG_COMPLAIN_RESULT                            = 0x3C8,
-    SMSG_FEATURE_SYSTEM_STATUS                      = 0x3C9,
+
     CMSG_GM_SHOW_COMPLAINTS                         = 0x3CA,
     CMSG_GM_UNSQUELCH                               = 0x3CB,
     CMSG_CHANNEL_SILENCE_VOICE                      = 0x3CC,
@@ -1024,9 +1024,7 @@ enum Opcodes
     CMSG_SET_PLAYER_DECLINED_NAMES                  = 0x419,
     SMSG_SET_PLAYER_DECLINED_NAMES_RESULT           = 0x41A,
     CMSG_QUERY_SERVER_BUCK_DATA                     = 0x41B,
-    CMSG_CLEAR_SERVER_BUCK_DATA                     = 0x41C,
-    SMSG_SERVER_BUCK_DATA                           = 0x41D,
-    SMSG_SEND_UNLEARN_SPELLS                        = 0x41E,
+
     SMSG_PROPOSE_LEVEL_GRANT                        = 0x41F,
     CMSG_ACCEPT_LEVEL_GRANT                         = 0x420,
     SMSG_REFER_A_FRIEND_FAILURE                     = 0x421,
@@ -1081,7 +1079,7 @@ enum Opcodes
     SMSG_DANCE_QUERY_RESPONSE                       = 0x452,
     SMSG_INVALIDATE_DANCE                           = 0x453,
     CMSG_DELETE_DANCE                               = 0x454,
-    SMSG_LEARNED_DANCE_MOVES                        = 0x455,
+
     CMSG_LEARN_DANCE_MOVE                           = 0x456,
     CMSG_UNLEARN_DANCE_MOVE                         = 0x457,
     CMSG_SET_RUNE_COUNT                             = 0x458,
@@ -1120,10 +1118,10 @@ enum Opcodes
     CMSG_PET_LEARN_TALENT                           = 0x47A,
     CMSG_PET_UNLEARN_TALENTS                        = 0x47B,
     SMSG_SET_PHASE_SHIFT                            = 0x47C,
-    SMSG_ALL_ACHIEVEMENT_DATA                       = 0x47D,
+
     CMSG_FORCE_SAY_CHEAT                            = 0x47E,
     SMSG_HEALTH_UPDATE                              = 0x47F,
-    SMSG_POWER_UPDATE                               = 0x480,
+
     CMSG_GAMEOBJ_REPORT_USE                         = 0x481,
     SMSG_HIGHEST_THREAT_UPDATE                      = 0x482,
     SMSG_THREAT_UPDATE                              = 0x483,
@@ -1144,8 +1142,7 @@ enum Opcodes
     SMSG_PET_UPDATE_COMBO_POINTS                    = 0x492,
     CMSG_ENABLETAXI                                 = 0x493,
     SMSG_PRE_RESURRECT                              = 0x494,
-    SMSG_AURA_UPDATE_ALL                            = 0x495,
-    SMSG_AURA_UPDATE                                = 0x496,
+
     CMSG_FLOOD_GRACE_CHEAT                          = 0x497,
     SMSG_SERVER_FIRST_ACHIEVEMENT                   = 0x498,
     SMSG_PET_LEARNED_SPELL                          = 0x499,
@@ -1158,7 +1155,7 @@ enum Opcodes
     CMSG_SERVER_INFO_QUERY                          = 0x4A0,
     SMSG_SERVER_INFO_RESPONSE                       = 0x4A1,
     CMSG_CHECK_LOGIN_CRITERIA                       = 0x4A2,
-    SMSG_SERVER_BUCK_DATA_START                     = 0x4A3,
+
     CMSG_QUERY_VEHICLE_STATUS                       = 0x4A4,
     UMSG_UNKNOWN_1189                               = 0x4A5,
     SMSG_UNKNOWN_1190                               = 0x4A6,
@@ -1182,11 +1179,11 @@ enum Opcodes
     UMSG_UNKNOWN_1209                               = 0x4B9,
     CMSG_UNKNOWN_1210                               = 0x4BA,
     SMSG_UNKNOWN_1211                               = 0x4BB,
-    SMSG_EQUIPMENT_SET_LIST                         = 0x4BC,
+
     CMSG_EQUIPMENT_SET_SAVE                         = 0x4BD,
     CMSG_UPDATE_PROJECTILE_POSITION                 = 0x4BE,
     SMSG_SET_PROJECTILE_POSITION                    = 0x4BF,
-    SMSG_TALENTS_INFO                               = 0x4C0,
+
     CMSG_LEARN_TALENTS_MULTIPLE                     = 0x4C1,
     CMSG_LEARN_PREVIEW_TALENTS_PET                  = 0x4C2,
     UMSG_UNKNOWN_1219                               = 0x4C3,
@@ -1229,7 +1226,7 @@ enum Opcodes
     SMSG_BATTLEFIELD_MGR_STATE_CHANGE               = 0x4E8,
     CMSG_BATTLEFIELD_MANAGER_ADVANCE_STATE          = 0x4E9,
     CMSG_BATTLEFIELD_MANAGER_SET_NEXT_TRANS_TIME    = 0x4EA,
-    MSG_SET_RAID_DIFFICULTY                         = 0x4EB,
+
     CMSG_TOGGLE_XP_GAIN                             = 0x4EC,
     SMSG_TOGGLE_XP_GAIN                             = 0x4ED,
     SMSG_GMRESPONSE_DB_ERROR                        = 0x4EE,
@@ -1358,6 +1355,39 @@ enum Opcodes
 
     SMSG_TIME_SYNC_REQ = 0x3CA4,	// 15595
     CMSG_TIME_SYNC_RESP = 0x3B0C,	/// 15595
+
+    SMSG_FEATURE_SYSTEM_STATUS = 0x3DB7,    // 15595
+    SMSG_LEARNED_DANCE_MOVES = 0x0E05,  // 15595
+    MSG_SET_RAID_DIFFICULTY = 0x0614,   // 15595
+    MSG_SET_DUNGEON_DIFFICULTY = 0x4925,    // 15595
+    SMSG_EQUIPMENT_SET_LIST = 0x2E04,   // 15595
+    SMSG_MESSAGECHAT = 0x2026,  // 15595
+    SMSG_MOTD = 0x0A35, // 15595
+    SMSG_BINDPOINTUPDATE = 0x0527,  // 15595
+    SMSG_SET_PROFICIENCY = 0x6207,  // 15595
+    SMSG_TUTORIAL_FLAGS = 0x0B35,   // 15595 (Extract refactoring needed)
+    SMSG_TALENTS_INFO = 0x6F26, // 15595 (refactoring, I'm not sure with the content)
+    SMSG_INITIAL_SPELLS = 0x0104,   //15595
+    SMSG_SEND_UNLEARN_SPELLS = 0x4E25,  // 15595
+    SMSG_ACTION_BUTTONS = 0x38B5,   // 15595
+    SMSG_INITIALIZE_FACTIONS = 0x4634,  // 15595 (Check that packet)
+    SMSG_UPDATE_WORLD_STATE = 0x4816,   // 15595
+    SMSG_ALL_ACHIEVEMENT_DATA = 0x58B1, // 15595 (Not sure about the content)
+
+    SMSG_WORLD_SERVER_INFO = 0x31A2,    // 15595
+    SMSG_COMPRESSED_UPDATE_OBJECT = 0x0000, // unknown send by server
+    SMSG_SPELL_GO = 0x6E16, // 15595    (not handled correctly!)
+    SMSG_SPELL_START = 0x6415,  // 15595
+    SMSG_POWER_UPDATE = 0x4A07, // 15595
+    CMSG_TEXT_EMOTE = 0x2E24, // 15595
+    CMSG_CLEAR_SERVER_BUCK_DATA = 0x141D,  // 15595 Not handle this
+    SMSG_SERVER_BUCK_DATA = 0x141E, // 15595 handle serverside
+    SMSG_UPDATE_INSTANCE_OWNERSHIP = 0x4915, // 15595
+    SMSG_SERVER_BUCK_DATA_START = 0x14A4, // 15595 handle serverside
+    SMSG_WEATHER = 0x2904,  // 15595
+    SMSG_AURA_UPDATE = 0x4707,
+    SMSG_AURA_UPDATE_ALL = 0x6916,
+    SMSG_ITEM_TIME_UPDATE = 0x2407,
 
     NUM_MSG_TYPES = 0xFFFF   // End of Opcodes
 };

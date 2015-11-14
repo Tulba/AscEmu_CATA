@@ -5684,7 +5684,7 @@ void Spell::SpellEffectActivateSpec(uint32 i)
     uint8 NewSpec = p_caster->m_talentActiveSpec == SPEC_PRIMARY ? SPEC_SECONDARY : SPEC_PRIMARY; // Check if primary spec is on or not
     p_caster->ActivateSpec(NewSpec);
 
-    WorldPacket data(SMSG_ACTION_BUTTONS, PLAYER_ACTION_BUTTON_SIZE + 1);
+    WorldPacket data(SMSG_ACTION_BUTTONS, PLAYER_ACTION_BUTTON_SIZE + 1);   //Rewrite that!
 
     data << uint8(1); // Force the client to reset the actionbar and use new values
 

@@ -50,7 +50,7 @@ initialiseSingleton(WeatherMgr);
 
 void BuildWeatherPacket(WorldPacket* data, uint32 Effect, float Density)
 {
-    data->Initialize(SMSG_WEATHER);
+    data->Initialize(SMSG_WEATHER, 4 + 4 + 1);
     if (Effect == 0)                                            // set all parameter to 0 for sunny.
         *data << uint32(0) << float(0) << uint32(0) << uint8(0);
     else if (Effect == 1)                                       // No sound/density for fog
@@ -150,7 +150,7 @@ void WeatherMgr::SendWeather(Player* plr)  //Update weather when player has chan
 
     if (itr == m_zoneWeathers.end())
     {
-        WorldPacket data(SMSG_WEATHER, 9);
+        WorldPacket data(SMSG_WEATHER, 4 + 4 + 1);
         BuildWeatherPacket(&data, 0, 0);
         plr->GetSession()->SendPacket(&data);
         plr->m_lastSeenWeather = 0;
@@ -258,7 +258,7 @@ void WeatherInfo::Update()
 
 void WeatherInfo::SendUpdate()
 {
-    WorldPacket data(SMSG_WEATHER, 9);
+    WorldPacket data(SMSG_WEATHER, 4 + 4 + 1);
     BuildWeatherPacket(&data, m_currentEffect, m_currentDensity);
     sWorld.SendZoneMessage(&data, m_zoneId, 0);
 }
@@ -270,7 +270,7 @@ void WeatherInfo::SendUpdate(Player* plr) //Updates weather for player's zone-ch
 
     plr->m_lastSeenWeather = m_currentEffect;
 
-    WorldPacket data(SMSG_WEATHER, 9);
+    WorldPacket data(SMSG_WEATHER, 4 + 4 + 1);
     BuildWeatherPacket(&data, m_currentEffect, m_currentDensity);
     plr->GetSession()->SendPacket(&data);
 }

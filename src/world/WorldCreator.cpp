@@ -1095,7 +1095,7 @@ void InstanceMgr::BuildSavedInstancesForPlayer(Player* plr)
                         plr->GetSession()->SendPacket(&data);
 
                         data.Initialize(SMSG_UPDATE_INSTANCE_OWNERSHIP);
-                        data << uint32(0x01);
+                        data << uint32(0x01);   // true
                         plr->GetSession()->SendPacket(&data);
 
                         return;
@@ -1107,7 +1107,7 @@ void InstanceMgr::BuildSavedInstancesForPlayer(Player* plr)
     }
 
     data.SetOpcode(SMSG_UPDATE_INSTANCE_OWNERSHIP);
-    data << uint32(0x00);
+    data << uint32(0x00);   //false
     plr->GetSession()->SendPacket(&data);
 }
 

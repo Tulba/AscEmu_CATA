@@ -2075,7 +2075,7 @@ WorldStatesHandler& MapMgr::GetWorldStatesHandler()
 
 void MapMgr::onWorldStateUpdate(uint32 zone, uint32 field, uint32 value)
 {
-    WorldPacket data(SMSG_UPDATE_WORLD_STATE, 8);
+    WorldPacket data(SMSG_UPDATE_WORLD_STATE, 4 + 4);
     data << uint32(field);
     data << uint32(value);
 

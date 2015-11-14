@@ -878,7 +878,7 @@ void WorldSession::HandlePlayerLoginOpcode(WorldPacket& recv_data)
     //printf("guid: %d\n", Arcemu::Util::GUID_LOPART(pGuid));
 
     AsyncQuery* q = new AsyncQuery(new SQLClassCallbackP0<WorldSession>(this, &WorldSession::LoadPlayerFromDBProc));
-    q->AddQuery("SELECT guid,class FROM characters WHERE guid = %u AND forced_rename_pending = 0", Arcemu::Util::GUID_LOPART(pGuid)); // 0
+    q->AddQuery("SELECT guid,class FROM characters WHERE guid = %u AND login_flags = 0", Arcemu::Util::GUID_LOPART(pGuid)); // login_flags = forced_rename_pending
     CharacterDatabase.QueueAsyncQuery(q);
 }
 
@@ -1052,20 +1052,35 @@ void WorldSession::FullLogin(Player* plr)
     //////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-    StackWorldPacket<20> datab(SMSG_FEATURE_SYSTEM_STATUS);
+    WorldPacket datab(SMSG_FEATURE_SYSTEM_STATUS);
 
-
-    datab.Initialize(SMSG_FEATURE_SYSTEM_STATUS);
-
+    bool feature_bit4 = true;
+    datab.Initialize(SMSG_FEATURE_SYSTEM_STATUS, 7);
     datab << uint8(2);
-    datab << uint8(0);
+    datab << uint32(1);
+    datab << uint32(1);
+    datab << uint32(2);
+    datab << uint32(0);
+    datab.writeBit(1);
+    datab.writeBit(1);
+    datab.writeBit(0);
+    datab.writeBit(feature_bit4);
+    datab.writeBit(0);
+    datab.writeBit(0);
+    datab.flushBits();
+    if (feature_bit4)
+    {
+        datab << uint32(1);
+        datab << uint32(0);
+        datab << uint32(10);
+        datab << uint32(60);
+    }
 
     SendPacket(&datab);
 
     WorldPacket dataldm(SMSG_LEARNED_DANCE_MOVES, 4 + 4);
 
-    dataldm << uint32(0);
-    dataldm << uint32(0);
+    dataldm << uint64(0);
 
     SendPacket(&dataldm);
 
