@@ -36,7 +36,7 @@ void WorldSession::HandleSetVisibleRankOpcode(WorldPacket& recv_data)
 
 void HonorHandler::AddHonorPointsToPlayer(Player* pPlayer, uint32 uAmount)
 {
-    pPlayer->AddHonor(uAmount, true);
+    //pPlayer->AddHonor(uAmount, true);
 }
 
 int32 HonorHandler::CalculateHonorPointsForKill(uint32 playerLevel, uint32 victimLevel)

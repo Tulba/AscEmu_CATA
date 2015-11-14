@@ -2458,7 +2458,7 @@ void ItemInterface::BuyItem(ItemPrototype* item, uint32 total_amount, Creature* 
                 m_pOwner->GetItemInterface()->RemoveItemAmt(ex->item[i], total_amount * ex->count[i]);
         }
 
-        if (m_pOwner->GetHonorCurrency() >= (ex->honor * total_amount))
+        /*if (m_pOwner->GetHonorCurrency() >= (ex->honor * total_amount))
         {
             m_pOwner->ModHonorCurrency(-int32((ex->honor * total_amount)));
             m_pOwner->m_honorPoints -= int32(ex->honor * total_amount);
@@ -2467,7 +2467,7 @@ void ItemInterface::BuyItem(ItemPrototype* item, uint32 total_amount, Creature* 
         {
             m_pOwner->ModArenaCurrency(-int32(ex->arena * total_amount));
             m_pOwner->m_arenaPoints -= int32(ex->arena * total_amount);
-        }
+        }*/
     }
 }
 
@@ -2485,10 +2485,10 @@ int8 ItemInterface::CanAffordItem(ItemPrototype* item, uint32 amount, Creature* 
             }
         }
 
-        if (m_pOwner->GetHonorCurrency() < (ex->honor * amount))
+        /*if (m_pOwner->GetHonorCurrency() < (ex->honor * amount))
             return INV_ERR_NOT_ENOUGH_HONOR_POINTS;
         if (m_pOwner->GetArenaCurrency() < (ex->arena * amount))
-            return INV_ERR_NOT_ENOUGH_ARENA_POINTS;
+            return INV_ERR_NOT_ENOUGH_ARENA_POINTS;*/
         if (m_pOwner->GetMaxPersonalRating() < ex->personalrating)
             return INV_ERR_PERSONAL_ARENA_RATING_TOO_LOW;
     }

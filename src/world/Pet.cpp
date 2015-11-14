@@ -639,7 +639,7 @@ void Pet::LoadFromDB(Player* owner, PlayerPet* pi)
 
     //Preventing overbuffs
     SetAttackPower(0);
-    SetAttackPowerMods(0);
+    //SetAttackPowerMods(0);
     SetBaseAttackTime(MELEE, 2000);
     SetBaseAttackTime(OFFHAND, 2000);
     SetCastSpeedMod(1.0f);          // better set this one

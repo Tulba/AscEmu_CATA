@@ -5849,7 +5849,7 @@ void Aura::SpellAuraModAttackPower(bool apply)
         SetNegative();
     else
         SetPositive();
-    m_target->ModAttackPowerMods(apply ? mod->m_amount : -mod->m_amount);
+    //m_target->ModAttackPowerMods(apply ? mod->m_amount : -mod->m_amount);
     m_target->CalcDamage();
 }
 
@@ -6509,7 +6509,7 @@ void Aura::SpellAuraUntrackable(bool apply)
 
 void Aura::SpellAuraModRangedAttackPower(bool apply)
 {
-    if (apply)
+    /*if (apply)
     {
         if (mod->m_amount > 0)
             SetPositive();
@@ -6519,7 +6519,7 @@ void Aura::SpellAuraModRangedAttackPower(bool apply)
     }
     else
         m_target->ModRangedAttackPowerMods(-mod->m_amount);
-    m_target->CalcDamage();
+    m_target->CalcDamage();*/
 }
 
 void Aura::SpellAuraModMeleeDamageTaken(bool apply)
@@ -8255,7 +8255,7 @@ void Aura::SpellAuraIncreaseRepGainPct(bool apply)
 
 void Aura::SpellAuraIncreaseRAPbyStatPct(bool apply)
 {
-    if (apply)
+    /*if (apply)
     {
         if (mod->m_amount > 0)
             SetPositive();
@@ -8268,7 +8268,7 @@ void Aura::SpellAuraIncreaseRAPbyStatPct(bool apply)
     else
         m_target->ModRangedAttackPowerMods(-mod->fixed_amount[mod->i]);
 
-    m_target->CalcDamage();
+    m_target->CalcDamage();*/
 }
 
 /* not used
@@ -8564,7 +8564,7 @@ void Aura::SpellAuraAllowOnlyAbility(bool apply)
 
 void Aura::SpellAuraIncreaseAPbyStatPct(bool apply)
 {
-    if (apply)
+    /*if (apply)
     {
         if (mod->m_amount > 0)
             SetPositive();
@@ -8577,7 +8577,7 @@ void Aura::SpellAuraIncreaseAPbyStatPct(bool apply)
     else
         m_target->ModAttackPowerMods(-mod->fixed_amount[mod->i]);
 
-    m_target->CalcDamage();
+    m_target->CalcDamage();*/
 }
 
 void Aura::SpellAuraModSpellDamageDOTPct(bool apply)
@@ -8691,7 +8691,7 @@ void Aura::SpellAuraModAttackPowerOfArmor(bool apply)
     }
     */
 
-    if (apply)
+    /*if (apply)
     {
         if (mod->m_amount > 0)
             SetPositive();
@@ -8704,7 +8704,7 @@ void Aura::SpellAuraModAttackPowerOfArmor(bool apply)
     else
         m_target->ModAttackPowerMods(-mod->fixed_amount[mod->i]);
 
-    m_target->CalcDamage();
+    m_target->CalcDamage();*/
 }
 
 void Aura::SpellAuraDeflectSpells(bool apply)

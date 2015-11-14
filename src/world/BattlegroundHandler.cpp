@@ -297,7 +297,6 @@ void WorldSession::HandleArenaJoinOpcode(WorldPacket& recv_data)
 
 void WorldSession::HandleInspectHonorStatsOpcode(WorldPacket& recv_data)
 {
-    CHECK_PACKET_SIZE(recv_data, 8);
     CHECK_INWORLD_RETURN;
 
     uint64 guid;
@@ -317,14 +316,11 @@ void WorldSession::HandleInspectHonorStatsOpcode(WorldPacket& recv_data)
 
     Player* player = _player->GetMapMgr()->GetPlayer((uint32)guid);
 
-    WorldPacket data(MSG_INSPECT_HONOR_STATS, 13);
-
-    data << player->GetGUID() << (uint8)player->GetHonorCurrency();
-    data << player->GetUInt32Value(PLAYER_FIELD_KILLS);
-    data << player->GetUInt32Value(PLAYER_FIELD_TODAY_CONTRIBUTION);
-    data << player->GetUInt32Value(PLAYER_FIELD_YESTERDAY_CONTRIBUTION);
-    data << player->GetUInt32Value(PLAYER_FIELD_LIFETIME_HONORBALE_KILLS);
-
+    WorldPacket data(SMSG_INSPECT_HONOR_STATS, 13);
+    data << uint8(0);
+    data << uint16(player->GetUInt16Value(PLAYER_FIELD_KILLS, 1));      // yesterday kills
+    data << uint16(player->GetUInt16Value(PLAYER_FIELD_KILLS, 0));      // today kills
+    data << uint32(player->GetUInt32Value(PLAYER_FIELD_LIFETIME_HONORBALE_KILLS));
     SendPacket(&data);
 }
 

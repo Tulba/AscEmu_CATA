@@ -836,8 +836,8 @@ class SERVER_DECL Player : public Unit
         /* Guilds                                                               */
         /************************************************************************/
         Guild*         GetGuild() { return m_playerInfo->guild; }
-        bool            IsInGuild() {return (m_uint32Values[PLAYER_GUILDID] != 0) ? true : false;}
-        uint32        GetGuildId() { return m_uint32Values[PLAYER_GUILDID]; }
+        bool            IsInGuild() {return /*m_uint32Values[PLAYER_GUILDID] != 0) ? true :*/ false;}
+        uint32        GetGuildId() { return /*m_uint32Values[PLAYER_GUILDID]*/ 0; }
         void                        SetGuildId(uint32 guildId);
         uint32        GetGuildRank() { return m_uint32Values[PLAYER_GUILDRANK]; }
         GuildRank*    GetGuildRankS() { return m_playerInfo->guildRank; }
@@ -1515,6 +1515,7 @@ class SERVER_DECL Player : public Unit
         uint32 GetXpToLevel() { return GetUInt32Value(PLAYER_NEXT_LEVEL_XP); }
         void SetNextLevelXp(uint32 xp) { SetUInt32Value(PLAYER_NEXT_LEVEL_XP, xp); }
 
+        /* 15595 disabled
         void SetTalentPointsForAllSpec(uint32 amt)
         {
             m_specs[0].SetTP(amt);
@@ -1547,7 +1548,7 @@ class SERVER_DECL Player : public Unit
 
         void SetPrimaryProfessionPoints(uint32 amt) { SetUInt32Value(PLAYER_CHARACTER_POINTS2, amt); }
         void ModPrimaryProfessionPoints(int32 amt) { ModUnsigned32Value(PLAYER_CHARACTER_POINTS2, amt); }
-        uint32 GetPrimaryProfessionPoints() { return GetUInt32Value(PLAYER_CHARACTER_POINTS2); }
+        uint32 GetPrimaryProfessionPoints() { return GetUInt32Value(PLAYER_CHARACTER_POINTS2); }*/
 
         void ModPosDamageDoneMod(uint32 school, uint32 value) { ModUnsigned32Value(PLAYER_FIELD_MOD_DAMAGE_DONE_POS + school, value); }
         uint32 GetPosDamageDoneMod(uint32 school) { return GetUInt32Value(PLAYER_FIELD_MOD_DAMAGE_DONE_POS + school); }
@@ -1558,9 +1559,11 @@ class SERVER_DECL Player : public Unit
         void ModHealingDoneMod(uint32 value) { ModUnsigned32Value(PLAYER_FIELD_MOD_HEALING_DONE_POS, value); }
         uint32 GetHealingDoneMod() { return GetUInt32Value(PLAYER_FIELD_MOD_HEALING_DONE_POS); }
 
+        // 15595 disabled
         //void SetAmmoId(uint32 id) { SetUInt32Value(PLAYER_AMMO_ID, id); }
         //uint32 GetAmmoId() { return GetUInt32Value(PLAYER_AMMO_ID); }
 
+        /* 15595 disabled
         void SetHonorCurrency(uint32 value) { SetUInt32Value(PLAYER_FIELD_HONOR_CURRENCY, value); }
         void ModHonorCurrency(uint32 value) { ModUnsigned32Value(PLAYER_FIELD_HONOR_CURRENCY, value); }
         uint32 GetHonorCurrency() { return GetUInt32Value(PLAYER_FIELD_HONOR_CURRENCY); }
@@ -1571,7 +1574,7 @@ class SERVER_DECL Player : public Unit
         void ModArenaCurrency(uint32 value) { ModUnsigned32Value(PLAYER_FIELD_ARENA_CURRENCY, value); }
         uint32 GetArenaCurrency() { return GetUInt32Value(PLAYER_FIELD_ARENA_CURRENCY); }
         void AddArenaPoints(uint32 arenaPoints, bool sendUpdate);
-        void UpdateArenaPoints();
+        void UpdateArenaPoints(); */
 
         void SetGlyph(uint32 slot, uint32 id) { SetUInt32Value(PLAYER_FIELD_GLYPHS_1 + slot, id); }
         uint32 GetGlyph(uint32 slot) { return GetUInt32Value(PLAYER_FIELD_GLYPHS_1 + slot); }

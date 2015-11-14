@@ -2082,13 +2082,13 @@ void Spell::SendSpellStart()
                 }
             }
         }
-        else if (hasAttributeExC(FLAGS4_PLAYER_RANGED_SPELLS))
+        /*else if (hasAttributeExC(FLAGS4_PLAYER_RANGED_SPELLS))
         {
             if (p_caster != NULL)
                 ip = ItemPrototypeStorage.LookupEntry(p_caster->GetUInt32Value(PLAYER_AMMO_ID));
             else
-                ip = ItemPrototypeStorage.LookupEntry(2512);	/*rough arrow*/
-        }
+                ip = ItemPrototypeStorage.LookupEntry(2512);	//rough arrow
+        }*/
 
         if (ip != NULL)
             data << ip->DisplayInfoID << ip->InventoryType;
@@ -2211,13 +2211,13 @@ void Spell::SendSpellGo()
             else
                 ip = ItemPrototypeStorage.LookupEntry(2512);	/*rough arrow*/
         }
-        else
+        /*else
         {
             if (p_caster != NULL)
                 ip = ItemPrototypeStorage.LookupEntry(p_caster->GetUInt32Value(PLAYER_AMMO_ID));
             else // HACK FIX
-                ip = ItemPrototypeStorage.LookupEntry(2512);	/*rough arrow*/
-        }
+                ip = ItemPrototypeStorage.LookupEntry(2512);	//rough arrow
+        }*/
         if (ip != NULL)
             data << ip->DisplayInfoID << ip->InventoryType;
         else
@@ -2503,9 +2503,7 @@ bool Spell::HasPower()
         case POWER_TYPE_HAPPINESS:
         {	powerField = UNIT_FIELD_POWER5;						}
         break;
-        case POWER_TYPE_RUNIC_POWER:
-        {	powerField = UNIT_FIELD_POWER7;						}
-        break;
+
         case POWER_TYPE_RUNES:
         {
             if (GetProto()->RuneCostID && p_caster)
@@ -2647,9 +2645,7 @@ bool Spell::TakePower()
         case POWER_TYPE_HAPPINESS:
         {	powerField = UNIT_FIELD_POWER5;						}
         break;
-        case POWER_TYPE_RUNIC_POWER:
-        {	powerField = UNIT_FIELD_POWER7;						}
-        break;
+
         case POWER_TYPE_RUNES:
         {
             if (GetProto()->RuneCostID && p_caster)
@@ -4497,7 +4493,7 @@ void Spell::RemoveItems()
         }
     }
     // Ammo Removal
-    if (p_caster != nullptr)
+    /*if (p_caster != nullptr)
     {
         if (hasAttributeExB(ATTRIBUTESEXB_REQ_RANGED_WEAPON) || hasAttributeExC(FLAGS4_PLAYER_RANGED_SPELLS))
         {
@@ -4516,7 +4512,7 @@ void Spell::RemoveItems()
                 }
             }
         }
-    }
+    }*/
 }
 
 int32 Spell::CalculateEffect(uint32 i, Unit* target)
@@ -6243,7 +6239,7 @@ void Spell::writeAmmoToPacket(WorldPacket* data)
 			ammoInventoryType = pItem->GetProto()->InventoryType;
             if (ammoInventoryType == INVTYPE_THROWN)
                 ammoDisplayID = pItem->GetProto()->DisplayInfoID;
-            else
+            /*else
             {
                 uint32 ammoID = p_caster->GetUInt32Value(PLAYER_AMMO_ID);
                 if (ammoID)
@@ -6260,7 +6256,7 @@ void Spell::writeAmmoToPacket(WorldPacket* data)
                     ammoDisplayID = 5996;                   // normal arrow
                     ammoInventoryType = INVTYPE_AMMO;
                 }
-            }
+            }*/
         }
     }
     else

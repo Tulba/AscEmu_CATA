@@ -62,10 +62,10 @@ bool PredatoryStrikes(uint32 i, Aura* a, bool apply)
     if(apply)
     {
         a->SetPositive();
-        m_target->ModAttackPowerMods(realamount);
+        //m_target->ModAttackPowerMods(realamount);
     }
-    else
-        m_target->ModAttackPowerMods(-realamount);
+    //else
+       // m_target->ModAttackPowerMods(-realamount);
 
     m_target->CalcDamage();
 

@@ -922,7 +922,8 @@ void WorldSession::InitPacketHandlerTable()
     WorldPacketHandlers[CMSG_AREA_SPIRIT_HEALER_QUEUE].handler = &WorldSession::HandleAreaSpiritHealerQueueOpcode;
     WorldPacketHandlers[MSG_BATTLEGROUND_PLAYER_POSITIONS].handler = &WorldSession::HandleBattlegroundPlayerPositionsOpcode;
     WorldPacketHandlers[MSG_PVP_LOG_DATA].handler = &WorldSession::HandlePVPLogDataOpcode;
-    WorldPacketHandlers[MSG_INSPECT_HONOR_STATS].handler = &WorldSession::HandleInspectHonorStatsOpcode;
+    WorldPacketHandlers[CMSG_INSPECT_HONOR_STATS].handler = &WorldSession::HandleInspectHonorStatsOpcode;
+    WorldPacketHandlers[CMSG_INSPECT_HONOR_STATS].status = STATUS_LOGGEDIN;
     WorldPacketHandlers[CMSG_SET_ACTIONBAR_TOGGLES].handler = &WorldSession::HandleSetActionBarTogglesOpcode;
     WorldPacketHandlers[CMSG_MOVE_SPLINE_DONE].handler = &WorldSession::HandleMoveSplineCompleteOpcode;
     WorldPacketHandlers[CMSG_BATTLEFIELD_MGR_ENTRY_INVITE_RESPONSE].handler = &WorldSession::HandleBgInviteResponse;
@@ -1351,21 +1352,22 @@ void WorldSession::HandleUnlearnTalents(WorldPacket& recv_data)
 void WorldSession::HandleUnlearnSkillOpcode(WorldPacket& recv_data)
 {
     CHECK_INWORLD_RETURN uint32 skill_line;
-    uint32 points_remaining = _player->GetPrimaryProfessionPoints();
+    LOG_DEBUG("HandleUnlearnSkillOpcode unhandled!");
+    //uint32 points_remaining = _player->GetPrimaryProfessionPoints();
     recv_data >> skill_line;
 
     // Cheater detection
     // if (!_player->HasSkillLine(skill_line)) return;
 
     // Remove any spells within that line that the player has
-    _player->RemoveSpellsFromLine(skill_line);
+    //_player->RemoveSpellsFromLine(skill_line);
 
     // Finally, remove the skill line.
-    _player->_RemoveSkillLine(skill_line);
+    //_player->_RemoveSkillLine(skill_line);
 
     // added by Zack : This is probably wrong or already made elsewhere :
     // restore skill learnability
-    if (points_remaining == _player->GetPrimaryProfessionPoints())
+    /*if (points_remaining == _player->GetPrimaryProfessionPoints())
     {
         // we unlearned a skill so we enable a new one to be learned
         skilllineentry* sk = dbcSkillLine.LookupEntryForced(skill_line);
@@ -1373,7 +1375,7 @@ void WorldSession::HandleUnlearnSkillOpcode(WorldPacket& recv_data)
             return;
         if (sk->type == SKILL_TYPE_PROFESSION && points_remaining < 2)
             _player->SetPrimaryProfessionPoints(points_remaining + 1);
-    }
+    }*/
 }
 
 void WorldSession::HandleLearnMultipleTalentsOpcode(WorldPacket& recvPacket)

@@ -819,15 +819,15 @@ bool Player::Create(WorldPacket& data)
     SetBaseMana(info->mana);
     SetFaction(info->factiontemplate);
 
-    if (class_ == DEATHKNIGHT)
+    /*if (class_ == DEATHKNIGHT)
         SetTalentPointsForAllSpec(sWorld.DKStartTalentPoints); // Default is 0 in case you do not want to modify it
     else
-        SetTalentPointsForAllSpec(0);
+        SetTalentPointsForAllSpec(0);*/
     if (class_ != DEATHKNIGHT || sWorld.StartingLevel > 55)
     {
         setLevel(sWorld.StartingLevel);
-        if (sWorld.StartingLevel >= 10 && class_ != DEATHKNIGHT)
-            SetTalentPointsForAllSpec(sWorld.StartingLevel - 9);
+        /*if (sWorld.StartingLevel >= 10 && class_ != DEATHKNIGHT)
+            SetTalentPointsForAllSpec(sWorld.StartingLevel - 9);*/
     }
     else
     {
@@ -836,7 +836,7 @@ bool Player::Create(WorldPacket& data)
     }
     UpdateGlyphs();
 
-    SetPrimaryProfessionPoints(sWorld.MaxProfs);
+    //SetPrimaryProfessionPoints(sWorld.MaxProfs);
 
     setRace(race);
     setClass(class_);
@@ -1593,8 +1593,8 @@ void Player::GiveXP(uint32 xp, const uint64 & guid, bool allowbonus)
         nextlevelxp = objmgr.GetXPToLevel(level);
         levelup = true;
 
-        if (level > 9)
-            AddTalentPointsToAllSpec(1);
+        /*if (level > 9)
+            AddTalentPointsToAllSpec(1);*/
 
         if (level >= GetMaxLevel())
             break;
@@ -1840,7 +1840,8 @@ void Player::ActivateSpec(uint8 spec)
 
         addSpell(talentInfo->RankID[itr->second]);
     }
-    SetUInt32Value(PLAYER_CHARACTER_POINTS1, m_specs[m_talentActiveSpec].GetTP());
+    // 15595 disabled
+    //SetUInt32Value(PLAYER_CHARACTER_POINTS1, m_specs[m_talentActiveSpec].GetTP());
     smsg_TalentsInfo(false);
 }
 
@@ -2150,7 +2151,7 @@ void Player::addSpell(uint32 spell_id)
         {
             case SKILL_TYPE_PROFESSION:
                 max = 75 * ((spell->RankNumber) + 1);
-                ModPrimaryProfessionPoints(-1);   // we are learning a profession, so subtract a point.
+               // ModPrimaryProfessionPoints(-1);   // we are learning a profession, so subtract a point.
                 break;
             case SKILL_TYPE_SECONDARY:
                 max = 75 * ((spell->RankNumber) + 1);
@@ -2241,8 +2242,7 @@ void Player::InitVisibleUpdateBits()
     Player::m_visibleUpdateMask.SetBit(UNIT_FIELD_POWER3);
     Player::m_visibleUpdateMask.SetBit(UNIT_FIELD_POWER4);
     Player::m_visibleUpdateMask.SetBit(UNIT_FIELD_POWER5);
-    Player::m_visibleUpdateMask.SetBit(UNIT_FIELD_POWER6);
-    Player::m_visibleUpdateMask.SetBit(UNIT_FIELD_POWER7);
+
 
     Player::m_visibleUpdateMask.SetBit(UNIT_FIELD_MAXHEALTH);
     Player::m_visibleUpdateMask.SetBit(UNIT_FIELD_MAXPOWER1);
@@ -2250,8 +2250,7 @@ void Player::InitVisibleUpdateBits()
     Player::m_visibleUpdateMask.SetBit(UNIT_FIELD_MAXPOWER3);
     Player::m_visibleUpdateMask.SetBit(UNIT_FIELD_MAXPOWER4);
     Player::m_visibleUpdateMask.SetBit(UNIT_FIELD_MAXPOWER5);
-    Player::m_visibleUpdateMask.SetBit(UNIT_FIELD_MAXPOWER6);
-    Player::m_visibleUpdateMask.SetBit(UNIT_FIELD_MAXPOWER7);
+
 
     Player::m_visibleUpdateMask.SetBit(UNIT_VIRTUAL_ITEM_SLOT_ID);
     Player::m_visibleUpdateMask.SetBit(UNIT_VIRTUAL_ITEM_SLOT_ID + 1);
@@ -2289,7 +2288,7 @@ void Player::InitVisibleUpdateBits()
     Player::m_visibleUpdateMask.SetBit(PLAYER_DUEL_TEAM);
     Player::m_visibleUpdateMask.SetBit(PLAYER_DUEL_ARBITER);
     Player::m_visibleUpdateMask.SetBit(PLAYER_DUEL_ARBITER + 1);
-    Player::m_visibleUpdateMask.SetBit(PLAYER_GUILDID);
+
     Player::m_visibleUpdateMask.SetBit(PLAYER_GUILDRANK);
     Player::m_visibleUpdateMask.SetBit(UNIT_FIELD_BASE_MANA);
     Player::m_visibleUpdateMask.SetBit(UNIT_FIELD_BYTES_2);
@@ -2326,8 +2325,8 @@ void Player::SaveToDB(bool bNewCharacter /* =false */)
     if (m_bg != NULL && IS_ARENA(m_bg->GetType()))
         in_arena = true;
 
-    if (GetPrimaryProfessionPoints() > sWorld.MaxProfs)
-        SetPrimaryProfessionPoints(sWorld.MaxProfs);
+    /*if (GetPrimaryProfessionPoints() > sWorld.MaxProfs)
+        SetPrimaryProfessionPoints(sWorld.MaxProfs);*/
 
     //Calc played times
     uint32 playedt = (uint32)UNIXTIME - m_playedtime[2];
@@ -2407,7 +2406,7 @@ void Player::SaveToDB(bool bNewCharacter /* =false */)
         ss << (uint32)0 << ","; // make sure ammo slot is 0 for these classes, otherwise it can mess up wand shoot
     else
         ss << m_uint32Values[PLAYER_AMMO_ID] << ",";*/
-    ss << GetPrimaryProfessionPoints() << ",";
+    ss << 0 << ","; //GetPrimaryProfessionPoints() << ",";
 
     ss << load_health << ","
         << load_mana << ","
@@ -2820,7 +2819,7 @@ void Player::LoadFromDBProc(QueryResultVector & results)
         return;
     }
 
-    uint32 banned = fields[33].GetUInt32();
+    uint32 banned = fields[32].GetUInt32();
     if (banned && (banned < 100 || banned >(uint32)UNIXTIME))
     {
         RemovePendingPlayer();
@@ -2964,7 +2963,7 @@ void Player::LoadFromDBProc(QueryResultVector & results)
     SetUInt64Value(PLAYER__FIELD_KNOWN_TITLES2, get_next_field.GetUInt64());
     m_uint32Values[PLAYER_FIELD_COINAGE] = get_next_field.GetUInt32();
     //m_uint32Values[PLAYER_AMMO_ID] = get_next_field.GetUInt32();
-    m_uint32Values[PLAYER_CHARACTER_POINTS2] = get_next_field.GetUInt32();
+    //m_uint32Values[PLAYER_CHARACTER_POINTS2] = get_next_field.GetUInt32();
     load_health = get_next_field.GetUInt32();
     load_mana = get_next_field.GetUInt32();
     SetHealth(load_health);
@@ -3348,7 +3347,8 @@ void Player::LoadFromDBProc(QueryResultVector & results)
 
         m_specs[SPEC_PRIMARY].SetTP(tp1);
         m_specs[SPEC_SECONDARY].SetTP(tp2);
-        SetUInt32Value(PLAYER_CHARACTER_POINTS1, m_specs[m_talentActiveSpec].GetTP());
+        //15595 diabled
+        //SetUInt32Value(PLAYER_CHARACTER_POINTS1, m_specs[m_talentActiveSpec].GetTP());
     }
 
     m_phase = get_next_field.GetUInt32(); //Load the player's last phase
@@ -6577,14 +6577,14 @@ void Player::Reset_Talents()
         }
     }
     uint32 l = getLevel();
-    if (l > 9)
+    /*if (l > 9)
     {
         SetCurrentTalentPoints(l - 9);
     }
     else
     {
         SetCurrentTalentPoints(0);
-    }
+    }*/
 
     if (DualWield2H)
     {
@@ -8402,7 +8402,7 @@ void Player::ApplyLevelInfo(LevelInfo* Info, uint32 Level)
     SetPower(POWER_TYPE_MANA, Info->Mana);
 
 
-    if (Level > PreviousLevel)
+    /*if (Level > PreviousLevel)
     {
         if (Level > 9)
             SetTalentPointsForAllSpec(Level - 9);
@@ -8411,7 +8411,7 @@ void Player::ApplyLevelInfo(LevelInfo* Info, uint32 Level)
     {
         if (Level != PreviousLevel)
             Reset_AllTalents();
-    }
+    }*/
 
     // Set base fields
     SetBaseHealth(Info->HP);
@@ -8634,7 +8634,7 @@ void Player::SafeTeleport(MapMgr* mgr, const LocationVector & vec)
 
 void Player::SetGuildId(uint32 guildId)
 {
-    if (IsInWorld())
+    /*if (IsInWorld())
     {
         const uint32 field = PLAYER_GUILDID;
         sEventMgr.AddEvent(static_cast<Object*>(this), &Object::SetUInt32Value, field, guildId, EVENT_PLAYER_SEND_PACKET, 1,
@@ -8643,7 +8643,7 @@ void Player::SetGuildId(uint32 guildId)
     else
     {
         SetUInt32Value(PLAYER_GUILDID, guildId);
-    }
+    }*/
 }
 
 void Player::SetGuildRank(uint32 guildRank)
@@ -8990,7 +8990,7 @@ void Player::PvPToggle()
  *  \param honorPoints Number of honor points to add to the player
  *  \param sendUpdate True if UpdateHonor should be called after applying change
  *  \todo Remove map check (func does not work on map 559, 562, 572) */
-void Player::AddHonor(uint32 honorPoints, bool sendUpdate)
+/*void Player::AddHonor(uint32 honorPoints, bool sendUpdate)
 {
     this->HandleProc(PROC_ON_GAIN_EXPIERIENCE, this, NULL);
     this->m_procCounter = 0;
@@ -9005,11 +9005,11 @@ void Player::AddHonor(uint32 honorPoints, bool sendUpdate)
 
     if (sendUpdate)
         this->UpdateHonor();
-}
+}*/
 
 /*! Updates the honor related fields and sends updated values to the player
  *  \todo Validate whether this function is unsafe to call while not in world */
-void Player::UpdateHonor()
+/*void Player::UpdateHonor()
 {
     this->SetUInt32Value(PLAYER_FIELD_KILLS, uint16(this->m_killsToday) | (this->m_killsYesterday << 16));
     this->SetUInt32Value(PLAYER_FIELD_TODAY_CONTRIBUTION, this->m_honorToday);
@@ -9018,12 +9018,12 @@ void Player::UpdateHonor()
     this->SetHonorCurrency(this->m_honorPoints);
 
     this->UpdateKnownCurrencies(43308, true); //Honor Points
-}
+}*/
 
 /*! Increments the player's arena points
 *  \param arenaPoints Number of arena points to add to the player
 *  \param sendUpdate True if UpdateArenaPoints should be called after applying change */
-void Player::AddArenaPoints(uint32 arenaPoints, bool sendUpdate)
+/*void Player::AddArenaPoints(uint32 arenaPoints, bool sendUpdate)
 {
     this->m_arenaPoints += arenaPoints;
     if (this->m_arenaPoints > sWorld.m_limits.arenapoints)
@@ -9031,16 +9031,16 @@ void Player::AddArenaPoints(uint32 arenaPoints, bool sendUpdate)
 
     if (sendUpdate)
         this->UpdateArenaPoints();
-}
+}*/
 
 /*! Updates the arena point related fields and sends updated values to the player
 *  \todo Validate whether this function is unsafe to call while not in world */
-void Player::UpdateArenaPoints()
+/*void Player::UpdateArenaPoints()
 {
     this->SetArenaCurrency(this->m_arenaPoints);
 
     this->UpdateKnownCurrencies(43307, true);
-}
+}*/
 
 void Player::ResetPvPTimer()
 {
@@ -9466,7 +9466,7 @@ void Player::ModifyBonuses(uint32 type, int32 val, bool apply)
             ModUnsigned32Value(PLAYER_RATING_MODIFIER_SPELL_HASTE, val);   // Spell
         }
         break;
-        case ATTACK_POWER:
+        /*case ATTACK_POWER:
         {
             ModAttackPowerMods(val);
             ModRangedAttackPowerMods(val);
@@ -9481,7 +9481,7 @@ void Player::ModifyBonuses(uint32 type, int32 val, bool apply)
         {
             ModAttackPowerMods(val);
         }
-        break;
+        break;*/
         case SPELL_HEALING_DONE:
         {
             for (uint8 school = 1; school < SCHOOL_COUNT; ++school)
@@ -10176,8 +10176,8 @@ void Player::_AddSkillLine(uint32 SkillLine, uint32 Curr_sk, uint32 Max_sk)
 
 void Player::_UpdateSkillFields()
 {
-    uint32 f = PLAYER_SKILL_INFO_1_1;
-    /* Set the valid skills */
+    /*uint32 f = PLAYER_SKILL_INFO_1_1;
+    // Set the valid skills 
     for (SkillMap::iterator itr = m_skills.begin(); itr != m_skills.end();)
     {
         if (!itr->first)
@@ -10208,12 +10208,12 @@ void Player::_UpdateSkillFields()
         ++itr;
     }
 
-    /* Null out the rest of the fields */
+    ///Null out the rest of the fields 
     for (; f < PLAYER_CHARACTER_POINTS1; ++f)
     {
         if (m_uint32Values[f] != 0)
             SetUInt32Value(f, 0);
-    }
+    }*/
 }
 
 bool Player::_HasSkillLine(uint32 SkillLine)
@@ -10567,8 +10567,8 @@ void Player::_ModifySkillMaximum(uint32 SkillLine, uint32 NewMax)
  *  \sa Player::UpdateHonor, Player::UpdateArenaPoints */
 void Player::UpdatePvPCurrencies()
 {
-    this->UpdateHonor();
-    this->UpdateArenaPoints();
+    //this->UpdateHonor();
+    //this->UpdateArenaPoints();
 }
 
 /*! Fills parameters with reward for winning a random battleground 
@@ -10606,8 +10606,8 @@ void Player::ApplyRandomBattlegroundReward(bool wonBattleground)
 {
     uint32 honorPoints, arenaPoints;
     this->FillRandomBattlegroundReward(wonBattleground, honorPoints, arenaPoints);
-    this->AddHonor(honorPoints, false);
-    this->AddArenaPoints(arenaPoints, false);
+    //this->AddHonor(honorPoints, false);
+    //this->AddArenaPoints(arenaPoints, false);
     this->UpdatePvPCurrencies();
 }
 
@@ -12028,7 +12028,7 @@ void Player::CalcExpertise()
 
 void Player::UpdateKnownCurrencies(uint32 itemId, bool apply)
 {
-    if (CurrencyTypesEntry const* ctEntry = dbcCurrencyTypesStore.LookupEntryForced(itemId))
+    /*if (CurrencyTypesEntry const* ctEntry = dbcCurrencyTypesStore.LookupEntryForced(itemId))
     {
         if (apply)
         {
@@ -12042,7 +12042,7 @@ void Player::UpdateKnownCurrencies(uint32 itemId, bool apply)
             uint64 newval = oldval & ~(((uint32)1) << (ctEntry->BitIndex - 1));
             SetUInt64Value(PLAYER_FIELD_KNOWN_CURRENCIES, newval);
         }
-    }
+    }*/
 }
 
 void Player::RemoveItemByGuid(uint64 GUID)
@@ -12391,7 +12391,7 @@ void Player::LearnTalent(uint32 talentid, uint32 rank, bool isPreviewed)
                 }
             }
 
-            SetCurrentTalentPoints(CurTalentPoints - static_cast<uint32>(points));
+            //SetCurrentTalentPoints(CurTalentPoints - static_cast<uint32>(points));
             m_specs[m_talentActiveSpec].AddTalent(talentid, uint8(rank));
             smsg_TalentsInfo(false);
         }

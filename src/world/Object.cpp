@@ -1089,7 +1089,6 @@ void Object::SetUInt32Value(const uint32 index, const uint32 value)
             case UNIT_FIELD_POWER1:
             case UNIT_FIELD_POWER2:
             case UNIT_FIELD_POWER4:
-            case UNIT_FIELD_POWER7:
                 static_cast< Unit* >(this)->SendPowerUpdate(true);
                 break;
             default:
@@ -1104,7 +1103,6 @@ void Object::SetUInt32Value(const uint32 index, const uint32 value)
             case UNIT_FIELD_POWER2:
             case UNIT_FIELD_POWER3:
             case UNIT_FIELD_POWER4:
-            case UNIT_FIELD_POWER7:
                 static_cast<Creature*>(this)->SendPowerUpdate(false);
                 break;
             default:
@@ -1148,7 +1146,6 @@ void Object::ModUnsigned32Value(uint32 index, int32 mod)
             case UNIT_FIELD_POWER1:
             case UNIT_FIELD_POWER2:
             case UNIT_FIELD_POWER4:
-            case UNIT_FIELD_POWER7:
                 static_cast< Unit* >(this)->SendPowerUpdate(true);
                 break;
             default:
@@ -1163,7 +1160,6 @@ void Object::ModUnsigned32Value(uint32 index, int32 mod)
             case UNIT_FIELD_POWER2:
             case UNIT_FIELD_POWER3:
             case UNIT_FIELD_POWER4:
-            case UNIT_FIELD_POWER7:
                 static_cast<Creature*>(this)->SendPowerUpdate(false);
                 break;
             default:

@@ -546,7 +546,7 @@ void QuestMgr::BuildRequestItems(WorldPacket* data, Quest* qst, Object* qst_give
 void QuestMgr::BuildQuestComplete(Player* plr, Quest* qst)
 {
     uint32 xp;
-    uint32 currtalentpoints = plr->GetCurrentTalentPoints();
+    uint32 currtalentpoints = 0; // plr->GetCurrentTalentPoints();
     uint32 rewardtalents = qst->rewardtalents;
     uint32 playerlevel = plr->getLevel();
 
@@ -560,8 +560,8 @@ void QuestMgr::BuildQuestComplete(Player* plr, Quest* qst)
         plr->GiveXP(xp, 0, false);
     }
 
-    if (currtalentpoints <= (playerlevel - 9 - rewardtalents))
-        plr->AddTalentPointsToAllSpec(rewardtalents);
+    /*if (currtalentpoints <= (playerlevel - 9 - rewardtalents))
+        plr->AddTalentPointsToAllSpec(rewardtalents);*/
 
     // Reward title
     if (qst->rewardtitleid > 0)
@@ -1356,10 +1356,10 @@ void QuestMgr::OnQuestFinished(Player* plr, Quest* qst, Object* qst_giver, uint3
 
         //Add to finished quests
         plr->AddToFinishedQuests(qst->id);
-        if (qst->bonusarenapoints != 0)
+        /*if (qst->bonusarenapoints != 0)
         {
             plr->AddArenaPoints(qst->bonusarenapoints, true);
-        }
+        }*/
 
 #ifdef ENABLE_ACHIEVEMENTS
         plr->GetAchievementMgr().UpdateAchievementCriteria(ACHIEVEMENT_CRITERIA_TYPE_COMPLETE_QUEST_COUNT, 1, 0, 0);

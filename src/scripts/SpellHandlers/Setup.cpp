@@ -26,7 +26,7 @@ extern "C" SCRIPT_DECL uint32 _exp_get_script_type()
 
 extern "C" SCRIPT_DECL void _exp_script_register(ScriptMgr* mgr)
 {
-    SetupShamanSpells(mgr);
+    /*SetupShamanSpells(mgr);
     SetupWarlockSpells(mgr);
     SetupWarriorSpells(mgr);
     SetupHunterSpells(mgr);
@@ -39,7 +39,7 @@ extern "C" SCRIPT_DECL void _exp_script_register(ScriptMgr* mgr)
     SetupPetAISpells(mgr);
     SetupDruidSpells(mgr);
     SetupDeathKnightSpells(mgr);
-    SetupMiscSpellhandlers(mgr);
+    SetupMiscSpellhandlers(mgr);*/
 }
 
 #ifdef WIN32

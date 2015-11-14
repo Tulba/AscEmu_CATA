@@ -1021,7 +1021,7 @@ void Spell::SpellEffectSchoolDMG(uint32 i) // dmg school
                         dmg = ((item->GetProto()->Damage[0].Min + item->GetProto()->Damage[0].Max) * 0.2f) * 1.25;
                 }
             }break;
-            case 56641:
+            /*case 56641:
             case 34120:
             case 49051:
             case 49052:
@@ -1048,7 +1048,7 @@ void Spell::SpellEffectSchoolDMG(uint32 i) // dmg school
 
                     dmg = float2int32(ammodmg + bowdmg) + stundmg;
                 }
-            }break;
+            }break;*/
             case 64422: // Sonic Screech, Auriaya encounter
             case 64688:
             {
@@ -3481,8 +3481,8 @@ void Spell::SpellEffectSkillStep(uint32 i) // Skill Step
         /*if ((GetProto()->Attributes & 64) && playerTarget->m_TeleportState == 1)
         return;*/
 
-        if (sk->type == SKILL_TYPE_PROFESSION)
-            target->ModPrimaryProfessionPoints(-1);
+        /*if (sk->type == SKILL_TYPE_PROFESSION)
+            target->ModPrimaryProfessionPoints(-1);*/
 
         if (skill == SKILL_RIDING)
             target->_AddSkillLine(skill, max, max);

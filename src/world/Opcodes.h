@@ -702,7 +702,7 @@ enum Opcodes
     CMSG_BATTLEFIELD_STATUS                         = 0x2D3,
     SMSG_BATTLEFIELD_STATUS                         = 0x2D4,
     CMSG_BATTLEFIELD_PORT                           = 0x2D5,
-    MSG_INSPECT_HONOR_STATS                         = 0x2D6,
+
     CMSG_BATTLEMASTER_HELLO                         = 0x2D7,
     CMSG_MOVE_START_SWIM_CHEAT                      = 0x2D8,
     CMSG_MOVE_STOP_SWIM_CHEAT                       = 0x2D9,
@@ -1388,6 +1388,8 @@ enum Opcodes
     SMSG_AURA_UPDATE = 0x4707,
     SMSG_AURA_UPDATE_ALL = 0x6916,
     SMSG_ITEM_TIME_UPDATE = 0x2407,
+    CMSG_INSPECT_HONOR_STATS = 0x791E, // 15595
+    SMSG_INSPECT_HONOR_STATS = 0x79A5, // 15595
 
     NUM_MSG_TYPES = 0xFFFF   // End of Opcodes
 };

@@ -364,6 +364,13 @@ class SERVER_DECL Object : public EventableObject
 			return *p;
 		}
 
+        uint16 GetUInt16Value(uint16 index, uint8 offset) const
+        {
+            ARCEMU_ASSERT(index < m_valuesCount);
+            ARCEMU_ASSERT(offset < 2);
+            return *(((uint16*)&m_uint32Values[index]) + offset);
+        }
+
 		/// Get float property
 		const float & GetFloatValue(uint32 index) const
 		{

@@ -2715,15 +2715,7 @@ void Unit::RegeneratePower(bool isinterrupted)
             }
             break;
 
-            case POWER_TYPE_RUNIC_POWER:
-            {
-                if (!CombatStatus.IsInCombat())
-                {
-                    uint32 cur = GetUInt32Value(UNIT_FIELD_POWER7);
-                    SetPower(POWER_TYPE_RUNIC_POWER, cur - 20);
-                }
-            }
-            break;
+
         }
 
         /*
@@ -6466,19 +6458,19 @@ void Unit::EventHealthChangeSinceLastUpdate()
 
 int32 Unit::GetAP()
 {
-    int32 baseap = GetAttackPower() + GetAttackPowerMods();
+    /*int32 baseap = GetAttackPower() + GetAttackPowerMods();
     float totalap = baseap * (GetFloatValue(UNIT_FIELD_ATTACK_POWER_MULTIPLIER) + 1);
     if (totalap >= 0)
-        return float2int32(totalap);
+        return float2int32(totalap);*/
     return	0;
 }
 
 int32 Unit::GetRAP()
 {
-    int32 baseap = GetRangedAttackPower() + GetRangedAttackPowerMods();
+    /*int32 baseap = GetRangedAttackPower() + GetRangedAttackPowerMods();
     float totalap = baseap * (GetRangedAttackPowerMultiplier() + 1);
     if (totalap >= 0)
-        return float2int32(totalap);
+        return float2int32(totalap);*/
     return	0;
 }
 
@@ -8508,8 +8500,6 @@ void Unit::HandleUpdateFieldChange(uint32 Index)
         case UNIT_FIELD_POWER3:
         case UNIT_FIELD_POWER4:
         case UNIT_FIELD_POWER5:
-        case UNIT_FIELD_POWER6:
-        case UNIT_FIELD_POWER7:
             Flags = pet ? GROUP_UPDATE_FLAG_PET_CUR_POWER : GROUP_UPDATE_FLAG_CUR_POWER;
             break;
 
@@ -8518,8 +8508,6 @@ void Unit::HandleUpdateFieldChange(uint32 Index)
         case UNIT_FIELD_MAXPOWER3:
         case UNIT_FIELD_MAXPOWER4:
         case UNIT_FIELD_MAXPOWER5:
-        case UNIT_FIELD_MAXPOWER6:
-        case UNIT_FIELD_MAXPOWER7:
             Flags = pet ? GROUP_UPDATE_FLAG_PET_CUR_POWER : GROUP_UPDATE_FLAG_MAX_POWER;
             break;
 
