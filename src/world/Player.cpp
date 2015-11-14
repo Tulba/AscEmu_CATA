@@ -2402,12 +2402,6 @@ void Player::SaveToDB(bool bNewCharacter /* =false */)
         << GetUInt64Value(PLAYER__FIELD_KNOWN_TITLES2) << ","
         << m_uint32Values[PLAYER_FIELD_COINAGE] << ",";
 
-    /*if ((getClass() == MAGE) || (getClass() == PRIEST) || (getClass() == WARLOCK))
-        ss << (uint32)0 << ","; // make sure ammo slot is 0 for these classes, otherwise it can mess up wand shoot
-    else
-        ss << m_uint32Values[PLAYER_AMMO_ID] << ",";*/
-    ss << 0 << ","; //GetPrimaryProfessionPoints() << ",";
-
     ss << load_health << ","
         << load_mana << ","
         << uint32(GetPVPRank()) << ","
@@ -2798,7 +2792,7 @@ void Player::LoadFromDBProc(QueryResultVector & results)
         return;
     }
 
-    const uint32 fieldcount = 92;
+    const uint32 fieldcount = 90;
 
     if (result->GetFieldCount() != fieldcount)
     {
