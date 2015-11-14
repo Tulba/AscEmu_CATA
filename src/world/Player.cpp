@@ -2403,10 +2403,10 @@ void Player::SaveToDB(bool bNewCharacter /* =false */)
         << GetUInt64Value(PLAYER__FIELD_KNOWN_TITLES2) << ","
         << m_uint32Values[PLAYER_FIELD_COINAGE] << ",";
 
-    if ((getClass() == MAGE) || (getClass() == PRIEST) || (getClass() == WARLOCK))
+    /*if ((getClass() == MAGE) || (getClass() == PRIEST) || (getClass() == WARLOCK))
         ss << (uint32)0 << ","; // make sure ammo slot is 0 for these classes, otherwise it can mess up wand shoot
     else
-        ss << m_uint32Values[PLAYER_AMMO_ID] << ",";
+        ss << m_uint32Values[PLAYER_AMMO_ID] << ",";*/
     ss << GetPrimaryProfessionPoints() << ",";
 
     ss << load_health << ","
@@ -2820,7 +2820,7 @@ void Player::LoadFromDBProc(QueryResultVector & results)
         return;
     }
 
-    uint32 banned = fields[34].GetUInt32();
+    uint32 banned = fields[33].GetUInt32();
     if (banned && (banned < 100 || banned >(uint32)UNIXTIME))
     {
         RemovePendingPlayer();
@@ -2963,7 +2963,7 @@ void Player::LoadFromDBProc(QueryResultVector & results)
     SetUInt64Value(PLAYER__FIELD_KNOWN_TITLES1, get_next_field.GetUInt64());
     SetUInt64Value(PLAYER__FIELD_KNOWN_TITLES2, get_next_field.GetUInt64());
     m_uint32Values[PLAYER_FIELD_COINAGE] = get_next_field.GetUInt32();
-    m_uint32Values[PLAYER_AMMO_ID] = get_next_field.GetUInt32();
+    //m_uint32Values[PLAYER_AMMO_ID] = get_next_field.GetUInt32();
     m_uint32Values[PLAYER_CHARACTER_POINTS2] = get_next_field.GetUInt32();
     load_health = get_next_field.GetUInt32();
     load_mana = get_next_field.GetUInt32();
@@ -6124,7 +6124,7 @@ int32 Player::CanShootRangedWeapon(uint32 spellid, Unit* target, bool autoshot)
 
     // Check ammo
     Item* itm = GetItemInterface()->GetInventoryItem(EQUIPMENT_SLOT_RANGED);
-    ItemPrototype* iprot = ItemPrototypeStorage.LookupEntry(GetAmmoId());
+    ItemPrototype* iprot = ItemPrototypeStorage.LookupEntry(/*GetAmmoId()*/ 0);
     if (itm == NULL || disarmed) //Disarmed means disarmed, we shouldn't be able to cast Auto Shot while disarmed
         return SPELL_FAILED_NO_AMMO; //In proper language means "Requires Ranged Weapon to be equipped"
     if (!m_requiresNoAmmo) //Thori'dal, Wild Quiver, but it still requires to have a weapon equipped
@@ -9848,14 +9848,14 @@ void Player::CalcDamage()
             ap_bonus = GetRAP() / 14000.0f;
             bonus = ap_bonus * it->GetProto()->Delay;
 
-            if (GetAmmoId() && !m_requiresNoAmmo)
+            /*if (GetAmmoId() && !m_requiresNoAmmo)
             {
                 ItemPrototype* xproto = ItemPrototypeStorage.LookupEntry(GetAmmoId());
                 if (xproto)
                 {
                     bonus += ((xproto->Damage[0].Min + xproto->Damage[0].Max) * it->GetProto()->Delay) / 2000.0f;
                 }
-            }
+            }*/
         }
         else bonus = 0;
 

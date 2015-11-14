@@ -1558,8 +1558,8 @@ class SERVER_DECL Player : public Unit
         void ModHealingDoneMod(uint32 value) { ModUnsigned32Value(PLAYER_FIELD_MOD_HEALING_DONE_POS, value); }
         uint32 GetHealingDoneMod() { return GetUInt32Value(PLAYER_FIELD_MOD_HEALING_DONE_POS); }
 
-        void SetAmmoId(uint32 id) { SetUInt32Value(PLAYER_AMMO_ID, id); }
-        uint32 GetAmmoId() { return GetUInt32Value(PLAYER_AMMO_ID); }
+        //void SetAmmoId(uint32 id) { SetUInt32Value(PLAYER_AMMO_ID, id); }
+        //uint32 GetAmmoId() { return GetUInt32Value(PLAYER_AMMO_ID); }
 
         void SetHonorCurrency(uint32 value) { SetUInt32Value(PLAYER_FIELD_HONOR_CURRENCY, value); }
         void ModHonorCurrency(uint32 value) { ModUnsigned32Value(PLAYER_FIELD_HONOR_CURRENCY, value); }

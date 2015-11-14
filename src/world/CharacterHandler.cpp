@@ -520,11 +520,13 @@ void WorldSession::LoadAccountDataProc(QueryResult* result)
 
 void WorldSession::HandleCharCreateOpcode(WorldPacket& recv_data)
 {
-    CHECK_PACKET_SIZE(recv_data, 10);
     std::string name;
     uint8 race, class_;
 
-    recv_data >> name >> race >> class_;
+    recv_data >> name;
+    
+    recv_data >> race;
+    recv_data >> class_;
     recv_data.rpos(0);
 
 
