@@ -5023,14 +5023,15 @@ void Player::SendInitialActions()
 {
     WorldPacket data(SMSG_ACTION_BUTTONS, PLAYER_ACTION_BUTTON_SIZE + 1);
 
-    data << uint8(0);         // VLack: 3.1, some bool - 0 or 1. seems to work both ways
-
     for (uint32 i = 0; i < PLAYER_ACTION_BUTTON_COUNT; ++i)
     {
         data << m_specs[m_talentActiveSpec].mActions[i].Action;
         data << m_specs[m_talentActiveSpec].mActions[i].Misc; // 3.3.5 Misc have to be sent before Type (buttons with value over 0xFFFF)
         data << m_specs[m_talentActiveSpec].mActions[i].Type;
     }
+
+    data << uint8(1);         // VLack: 3.1, some bool - 0 or 1. seems to work both ways
+
     m_session->SendPacket(&data);
 }
 

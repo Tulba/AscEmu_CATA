@@ -26,7 +26,6 @@
 /// 3.3.5a client opcodes
 enum Opcodes
 {
-    MSG_NULL_ACTION                                 = 0x000,
     CMSG_BOOTME                                     = 0x001,
     CMSG_DBLOOKUP                                   = 0x002,
     SMSG_DBLOOKUP                                   = 0x003,
@@ -1374,7 +1373,7 @@ enum Opcodes
     SMSG_ALL_ACHIEVEMENT_DATA = 0x58B1, // 15595 (Not sure about the content)
 
     SMSG_WORLD_SERVER_INFO = 0x31A2,    // 15595
-    SMSG_COMPRESSED_UPDATE_OBJECT = 0x0000, // unknown send by server
+    SMSG_COMPRESSED_UPDATE_OBJECT = 0x11F7, // 15595
     SMSG_SPELL_GO = 0x6E16, // 15595    (not handled correctly!)
     SMSG_SPELL_START = 0x6415,  // 15595
     SMSG_POWER_UPDATE = 0x4A07, // 15595
@@ -1394,6 +1393,8 @@ enum Opcodes
     CMSG_NAME_QUERY = 0x2224, // 15595
     SMSG_NAME_QUERY_RESPONSE = 0x6E04, // 15595
     SMSG_INIT_WORLD_STATES = 0x4C15, // 15595
+
+    MSG_NULL_ACTION = 0x1001, // ??
 
     NUM_MSG_TYPES = 0xFFFF   // End of Opcodes
 };
