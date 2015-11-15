@@ -350,7 +350,7 @@ void WorldSession::HandleMovementOpcodes(WorldPacket& recv_data)
         return;
 
     /* Anti Multi-Jump Check */
-    if (recv_data.GetOpcode() == MSG_MOVE_JUMP && _player->jumping == true && !GetPermissionCount())
+    if (recv_data.GetOpcode() == CMSG_MOVE_JUMP && _player->jumping == true && !GetPermissionCount())
     {
         sCheatLog.writefromsession(this, "Detected jump hacking");
         Disconnect();
@@ -358,7 +358,7 @@ void WorldSession::HandleMovementOpcodes(WorldPacket& recv_data)
     }
     if (recv_data.GetOpcode() == MSG_MOVE_FALL_LAND || movement_info.flags & MOVEFLAG_SWIMMING)
         _player->jumping = false;
-    if (!_player->jumping && (recv_data.GetOpcode() == MSG_MOVE_JUMP || movement_info.flags & MOVEFLAG_FALLING))
+    if (!_player->jumping && (recv_data.GetOpcode() == CMSG_MOVE_JUMP || movement_info.flags & MOVEFLAG_FALLING))
         _player->jumping = true;
 
     /************************************************************************/
@@ -376,10 +376,10 @@ void WorldSession::HandleMovementOpcodes(WorldPacket& recv_data)
         case MSG_MOVE_START_STRAFE_RIGHT:
             _player->strafing = true;
             break;
-        case MSG_MOVE_JUMP:
+        case CMSG_MOVE_JUMP:
             _player->jumping = true;
             break;
-        case MSG_MOVE_STOP:
+        case CMSG_MOVE_STOP:
             _player->moving = false;
             break;
         case MSG_MOVE_STOP_STRAFE:
@@ -549,7 +549,7 @@ void WorldSession::HandleMovementOpcodes(WorldPacket& recv_data)
     /************************************************************************/
     /* Hack Detection by Classic	                                        */
     /************************************************************************/
-    if (!movement_info.transGuid && recv_data.GetOpcode() != MSG_MOVE_JUMP && !_player->FlyCheat && !_player->flying_aura && !(movement_info.flags & MOVEFLAG_SWIMMING || movement_info.flags & MOVEFLAG_FALLING) && movement_info.z > _player->GetPositionZ() && movement_info.x == _player->GetPositionX() && movement_info.y == _player->GetPositionY())
+    if (!movement_info.transGuid && recv_data.GetOpcode() != CMSG_MOVE_JUMP && !_player->FlyCheat && !_player->flying_aura && !(movement_info.flags & MOVEFLAG_SWIMMING || movement_info.flags & MOVEFLAG_FALLING) && movement_info.z > _player->GetPositionZ() && movement_info.x == _player->GetPositionX() && movement_info.y == _player->GetPositionY())
     {
         WorldPacket data(SMSG_MOVE_UNSET_CAN_FLY, 13);
         data << _player->GetNewGUID();

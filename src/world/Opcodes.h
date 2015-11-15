@@ -158,14 +158,9 @@ enum Opcodes
     CMSG_AREATRIGGER                                = 0x0B4,
     MSG_MOVE_START_FORWARD                          = 0x0B5,
     MSG_MOVE_START_BACKWARD                         = 0x0B6,
-    MSG_MOVE_STOP                                   = 0x0B7,
     MSG_MOVE_START_STRAFE_LEFT                      = 0x0B8,
     MSG_MOVE_START_STRAFE_RIGHT                     = 0x0B9,
     MSG_MOVE_STOP_STRAFE                            = 0x0BA,
-    MSG_MOVE_JUMP                                   = 0x0BB,
-    MSG_MOVE_START_TURN_LEFT                        = 0x0BC,
-    MSG_MOVE_START_TURN_RIGHT                       = 0x0BD,
-    MSG_MOVE_STOP_TURN                              = 0x0BE,
     MSG_MOVE_START_PITCH_UP                         = 0x0BF,
     MSG_MOVE_START_PITCH_DOWN                       = 0x0C0,
     MSG_MOVE_STOP_PITCH                             = 0x0C1,
@@ -213,7 +208,6 @@ enum Opcodes
     CMSG_FORCE_MOVE_UNROOT_ACK                      = 0x0EB,
     MSG_MOVE_ROOT                                   = 0x0EC,
     MSG_MOVE_UNROOT                                 = 0x0ED,
-    MSG_MOVE_HEARTBEAT                              = 0x0EE,
     SMSG_MOVE_KNOCK_BACK                            = 0x0EF,
     CMSG_MOVE_KNOCK_BACK_ACK                        = 0x0F0,
     MSG_MOVE_KNOCK_BACK                             = 0x0F1,
@@ -799,22 +793,15 @@ enum Opcodes
     SMSG_UPDATE_LFG_LIST                            = 0x360,
     SMSG_LFG_PROPOSAL_UPDATE                        = 0x361,
     CMSG_LFG_PROPOSAL_RESULT                        = 0x362,
-    SMSG_LFG_ROLE_CHECK_UPDATE                      = 0x363,
-    SMSG_LFG_JOIN_RESULT                            = 0x364,
     SMSG_LFG_QUEUE_STATUS                           = 0x365,
     CMSG_SET_LFG_COMMENT                            = 0x366,
-    SMSG_LFG_UPDATE_PLAYER                          = 0x367,
-    SMSG_LFG_UPDATE_PARTY                           = 0x368,
-    SMSG_LFG_UPDATE_SEARCH                          = 0x369,
     CMSG_LFG_SET_ROLES                              = 0x36A,
     CMSG_LFG_SET_NEEDS                              = 0x36B,
     CMSG_LFG_SET_BOOT_VOTE                          = 0x36C,
     SMSG_LFG_BOOT_PROPOSAL_UPDATE                   = 0x36D,
     CMSG_LFD_PLAYER_LOCK_INFO_REQUEST               = 0x36E,
-    SMSG_LFG_PLAYER_INFO                            = 0x36F,
     CMSG_LFG_TELEPORT                               = 0x370,
     CMSG_LFD_PARTY_LOCK_INFO_REQUEST                = 0x371, 
-    SMSG_LFG_PARTY_INFO                             = 0x372,
     SMSG_TITLE_EARNED                               = 0x373,
     CMSG_SET_TITLE                                  = 0x374,
     CMSG_CANCEL_MOUNT_AURA                          = 0x375,
@@ -1344,6 +1331,7 @@ enum Opcodes
     CMSG_WORLD_TELEPORT                                 = 0x24B2,
     CMSG_TELEPORT_TO_UNIT                               = 0x4206,
 
+    //Chat
     CMSG_MESSAGECHAT_SAY                                = 0x1154,   // not implemented
     CMSG_MESSAGECHAT_YELL                               = 0x3544,   // not implemented
     CMSG_MESSAGECHAT_CHANNEL                            = 0x1D44,   // not implemented
@@ -1358,6 +1346,24 @@ enum Opcodes
     CMSG_MESSAGECHAT_RAID_WARNING                       = 0x0944,   // not implemented
     CMSG_MESSAGECHAT_BATTLEGROUND                       = 0x2156,   // not implemented
     SMSG_MESSAGECHAT                                    = 0x2026,   // not implemented
+
+    // Movement
+    MSG_MOVE_HEARTBEAT                                  = 0x3914,   // forward/backward
+    CMSG_MOVE_STOP                                      = 0x320A,
+    CMSG_MOVE_START_TURN_LEFT                           = 0x700C,
+    CMSG_MOVE_START_TURN_RIGHT                          = 0x7000,
+    CMSG_MOVE_STOP_TURN                                 = 0x331E,
+    CMSG_MOVE_JUMP                                      = 0x7A06,
+
+    // LFG Check packet sending in LfgHandler.cpp
+    SMSG_LFG_PLAYER_INFO                                = 0x1370,   // not updated
+    SMSG_LFG_PARTY_INFO                                 = 0x1373,   // not updated
+    SMSG_LFG_JOIN_RESULT                                = 0x1365,   // not updated
+    SMSG_LFG_UPDATE_PLAYER                              = 0x1368,   // not updated
+    SMSG_LFG_UPDATE_PARTY                               = 0x1369,   // not updated
+    SMSG_LFG_UPDATE_SEARCH                              = 0x136A,   // not updated
+    SMSG_LFG_ROLE_CHECK_UPDATE                          = 0x1364,   // not updated
+
 
     NUM_MSG_TYPES                                       = 0xFFFF    // End of Opcodes
 };
