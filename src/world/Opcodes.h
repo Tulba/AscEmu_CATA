@@ -144,12 +144,6 @@ enum Opcodes
     CMSG_CHANNEL_UNBAN                              = 0x2D46,
     CMSG_CHANNEL_ANNOUNCEMENTS                      = 0x1146,
     CMSG_CHANNEL_MODERATE                           = 0x2944,
-    CMSG_USE_ITEM                                   = 0x0AB,
-    CMSG_OPEN_ITEM                                  = 0x0AC,
-    CMSG_READ_ITEM                                  = 0x0AD,
-    SMSG_READ_ITEM_OK                               = 0x0AE,
-    SMSG_READ_ITEM_FAILED                           = 0x0AF,
-    SMSG_ITEM_COOLDOWN                              = 0x0B0,
     CMSG_DESTROY_ITEMS                              = 0x0B2,
     SMSG_GAMEOBJECT_CUSTOM_ANIM                     = 0x0B3,
     CMSG_AREATRIGGER                                = 0x0B4,
@@ -212,22 +206,9 @@ enum Opcodes
     CMSG_OPENING_CINEMATIC                          = 0x0F9,
     CMSG_NEXT_CINEMATIC_CAMERA                      = 0x0FB,
     CMSG_COMPLETE_CINEMATIC                         = 0x0FC,
-    CMSG_AUTOEQUIP_GROUND_ITEM                      = 0x106,
-    CMSG_AUTOSTORE_GROUND_ITEM                      = 0x107,
-    CMSG_AUTOSTORE_LOOT_ITEM                        = 0x108,
-    CMSG_STORE_LOOT_IN_SLOT                         = 0x109,
-    CMSG_AUTOEQUIP_ITEM                             = 0x10A,
-    CMSG_AUTOSTORE_BAG_ITEM                         = 0x10B,
-    CMSG_SWAP_ITEM                                  = 0x10C,
-    CMSG_SWAP_INV_ITEM                              = 0x10D,
-    CMSG_SPLIT_ITEM                                 = 0x10E,
-    CMSG_AUTOEQUIP_ITEM_SLOT                        = 0x10F,
     OBSOLETE_DROP_ITEM                              = 0x110,
-    CMSG_DESTROYITEM                                = 0x111,
-    SMSG_INVENTORY_CHANGE_FAILURE                   = 0x112,
     SMSG_OPEN_CONTAINER                             = 0x113,
-    CMSG_INSPECT                                    = 0x114,
-    SMSG_INSPECT                                    = 0x115,
+    SMSG_INSPECT                                    = 0x4014,/*0x115,*/
     CMSG_INITIATE_TRADE                             = 0x116,
     CMSG_BEGIN_TRADE                                = 0x117,
     CMSG_BUSY_TRADE                                 = 0x118,
@@ -1375,6 +1356,27 @@ enum Opcodes
     SMSG_ATTACKSWING_NOTSTANDING                        = 0x2B26,   // unchecked SMSG_ATTACKSWING_DEADTARGET
     SMSG_ATTACKSWING_CANT_ATTACK                        = 0x0016,   // unchecked
     SMSG_ATTACKERSTATEUPDATE                            = 0x0B25,   // unchecked
+    CMSG_INSPECT                                        = 0x0927,
+
+    //Item
+    CMSG_AUTOEQUIP_GROUND_ITEM                          = 0x1107,   // unchecked
+    CMSG_AUTOSTORE_GROUND_ITEM                          = 0x1108,   // unchecked
+    CMSG_AUTOSTORE_LOOT_ITEM                            = 0x0E34,   // unchecked
+    CMSG_STORE_LOOT_IN_SLOT                             = 0x110A,   // unchecked
+    CMSG_AUTOEQUIP_ITEM                                 = 0x4304,   // checked
+    CMSG_AUTOSTORE_BAG_ITEM                             = 0x0236,   // unchecked
+    CMSG_SPLIT_ITEM                                     = 0x0F17,   // unchecked
+    CMSG_AUTOEQUIP_ITEM_SLOT                            = 0x4A17,   // checked
+    CMSG_SWAP_ITEM                                      = 0x6326,   // checked
+    CMSG_SWAP_INV_ITEM                                  = 0x2614,   // checked
+    SMSG_INVENTORY_CHANGE_FAILURE                       = 0x2236,
+    CMSG_DESTROYITEM                                    = 0x4A27,   // checked
+    CMSG_USE_ITEM                                       = 0x2C06,
+    CMSG_OPEN_ITEM                                      = 0x6A34,   //
+    CMSG_READ_ITEM                                      = 0x2F16,   //
+    SMSG_READ_ITEM_OK                                   = 0x2605,   // 
+    SMSG_READ_ITEM_FAILED                               = 0x0F16,   // 
+    SMSG_ITEM_COOLDOWN                                  = 0x4D14,   // 
 
     //Unknown packet send by client to server
     //0x3D54 0 bytes
