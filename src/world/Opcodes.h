@@ -156,11 +156,8 @@ enum Opcodes
     CMSG_DESTROY_ITEMS                              = 0x0B2,
     SMSG_GAMEOBJECT_CUSTOM_ANIM                     = 0x0B3,
     CMSG_AREATRIGGER                                = 0x0B4,
-    MSG_MOVE_START_FORWARD                          = 0x0B5,
-    MSG_MOVE_START_BACKWARD                         = 0x0B6,
     MSG_MOVE_START_STRAFE_LEFT                      = 0x0B8,
     MSG_MOVE_START_STRAFE_RIGHT                     = 0x0B9,
-    MSG_MOVE_STOP_STRAFE                            = 0x0BA,
     MSG_MOVE_START_PITCH_UP                         = 0x0BF,
     MSG_MOVE_START_PITCH_DOWN                       = 0x0C0,
     MSG_MOVE_STOP_PITCH                             = 0x0C1,
@@ -171,8 +168,6 @@ enum Opcodes
     MSG_MOVE_TELEPORT_CHEAT                         = 0x0C6,
     MSG_MOVE_TELEPORT_ACK                           = 0x0C7,
     MSG_MOVE_TOGGLE_FALL_LOGGING                    = 0x0C8,
-    MSG_MOVE_FALL_LAND                              = 0x0C9,
-    MSG_MOVE_START_SWIM                             = 0x0CA,
     MSG_MOVE_STOP_SWIM                              = 0x0CB,
     MSG_MOVE_SET_RUN_SPEED_CHEAT                    = 0x0CC,
     MSG_MOVE_SET_RUN_SPEED                          = 0x0CD,
@@ -783,8 +778,6 @@ enum Opcodes
     CMSG_ARENA_TEAM_LEADER                          = 0x356,
     SMSG_ARENA_TEAM_EVENT                           = 0x357,
     CMSG_BATTLEMASTER_JOIN_ARENA                    = 0x358,
-    MSG_MOVE_START_ASCEND                           = 0x359,
-    MSG_MOVE_STOP_ASCEND                            = 0x35A,
     SMSG_ARENA_TEAM_STATS                           = 0x35B,
     CMSG_LFG_JOIN                                   = 0x35C,
     CMSG_LFG_LEAVE                                  = 0x35D,
@@ -850,7 +843,6 @@ enum Opcodes
     SMSG_SET_EXTRA_AURA_INFO_OBSOLETE               = 0x3A4,
     SMSG_SET_EXTRA_AURA_INFO_NEED_UPDATE_OBSOLETE   = 0x3A5,
     SMSG_CLEAR_EXTRA_AURA_INFO_OBSOLETE             = 0x3A6,
-    MSG_MOVE_START_DESCEND                          = 0x3A7,
     CMSG_IGNORE_REQUIREMENTS_CHEAT                  = 0x3A8,
     SMSG_IGNORE_REQUIREMENTS_CHEAT                  = 0x3A9,
     SMSG_SPELL_CHANCE_PROC_LOG                      = 0x3AA,
@@ -1354,6 +1346,14 @@ enum Opcodes
     CMSG_MOVE_START_TURN_RIGHT                          = 0x7000,
     CMSG_MOVE_STOP_TURN                                 = 0x331E,
     CMSG_MOVE_JUMP                                      = 0x7A06,
+    CMSG_MOVE_FALL_LAND                                 = 0x380A,
+    CMSG_MOVE_START_FORWARD                             = 0x7814,   // swim in water forward
+    CMSG_MOVE_START_BACKWARD                            = 0x330A,   // swim in water backward
+    CMSG_MOVE_STOP_STRAFE                               = 0x3002,   // stop swim
+    CMSG_MOVE_START_SWIM                                = 0x3206,
+    CMSG_MOVE_START_ASCEND                              = 0x390A,   // water moving down
+    CMSG_MOVE_STOP_ASCEND                               = 0x7B00,   // water moving up
+    CMSG_MOVE_START_DESCEND                             = 0x3800,   // water moving down2
 
     // LFG Check packet sending in LfgHandler.cpp
     SMSG_LFG_PLAYER_INFO                                = 0x1370,   // not updated

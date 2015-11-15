@@ -324,7 +324,7 @@ void WorldSession::HandleMovementOpcodes(WorldPacket& recv_data)
     /************************************************************************/
     /* Clear standing state to stand.				                        */
     /************************************************************************/
-    if (recv_data.GetOpcode() == MSG_MOVE_START_FORWARD)
+    if (recv_data.GetOpcode() == CMSG_MOVE_START_FORWARD)
         _player->SetStandState(STANDSTATE_STAND);
 
     /************************************************************************/
@@ -356,7 +356,7 @@ void WorldSession::HandleMovementOpcodes(WorldPacket& recv_data)
         Disconnect();
         return;
     }
-    if (recv_data.GetOpcode() == MSG_MOVE_FALL_LAND || movement_info.flags & MOVEFLAG_SWIMMING)
+    if (recv_data.GetOpcode() == CMSG_MOVE_FALL_LAND || movement_info.flags & MOVEFLAG_SWIMMING)
         _player->jumping = false;
     if (!_player->jumping && (recv_data.GetOpcode() == CMSG_MOVE_JUMP || movement_info.flags & MOVEFLAG_FALLING))
         _player->jumping = true;
@@ -368,8 +368,8 @@ void WorldSession::HandleMovementOpcodes(WorldPacket& recv_data)
     uint16 opcode = recv_data.GetOpcode();
     switch (opcode)
     {
-        case MSG_MOVE_START_FORWARD:
-        case MSG_MOVE_START_BACKWARD:
+        case CMSG_MOVE_START_FORWARD:
+        case CMSG_MOVE_START_BACKWARD:
             _player->moving = true;
             break;
         case MSG_MOVE_START_STRAFE_LEFT:
@@ -382,10 +382,10 @@ void WorldSession::HandleMovementOpcodes(WorldPacket& recv_data)
         case CMSG_MOVE_STOP:
             _player->moving = false;
             break;
-        case MSG_MOVE_STOP_STRAFE:
+        case CMSG_MOVE_STOP_STRAFE:
             _player->strafing = false;
             break;
-        case MSG_MOVE_FALL_LAND:
+        case CMSG_MOVE_FALL_LAND:
             _player->jumping = false;
             break;
 
@@ -577,7 +577,7 @@ void WorldSession::HandleMovementOpcodes(WorldPacket& recv_data)
     }
     else
     {
-        if (recv_data.GetOpcode() == MSG_MOVE_FALL_LAND)
+        if (recv_data.GetOpcode() == CMSG_MOVE_FALL_LAND)
         {
             // player has finished falling
             //if z_axisposition contains no data then set to current position
