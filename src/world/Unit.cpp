@@ -6142,7 +6142,8 @@ bool Unit::IsPoisoned()
 
 void Unit::SendFullAuraUpdate()
 {
-    WorldPacket data(SMSG_AURA_UPDATE_ALL, 200);
+    // not updated
+    /*WorldPacket data(SMSG_AURA_UPDATE_ALL, 200);
 
     data << WoWGuid(GetNewGUID());
 
@@ -6185,7 +6186,7 @@ void Unit::SendFullAuraUpdate()
     }
     SendMessageToSet(&data, true);
 
-    LOG_DEBUG("Full Aura Update: GUID: " I64FMT " - Updates: %u", GetGUID(), Updates);
+    LOG_DEBUG("Full Aura Update: GUID: " I64FMT " - Updates: %u", GetGUID(), Updates); */
 }
 
 void Unit::SendAuraUpdate(uint32 AuraSlot, bool remove)
@@ -8366,7 +8367,7 @@ void Unit::BuildMovementPacket(ByteBuffer* data)
     *data << (uint32)GetMovementInfo()->unk12;
 
     // 0x00001000
-    if (GetUnitMovementFlags() & MOVEFLAG_REDIRECTED)
+    /*if (GetUnitMovementFlags() & MOVEFLAG_REDIRECTED)
     {
         *data << (float)GetMovementInfo()->redirectVelocity;
         *data << (float)GetMovementInfo()->redirectSin;
@@ -8376,7 +8377,7 @@ void Unit::BuildMovementPacket(ByteBuffer* data)
 
     // 0x04000000
     if (GetUnitMovementFlags() & MOVEFLAG_SPLINE_MOVER)
-        *data << (float)GetMovementInfo()->unk13;
+        *data << (float)GetMovementInfo()->unk13;*/
 }
 
 
@@ -8417,7 +8418,7 @@ void Unit::BuildMovementPacket(ByteBuffer* data, float x, float y, float z, floa
     *data << (uint32)GetMovementInfo()->unk11;
 
     // 0x00001000
-    if (GetUnitMovementFlags() & MOVEFLAG_REDIRECTED)
+    /*if (GetUnitMovementFlags() & MOVEFLAG_REDIRECTED)
     {
         *data << (float)GetMovementInfo()->redirectVelocity;
         *data << (float)GetMovementInfo()->redirectSin;
@@ -8427,7 +8428,7 @@ void Unit::BuildMovementPacket(ByteBuffer* data, float x, float y, float z, floa
 
     // 0x04000000
     if (GetUnitMovementFlags() & MOVEFLAG_SPLINE_MOVER)
-        *data << (float)GetMovementInfo()->unk13;
+        *data << (float)GetMovementInfo()->unk13;*/
 }
 
 void Unit::setLevel(uint32 level)

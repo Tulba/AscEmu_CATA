@@ -657,7 +657,7 @@ void WorldSession::HandleCancelTotem(WorldPacket& recv_data)
 
 void WorldSession::HandleUpdateProjectilePosition(WorldPacket& recv_data)
 {
-    CHECK_INWORLD_RETURN
+    /*CHECK_INWORLD_RETURN
 
     uint64 casterGuid;          // guid of the caster
     uint32 spellId;             // spell ID of casted spell
@@ -683,5 +683,5 @@ void WorldSession::HandleUpdateProjectilePosition(WorldPacket& recv_data)
     data << float(x);
     data << float(y);
     data << float(z);
-    SendPacket(&data);
+    SendPacket(&data);*/
 }

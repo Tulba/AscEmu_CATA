@@ -75,66 +75,81 @@ struct LfgRoleCheck;
 // MovementFlags Contribution by Tenshi
 enum MovementFlags
 {
-    // Byte 1 (Resets on Movement Key Press)
-    MOVEFLAG_MOVE_STOP                  = 0x00,         //verified
-    MOVEFLAG_MOVE_FORWARD               = 0x01,         //verified
-    MOVEFLAG_MOVE_BACKWARD              = 0x02,         //verified
-    MOVEFLAG_STRAFE_LEFT                = 0x04,         //verified
-    MOVEFLAG_STRAFE_RIGHT               = 0x08,         //verified
-    MOVEFLAG_TURN_LEFT                  = 0x10,         //verified
-    MOVEFLAG_TURN_RIGHT                 = 0x20,         //verified
-    MOVEFLAG_PITCH_DOWN                 = 0x40,         //Unconfirmed
-    MOVEFLAG_PITCH_UP                   = 0x80,         //Unconfirmed
+   // Byte 1 (Resets on Movement Key Press)
+    MOVEFLAG_MOVE_STOP                  = 0x00000000,			// 15595
+    MOVEFLAG_MOVE_FORWARD				= 0x00000001,			// 15595
+    MOVEFLAG_MOVE_BACKWARD				= 0x00000002,			// 15595
+    MOVEFLAG_STRAFE_LEFT				= 0x00000004,			// 15595
+    MOVEFLAG_STRAFE_RIGHT				= 0x00000008,			// 15595
+    MOVEFLAG_TURN_LEFT					= 0x00000010,			// 15595
+    MOVEFLAG_TURN_RIGHT					= 0x00000020,			// 15595
+    MOVEFLAG_PITCH_DOWN					= 0x00000080,			// 15595
+    MOVEFLAG_PITCH_UP					= 0x00000040,			// 15595
 
+	// 4.3.4 15595
     // Byte 2 (Resets on Situation Change)
-    MOVEFLAG_WALK                       = 0x100,        //verified
-    MOVEFLAG_TRANSPORT                  = 0x200,
-    MOVEFLAG_NO_COLLISION               = 0x400,
-    MOVEFLAG_ROOTED                     = 0x800,        //verified
-    MOVEFLAG_REDIRECTED                 = 0x1000,       //Unconfirmed, should be MOVEFLAG_JUMPING
-    MOVEFLAG_FALLING                    = 0x2000,       //verified
-    MOVEFLAG_FALLING_FAR                = 0x4000,       //verified
-    MOVEFLAG_FREE_FALLING               = 0x8000,       //half verified
+    MOVEFLAG_WALK						= 0x00000100,		// 15595
+    MOVEFLAG_TRANSPORT					= 0x00000200,       // 15595
+    MOVEFLAG_NO_COLLISION				= 0x20000000,       // 15595
+    MOVEFLAG_ROOTED 					= 0x00000400,		// 15595
+	// not here in 15595?
+    //MOVEFLAG_REDIRECTED 				= 0x00001000,		// 15595 - Unconfirmed, should be MOVEFLAG_JUMP // is this here in 15595
+    MOVEFLAG_FALLING					= 0x00000800,       // 15595
+    MOVEFLAG_FALLING_FAR				= 0x00001000,		// 15595
+    MOVEFLAG_FREE_FALLING				= 0x08000000,		// 15595 not sure - passive rogue spell "free fall"?
 
+	// 4.3.4 15595
     // Byte 3 (Set by server. TB = Third Byte. Completely unconfirmed.)
-    MOVEFLAG_TB_PENDING_STOP            = 0x10000,      // (MOVEFLAG_PENDING_STOP)
-    MOVEFLAG_TB_PENDING_UNSTRAFE        = 0x20000,      // (MOVEFLAG_PENDING_UNSTRAFE)
-    MOVEFLAG_TB_PENDING_FALL            = 0x40000,      // (MOVEFLAG_PENDING_FALL)
-    MOVEFLAG_TB_PENDING_FORWARD         = 0x80000,      // (MOVEFLAG_PENDING_FORWARD)
-    MOVEFLAG_TB_PENDING_BACKWARD        = 0x100000,     // (MOVEFLAG_PENDING_BACKWARD)
-    MOVEFLAG_SWIMMING                   = 0x200000,     //  verified
-    MOVEFLAG_FLYING_PITCH_UP            = 0x400000,     // (half confirmed)(MOVEFLAG_PENDING_STR_RGHT)
-    MOVEFLAG_CAN_FLY                    = 0x800000,     // (half confirmed) gets called when landing (MOVEFLAG_MOVED)
+    MOVEFLAG_TB_PENDING_STOP			= 0x00002000,		// 15595 - (MOVEFLAG_PENDING_STOP)
+    MOVEFLAG_TB_PENDING_UNSTRAFE		= 0x00004000,		// 15595 - (MOVEFLAG_PENDING_UNSTRAFE) (_STRAFESTOP)
+    //MOVEFLAG_TB_PENDING_FALL			= 0x40000,		// (MOVEFLAG_PENDING_FALL) // not here 15595?
+    MOVEFLAG_TB_PENDING_FORWARD			= 0x00008000,		// 15595 - (MOVEFLAG_PENDING_FORWARD)
+    MOVEFLAG_TB_PENDING_BACKWARD		= 0x00010000,		// 15595 - (MOVEFLAG_PENDING_BACKWARD)
 
+    MOVEFLAG_SWIMMING          		    = 0x00100000,		// 15595
+    //MOVEFLAG_FLYING_PITCH_UP	        = 0x00000040,		// 15595 - (MOVEFLAG_PENDING_STR_RGHT) // we already have it
+    MOVEFLAG_CAN_FLY					= 0x00800000,		// 15595 - gets called when landing (MOVEFLAG_MOVED)
+
+	// 4.3.4 15595
     // Byte 4 (Script Based Flags. Never reset, only turned on or off.)
-    MOVEFLAG_AIR_SUSPENSION             = 0x1000000,    // confirmed allow body air suspension(good name? lol).
-    MOVEFLAG_AIR_SWIMMING               = 0x2000000,    // confirmed while flying.
-    MOVEFLAG_SPLINE_MOVER               = 0x4000000,    // Unconfirmed
-    MOVEFLAG_SPLINE_ENABLED             = 0x8000000,
-    MOVEFLAG_WATER_WALK                 = 0x10000000,
-    MOVEFLAG_FEATHER_FALL               = 0x20000000,   // Does not negate fall damage.
-    MOVEFLAG_LEVITATE                   = 0x40000000,
-    MOVEFLAG_LOCAL                      = 0x80000000,   // This flag defaults to on. (Assumption)
+    MOVEFLAG_AIR_SUSPENSION	   	 		= 0x1000000,	// confirmed allow body air suspension(good name? lol). wtf flag is this in 15595?
+    MOVEFLAG_AIR_SWIMMING				= 0x01000000,	// MOVEFLAG_AIR_SWIMMING == MOVEFLAG_FLYING (15595)
+    MOVEFLAG_SPLINE_ELEVATION		    = 0x02000000,	// Old MOVEFLAG_SPLINE_MOVER (15595)
+    //MOVEFLAG_SPLINE_ENABLED		    = 0x8000000,    // Gone in 4.3.4 15595
+    MOVEFLAG_WATER_WALK					= 0x04000000,   // 15595
+    MOVEFLAG_FEATHER_FALL				= 0x08000000,	// 15595 (MOVEFLAG_SAFE_FALL) (trinitycore: _FALLING_SLOW)
+    MOVEFLAG_LEVITATE					= 0x10000000,   // 15595 NOT SURE
+    MOVEFLAG_LOCAL						= 0x20000000,	// 15595 NOT SURE
 
+	// not 15595
     // Masks
-    MOVEFLAG_MOVING_MASK                = 0x03,
-    MOVEFLAG_STRAFING_MASK              = 0x0C,
-    MOVEFLAG_TURNING_MASK               = 0x30,         // MOVEFLAG_TURN_LEFT + MOVEFLAG_TURN_RIGHT
-    MOVEFLAG_FALLING_MASK               = 0x6000,
-    MOVEFLAG_MOTION_MASK                = 0xE00F,       // Forwards, Backwards, Strafing, Falling
-    MOVEFLAG_PENDING_MASK               = 0x7F0000,
-    MOVEFLAG_PENDING_STRAFE_MASK        = 0x600000,
-    MOVEFLAG_PENDING_MOVE_MASK          = 0x180000,
-    MOVEFLAG_FULL_FALLING_MASK          = 0xE000,
+    MOVEFLAG_MOVING_MASK				= 0x03,
+    MOVEFLAG_STRAFING_MASK				= 0x0C,
+    MOVEFLAG_TURNING_MASK				= 0x30,         // MOVEFLAG_TURN_LEFT + MOVEFLAG_TURN_RIGHT
+    MOVEFLAG_FALLING_MASK				= 0x6000,
+    MOVEFLAG_MOTION_MASK				= 0xE00F,		// Forwards, Backwards, Strafing, Falling
+    MOVEFLAG_PENDING_MASK				= 0x7F0000,
+    MOVEFLAG_PENDING_STRAFE_MASK		= 0x600000,
+    MOVEFLAG_PENDING_MOVE_MASK			= 0x180000,
+    MOVEFLAG_FULL_FALLING_MASK			= 0xE000,
 };
 
 enum MovementFlags2
 {
-    MOVEFLAG2_NO_STRAFING        = 0x01,
-    MOVEFLAG2_NO_JUMPING         = 0x02,
-    MOVEFLAG2_FULLSPEED_TURNING  = 0x08,
-    MOVEFLAG2_FULLSPEED_PITCHING = 0x10,
-    MOVEFLAG2_ALLOW_PITCHING     = 0x20
+    MOVEFLAG2_NONE              = 0x0000,
+    MOVEFLAG2_NO_STRAFE         = 0x0001,
+    MOVEFLAG2_NO_JUMPING        = 0x0002,
+    MOVEFLAG2_FULLSPEED_TURNING  = 0x0004,
+    MOVEFLAG2_FULLSPEED_PITCHING = 0x0008,
+    MOVEFLAG2_ALLOW_PITCHING    = 0x0010,
+    MOVEFLAG2_UNK4              = 0x0020,
+    MOVEFLAG2_UNK5              = 0x0040,
+    MOVEFLAG2_UNK6              = 0x0080,                   // transport related
+    MOVEFLAG2_UNK7              = 0x0100,
+    MOVEFLAG2_INTERP_MOVEMENT   = 0x0200,
+    MOVEFLAG2_INTERP_TURNING    = 0x0400,
+    MOVEFLAG2_INTERP_PITCHING   = 0x0800,
+    MOVEFLAG2_INTERP_MASK       = MOVEFLAG2_INTERP_MOVEMENT | MOVEFLAG2_INTERP_TURNING | MOVEFLAG2_INTERP_PITCHING
 };
 
 struct OpcodeHandler
@@ -333,7 +348,7 @@ class SERVER_DECL WorldSession
         void HandleCharCreateOpcode(WorldPacket& recvPacket);
         void HandlePlayerLoginOpcode(WorldPacket& recvPacket);
         void HandleRealmSplitOpcode(WorldPacket& recvPacket);
-        void HandleTimeSyncResp(WorldPacket& recv_data);
+        //void HandleTimeSyncResp(WorldPacket& recv_data);
 
         /// Authentification and misc opcodes (MiscHandler.cpp):
         void HandlePingOpcode(WorldPacket& recvPacket);
@@ -379,6 +394,10 @@ class SERVER_DECL WorldSession
         void HandleNextCinematic(WorldPacket& recv_data);
         void HandleInspectOpcode(WorldPacket& recv_data);
         void HandleGameobjReportUseOpCode(WorldPacket& recv_data);  // CMSG_GAMEOBJ_REPORT_USE
+
+        // 4.3.4 15595
+        void HandleUITimeRequestOpcode(WorldPacket & recv_data); // empty opcode
+        void HandleTimeSyncRespOpcode(WorldPacket & recv_data);
 
         /// Gm Ticket System in GMTicket.cpp:
         void HandleGMTicketCreateOpcode(WorldPacket& recvPacket);

@@ -2638,7 +2638,18 @@ void WorldSession::HandleReadyForAccountDataTimesOpcode(WorldPacket & recv_data)
     SendAccountDataTimes(GLOBAL_CACHE_MASK);
 }
 
-void WorldSession::HandleTimeSyncResp(WorldPacket& recv_data)
+void WorldSession::HandleUITimeRequestOpcode(WorldPacket & recv_data) // 4.3.4 (cmangos)
 {
-    Log.Debug("HandleTimeSyncResp", "Not handled");
+	// empty opcode
+	WorldPacket data(SMSG_UI_TIME, 4);
+	data << uint32(time(NULL));
+	SendPacket(&data);
+}
+
+void WorldSession::HandleTimeSyncRespOpcode(WorldPacket & recv_data) // 4.3.4 (cmangos)
+{
+    uint32 counter, clientTicks;
+    recv_data >> counter >> clientTicks;
+
+    // do something with this...
 }

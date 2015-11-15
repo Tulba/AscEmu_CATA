@@ -550,77 +550,64 @@ void Player::SendLoot(uint64 guid, uint8 loot_type, uint32 mapid)
 
 void Player::SendInitialLogonPackets()
 {
-    // Initial Packets... they seem to be re-sent on port.
-    //m_session->OutPacket(SMSG_SET_REST_START_OBSOLETE, 4, &m_timeLogoff); // Seem to be unused by client
+    WorldPacket datao(SMSG_BINDPOINTUPDATE, 5 * 4);
+    datao << float(m_bind_pos_x);
+    datao << float(m_bind_pos_y);
+    datao << float(m_bind_pos_z);
+    datao << uint32(m_bind_mapid);
+    datao << uint32(m_bind_zoneid);
 
-    WorldPacket data(SMSG_BINDPOINTUPDATE, 5 * 4);
-
-    data << float(m_bind_pos_x);
-    data << float(m_bind_pos_y);
-    data << float(m_bind_pos_z);
-    data << uint32(m_bind_mapid);
-    data << uint32(m_bind_zoneid);
-    m_session->SendPacket(&data);
-
-    smsg_TalentsInfo(false);
-
-    data.Initialize(SMSG_WORLD_SERVER_INFO, 1 + 1 + 4 + 4);
-    data.writeBit(0); // level?
-    data.writeBit(0); // money?
-    data.writeBit(0); // loot?
-    data.flushBits();
-    data << uint8(0); // bool tournament realm?
-    data << uint32(0); // Weekly reset?
-    data << uint32(0);  // map difficulty?
-    GetSession()->SendPacket(&data);
-
-    //spells
-    smsg_InitialSpells();
-
-    data.Initialize(SMSG_SEND_UNLEARN_SPELLS, 4);
-    data << uint32(0); // unk
-    GetSession()->SendPacket(&data);
+    m_session->SendPacket(&datao);
 
     //Proficiencies
+    // 4.3.4
     SendSetProficiency(4, armor_proficiency);
     SendSetProficiency(2, weapon_proficiency);
 
-    //Tutorial Flags
-    data.Initialize(SMSG_TUTORIAL_FLAGS);
-    for (int i = 0; i < 8; i++)
-        data << uint32(m_Tutorials[i]);
-    m_session->SendPacket(&data);
+    // Tutorial Flags
+    // Disabled for now
+    /*data.Initialize(SMSG_TUTORIAL_FLAGS); // updated opcode to 15595, don't know if structure changed
+    for(int i = 0; i < 8; i++)
+    data << uint32(m_Tutorials[i]);
+    m_session->SendPacket(&data);*/
 
-    SendInitialActions();
-    smsg_InitialFactions();
+    // don't send this, it's just a sandbox
+    //smsg_TalentsInfo(false); // not updated (15595)
 
-    // SMSG_LOGIN_VERIFY_WORLD
-    data.Initialize(SMSG_LOGIN_VERIFY_WORLD, 20);
-    data << GetMapId();
-    data << GetPositionX();
-    data << GetPositionY();
-    data << GetPositionZ();
-    data << GetOrientation();
-    GetSession()->SendPacket(&data);
+    smsg_InitialSpells(); // not sure if updated (15595)
 
-    data.Initialize(SMSG_LOGIN_SETTIMESPEED, 4 + 4 + 4);
-    data << uint32(Arcemu::Util::MAKE_GAME_TIME());
-    data << float(0.0166666669777748f);    // Normal Game Speed
-    data << uint32(0);   // 3.1.2
-    m_session->SendPacket(&data);
+    // 15595
+    //data.Initialize(SMSG_SEND_UNLEARN_SPELLS, 4);  // size: 4
+    WorldPacket datat(SMSG_SEND_UNLEARN_SPELLS, 4);
+    datat << uint32(0);                            // count, for(count) uint32;
+    GetSession()->SendPacket(&datat);
+
+    SendInitialActions(); // 15595 not sure
+    smsg_InitialFactions(); // 15595
+
+
+    // 15595 should work
+    //data.Initialize(SMSG_LOGIN_SETTIMESPEED, 4 + 4 + 4); // size: 4 + 4 + 4
+    WorldPacket datatt(SMSG_LOGIN_SETTIMESPEED, 4 + 4 + 4);
+
+    datatt << uint32(Arcemu::Util::MAKE_GAME_TIME());
+    datatt << float(0.0166666669777748f);    // Normal Game Speed
+    datatt << uint32(0);                     // 3.1.2
+
+    m_session->SendPacket(&datatt);
 
     // cebernic for speedhack bug
     m_lastRunSpeed = 0;
     UpdateSpeed();
 
-    WorldPacket ArenaSettings(SMSG_UPDATE_WORLD_STATE, 16);
-
+    // we do not need this here I guess
+    // toDo: make a function for this packet, we'll need it later
+    /*WorldPacket ArenaSettings(SMSG_UPDATE_WORLD_STATE, 16);
     ArenaSettings << uint32(0xC77);
     ArenaSettings << uint32(sWorld.Arena_Progress);
     ArenaSettings << uint32(0xF3D);
     ArenaSettings << uint32(sWorld.Arena_Season);
-
-    m_session->SendPacket(&ArenaSettings);
+    m_session->SendPacket(&ArenaSettings);*/
 
     LOG_DETAIL("WORLD: Sent initial logon packets for %s.", GetName());
 }

@@ -316,11 +316,11 @@ void WorldSession::HandleInspectHonorStatsOpcode(WorldPacket& recv_data)
 
     Player* player = _player->GetMapMgr()->GetPlayer((uint32)guid);
 
-    WorldPacket data(SMSG_INSPECT_HONOR_STATS, 13);
-    data << uint8(0);
-    data << uint16(player->GetUInt16Value(PLAYER_FIELD_KILLS, 1));      // yesterday kills
-    data << uint16(player->GetUInt16Value(PLAYER_FIELD_KILLS, 0));      // today kills
-    data << uint32(player->GetUInt32Value(PLAYER_FIELD_LIFETIME_HONORBALE_KILLS));
+    WorldPacket data(MSG_INSPECT_HONOR_STATS, 13);
+    //data << uint8(0);
+    data << player->GetUInt32Value(PLAYER_FIELD_KILLS);      // yesterday kills
+    //data << uint16(player->GetUInt16Value(PLAYER_FIELD_KILLS, 0));      // today kills
+    data << player->GetUInt32Value(PLAYER_FIELD_LIFETIME_HONORBALE_KILLS);
     SendPacket(&data);
 }
 

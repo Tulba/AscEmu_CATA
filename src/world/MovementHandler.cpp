@@ -282,22 +282,21 @@ static MovementFlagName MoveFlagsToNames[] =
     { MOVEFLAG_TRANSPORT, "MOVEFLAG_TRANSPORT" },
     { MOVEFLAG_NO_COLLISION, "MOVEFLAG_NO_COLLISION" },
     { MOVEFLAG_ROOTED, "MOVEFLAG_ROOTED" },
-    { MOVEFLAG_REDIRECTED, "MOVEFLAG_REDIRECTED" },
+
     { MOVEFLAG_FALLING, "MOVEFLAG_FALLING" },
     { MOVEFLAG_FALLING_FAR, "MOVEFLAG_FALLING_FAR" },
     { MOVEFLAG_FREE_FALLING, "MOVEFLAG_FREE_FALLING" },
     { MOVEFLAG_TB_PENDING_STOP, "MOVEFLAG_TB_PENDING_STOP" },
     { MOVEFLAG_TB_PENDING_UNSTRAFE, "MOVEFLAG_TB_PENDING_UNSTRAFE" },
-    { MOVEFLAG_TB_PENDING_FALL, "MOVEFLAG_TB_PENDING_FALL" },
+
     { MOVEFLAG_TB_PENDING_FORWARD, "MOVEFLAG_TB_PENDING_FORWARD" },
     { MOVEFLAG_TB_PENDING_BACKWARD, "MOVEFLAG_TB_PENDING_BACKWARD" },
     { MOVEFLAG_SWIMMING, "MOVEFLAG_SWIMMING" },
-    { MOVEFLAG_FLYING_PITCH_UP, "MOVEFLAG_FLYING_PITCH_UP" },
+
     { MOVEFLAG_CAN_FLY, "MOVEFLAG_CAN_FLY" },
     { MOVEFLAG_AIR_SUSPENSION, "MOVEFLAG_AIR_SUSPENSION" },
     { MOVEFLAG_AIR_SWIMMING, "MOVEFLAG_AIR_SWIMMING" },
-    { MOVEFLAG_SPLINE_MOVER, "MOVEFLAG_SPLINE_MOVER" },
-    { MOVEFLAG_SPLINE_ENABLED, "MOVEFLAG_SPLINE_ENABLED" },
+
     { MOVEFLAG_WATER_WALK, "MOVEFLAG_WATER_WALK" },
     { MOVEFLAG_FEATHER_FALL, "MOVEFLAG_FEATHER_FALL" },
     { MOVEFLAG_LEVITATE, "MOVEFLAG_LEVITATE" },
@@ -704,8 +703,8 @@ void WorldSession::HandleMovementOpcodes(WorldPacket& recv_data)
         flags |= AURA_INTERRUPT_ON_ENTER_WATER;
     if ((movement_info.flags & MOVEFLAG_TURNING_MASK) || _player->isTurning)
         flags |= AURA_INTERRUPT_ON_TURNING;
-    if (movement_info.flags & MOVEFLAG_REDIRECTED)
-        flags |= AURA_INTERRUPT_ON_JUMP;
+    /*if (movement_info.flags & MOVEFLAG_REDIRECTED)
+        flags |= AURA_INTERRUPT_ON_JUMP;*/
 
     _player->RemoveAurasByInterruptFlag(flags);
 
@@ -899,14 +898,14 @@ void MovementInfo::init(WorldPacket& data)
     {
         data >> pitch;
     }
-    if (flags & MOVEFLAG_REDIRECTED)
+    /*if (flags & MOVEFLAG_REDIRECTED)
     {
         data >> redirectVelocity >> redirectSin >> redirectCos >> redirect2DSpeed;
     }
     if (flags & MOVEFLAG_SPLINE_MOVER)
     {
         data >> unk12;
-    }
+    }*/
 
     data >> unklast;
     if (data.rpos() != data.wpos())
@@ -936,10 +935,10 @@ void MovementInfo::write(WorldPacket& data)
     {
         data << redirectVelocity << redirectSin << redirectCos << redirect2DSpeed;
     }
-    if (flags & MOVEFLAG_SPLINE_MOVER)
+    /*if (flags & MOVEFLAG_SPLINE_MOVER)
     {
         data << unk12;
-    }
+    }*/
     data << unklast;
     if (unk13)
         data << unk13;

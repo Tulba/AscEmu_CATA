@@ -68,14 +68,12 @@ void WorldSession::HandleQueryTimeOpcode(WorldPacket& recv_data)
 //////////////////////////////////////////////////////////////////////////////////////////
 void WorldSession::HandleCreatureQueryOpcode(WorldPacket& recv_data)
 {
-    CHECK_INWORLD_RETURN
-
     CHECK_PACKET_SIZE(recv_data, 12);
-
-    WorldPacket data(SMSG_CREATURE_QUERY_RESPONSE, 250); //VLack: thanks Aspire, this was 146 before
+    //sStackWorldPacket( data, SMSG_CREATURE_QUERY_RESPONSE, sizeof(CreatureInfo) + 250*4 );
+    WorldPacket data(SMSG_CREATURE_QUERY_RESPONSE, sizeof(CreatureInfo) + 250 * 4);
     uint32 entry;
     uint64 guid;
-    CreatureInfo* ci;
+    CreatureInfo *ci;
 
     recv_data >> entry;
     recv_data >> guid;
@@ -98,49 +96,53 @@ void WorldSession::HandleCreatureQueryOpcode(WorldPacket& recv_data)
         if (ci == NULL)
             return;
 
-        LocalizedCreatureName* lcn = (language > 0) ? sLocalizationMgr.GetLocalizedCreatureName(entry, language) : NULL;
+        LocalizedCreatureName * lcn = (language>0) ? sLocalizationMgr.GetLocalizedCreatureName(entry, language) : NULL;
 
         if (lcn == NULL)
         {
-            LOG_DETAIL("WORLD: CMSG_CREATURE_QUERY '%s'", ci->Name);
+            sLog.outDetail("WORLD: CMSG_CREATURE_QUERY '%s'", ci->Name);
             data << (uint32)entry;
-            data << ci->Name;       // name of the creature
-            data << uint8(0);       // name2, always seems to be empty
-            data << uint8(0);       // name3, always seems to be empty
-            data << uint8(0);       // name4, always seems to be empty
-            data << ci->SubName;    // this is the title/guild of the creature
+            data << ci->Name;
+            data << uint16(0);
+            data << uint16(0);
+            data << uint16(0);
+            data << uint8(0); //some str, never seen it non empty atm
+            data << ci->SubName;
         }
         else
         {
-            LOG_DETAIL("WORLD: CMSG_CREATURE_QUERY '%s' (localized to %s)", ci->Name, lcn->Name);
+            sLog.outDetail("WORLD: CMSG_CREATURE_QUERY '%s' (localized to %s)", ci->Name, lcn->Name);
             data << (uint32)entry;
             data << lcn->Name;
-            data << uint8(0);
-            data << uint8(0);
-            data << uint8(0);
+            data << uint16(0);
+            data << uint16(0);
+            data << uint16(0);
+            data << uint8(0); //some str, never seen it non empty atm
             data << lcn->SubName;
         }
-        data << ci->info_str;       // this is a string in 2.3.0 Example: stormwind guard has : "Direction"
-        data << ci->Flags1;         // flags like skinnable
-        data << ci->Type;           // humanoid, beast, etc
-        data << ci->Family;         // petfamily
-        data << ci->Rank;           // normal, elite, etc
-        data << ci->killcredit[0];  // quest kill credit 1
-        data << ci->killcredit[1];  // quest kill credit 2
+        data << ci->info_str; //!!! this is a string in 2.3.0 Example: stormwind guard has : "Direction"
+        data << ci->Flags1;
+        data << uint32(0);
+        data << ci->Type;
+        data << ci->Family;
+        data << ci->Rank;
+        data << ci->killcredit[0];
+        data << ci->killcredit[1];
         data << ci->Male_DisplayID;
         data << ci->Female_DisplayID;
         data << ci->Male_DisplayID2;
         data << ci->Female_DisplayID2;
         data << ci->unkfloat1;
         data << ci->unkfloat2;
-        data << ci->Leader;         // faction leader
-
-        // these are the 6 seperate quest items a creature can drop
-        for (uint32 i = 0; i < 6; ++i)
-        {
-            data << uint32(ci->QuestItems[i]);
-        }
+        data << ci->Leader;
+        data << ci->QuestItems[0];
+        data << ci->QuestItems[1];
+        data << ci->QuestItems[2];
+        data << ci->QuestItems[3];
+        data << ci->QuestItems[4];
+        data << ci->QuestItems[5];
         data << ci->waypointid;
+        data << uint32(0);
     }
 
     SendPacket(&data);
@@ -153,18 +155,20 @@ void WorldSession::HandleGameObjectQueryOpcode(WorldPacket& recv_data)
 {
     CHECK_INWORLD_RETURN
 
-    CHECK_PACKET_SIZE(recv_data, 12);
-    WorldPacket data(SMSG_GAMEOBJECT_QUERY_RESPONSE, 900);
+        CHECK_PACKET_SIZE(recv_data, 12);
+    WorldPacket data(SMSG_GAMEOBJECT_QUERY_RESPONSE, sizeof(GameObjectInfo) + 250 * 6); // not sure
 
     uint32 entryID;
     uint64 guid;
+    GameObjectInfo* gameobject_info;
+
 
     recv_data >> entryID;
     recv_data >> guid;
 
     LOG_DETAIL("WORLD: CMSG_GAMEOBJECT_QUERY '%u'", entryID);
 
-    auto gameobject_info = GameObjectNameStorage.LookupEntry(entryID);
+    gameobject_info = GameObjectNameStorage.LookupEntry(entryID);
     if (gameobject_info == nullptr)
         return;
 
@@ -180,9 +184,9 @@ void WorldSession::HandleGameObjectQueryOpcode(WorldPacket& recv_data)
     else
         data << gameobject_info->name;
 
-    data << uint8(0);               // name2, always seems to be empty
-    data << uint8(0);               // name3, always seems to be empty
-    data << uint8(0);               // name4, always seems to be empty
+    data << uint8(0);              // name2, always seems to be empty
+    data << uint8(0);              // name3, always seems to be empty
+    data << uint8(0);              // name4, always seems to be empty
     data << gameobject_info->category_name;  // Category string of the GO, like "attack", "pvp", "point", etc
     data << gameobject_info->cast_bar_text;  // text displayed when using the go, like "collecting", "summoning" etc
     data << gameobject_info->Unkstr;
@@ -210,6 +214,15 @@ void WorldSession::HandleGameObjectQueryOpcode(WorldPacket& recv_data)
     data << gameobject_info->parameter_21;
     data << gameobject_info->parameter_22;
     data << gameobject_info->parameter_23;
+    data << uint32(0);         // 15
+    data << uint32(0);         // 16
+    data << uint32(0);         // 17
+    data << uint32(0);         // 18
+    data << uint32(0);         // 19
+    data << uint32(0);         // 20
+    data << uint32(0);         // 21
+    data << uint32(0);         // 22
+
     data << float(gameobject_info->size);       // scaling of the GO
 
     // questitems that the go can contain
@@ -217,6 +230,8 @@ void WorldSession::HandleGameObjectQueryOpcode(WorldPacket& recv_data)
     {
         data << uint32(gameobject_info->QuestItems[i]);
     }
+
+    data << uint32(0);
 
     SendPacket(&data);
 }
