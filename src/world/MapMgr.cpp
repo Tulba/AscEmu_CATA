@@ -1459,17 +1459,17 @@ Object* MapMgr::_GetObject(const uint64 & guid)
 
     switch (GET_TYPE_FROM_GUID(guid))
     {
-        case	HIGHGUID_TYPE_GAMEOBJECT:
+        case HIGHGUID_TYPE_GAMEOBJECT:
             return GetGameObject(GET_LOWGUID_PART(guid));
             break;
         case HIGHGUID_TYPE_UNIT:
         case HIGHGUID_TYPE_VEHICLE:
             return GetCreature(GET_LOWGUID_PART(guid));
             break;
-        case	HIGHGUID_TYPE_DYNAMICOBJECT:
+        case HIGHGUID_TYPE_DYNAMICOBJECT:
             return GetDynamicObject((uint32)guid);
             break;
-        case	HIGHGUID_TYPE_TRANSPORTER:
+        case HIGHGUID_TYPE_TRANSPORTER:
             return objmgr.GetTransporter(Arcemu::Util::GUID_LOPART(guid));
             break;
         default:

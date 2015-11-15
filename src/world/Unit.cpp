@@ -6142,8 +6142,7 @@ bool Unit::IsPoisoned()
 
 void Unit::SendFullAuraUpdate()
 {
-    // not updated
-    /*WorldPacket data(SMSG_AURA_UPDATE_ALL, 200);
+    WorldPacket data(SMSG_AURA_UPDATE_ALL);
 
     data << WoWGuid(GetNewGUID());
 
@@ -6186,7 +6185,7 @@ void Unit::SendFullAuraUpdate()
     }
     SendMessageToSet(&data, true);
 
-    LOG_DEBUG("Full Aura Update: GUID: " I64FMT " - Updates: %u", GetGUID(), Updates); */
+    LOG_DEBUG("Full Aura Update: GUID: " I64FMT " - Updates: %u", GetGUID(), Updates);
 }
 
 void Unit::SendAuraUpdate(uint32 AuraSlot, bool remove)
@@ -6194,7 +6193,7 @@ void Unit::SendAuraUpdate(uint32 AuraSlot, bool remove)
     Aura* aur = m_auras[AuraSlot];
     ARCEMU_ASSERT(aur != NULL);
 
-    WorldPacket data(SMSG_AURA_UPDATE, 30);
+    WorldPacket data(SMSG_AURA_UPDATE);
 
     if (remove)
     {

@@ -183,7 +183,6 @@ enum Opcodes
     MSG_MOVE_SET_FACING                             = 0x0DA,
     MSG_MOVE_SET_PITCH                              = 0x0DB,
     MSG_MOVE_WORLDPORT_ACK                          = 0x0DC,
-    SMSG_MONSTER_MOVE                               = 0x0DD,
     SMSG_MOVE_WATER_WALK                            = 0x0DE,
     SMSG_MOVE_LAND_WALK                             = 0x0DF,
     MSG_MOVE_SET_RAW_POSITION_ACK                   = 0x0E0,
@@ -262,16 +261,6 @@ enum Opcodes
     CMSG_EQUIPMENT_SET_DELETE                       = 0x13E,
     CMSG_UNUSED                                     = 0x13F,
     CMSG_UNUSED2                                    = 0x140,
-    CMSG_ATTACKSWING                                = 0x141,
-    CMSG_ATTACKSTOP                                 = 0x142,
-    SMSG_ATTACKSTART                                = 0x143,
-    SMSG_ATTACKSTOP                                 = 0x144,
-    SMSG_ATTACKSWING_NOTINRANGE                     = 0x145,
-    SMSG_ATTACKSWING_BADFACING                      = 0x146,
-    SMSG_ATTACKSWING_NOTSTANDING                    = 0x147,
-    SMSG_ATTACKSWING_DEADTARGET                     = 0x148,
-    SMSG_ATTACKSWING_CANT_ATTACK                    = 0x149,
-    SMSG_ATTACKERSTATEUPDATE                        = 0x14A,
     SMSG_VICTIMSTATEUPDATE_OBSOLETE                 = 0x14B,
     SMSG_DAMAGE_DONE_OBSOLETE                       = 0x14C,
     SMSG_DAMAGE_TAKEN_OBSOLETE                      = 0x14D,
@@ -318,10 +307,6 @@ enum Opcodes
     SMSG_PET_NAME_INVALID                           = 0x178,
     SMSG_PET_SPELLS                                 = 0x179,
     SMSG_PET_MODE                                   = 0x17A,
-    CMSG_GOSSIP_HELLO                               = 0x17B,
-    CMSG_GOSSIP_SELECT_OPTION                       = 0x17C,
-    SMSG_GOSSIP_MESSAGE                             = 0x17D,
-    SMSG_GOSSIP_COMPLETE                            = 0x17E,
     CMSG_NPC_TEXT_QUERY                             = 0x17F,
     SMSG_NPC_TEXT_UPDATE                            = 0x180,
     SMSG_NPC_WONT_TALK                              = 0x181,
@@ -353,8 +338,6 @@ enum Opcodes
     CMSG_QUEST_CONFIRM_ACCEPT                       = 0x19B,
     SMSG_QUEST_CONFIRM_ACCEPT                       = 0x19C,
     CMSG_PUSHQUESTTOPARTY                           = 0x19D,
-    CMSG_LIST_INVENTORY                             = 0x19E,
-    SMSG_LIST_INVENTORY                             = 0x19F,
     CMSG_SELL_ITEM                                  = 0x1A0,
     SMSG_SELL_ITEM                                  = 0x1A1,
     CMSG_BUY_ITEM                                   = 0x1A2,
@@ -414,7 +397,6 @@ enum Opcodes
     SMSG_STOP_MIRROR_TIMER                          = 0x1DB,
     SMSG_CLEAR_COOLDOWN                             = 0x1DE,
     SMSG_GAMEOBJECT_PAGETEXT                        = 0x1DF,
-    CMSG_SETSHEATHED                                = 0x1E0,
     SMSG_COOLDOWN_CHEAT                             = 0x1E1,
     SMSG_SPELL_DELAYED                              = 0x1E2,
     CMSG_QUEST_POI_QUERY                            = 0x1E3,
@@ -602,7 +584,6 @@ enum Opcodes
     SMSG_SUMMON_REQUEST                             = 0x2AB,
     CMSG_SUMMON_RESPONSE                            = 0x2AC,
     MSG_MOVE_TOGGLE_GRAVITY_CHEAT                   = 0x2AD,
-    SMSG_MONSTER_MOVE_TRANSPORT                     = 0x2AE,
     SMSG_PET_BROKEN                                 = 0x2AF,
     MSG_MOVE_FEATHER_FALL                           = 0x2B0,
     MSG_MOVE_WATER_WALK                             = 0x2B1,
@@ -628,11 +609,8 @@ enum Opcodes
     SMSG_PET_ACTION_FEEDBACK                        = 0x2C6,
     CMSG_CHAR_RENAME                                = 0x2C7,
     SMSG_CHAR_RENAME                                = 0x2C8,
-    CMSG_MOVE_SPLINE_DONE                           = 0x2C9,
-    CMSG_MOVE_FALL_RESET                            = 0x2CA,
     SMSG_UPDATE_LAST_INSTANCE_CREATED               = 0x2CB,
     SMSG_RAID_INSTANCE_INFO                         = 0x2CC,
-    CMSG_MOVE_TIME_SKIPPED                          = 0x2CE,
     CMSG_MOVE_FEATHER_FALL_ACK                      = 0x2CF,
     CMSG_MOVE_WATER_WALK_ACK                        = 0x2D0,
     CMSG_MOVE_NOT_ACTIVE_MOVER                      = 0x2D1,
@@ -1061,8 +1039,6 @@ enum Opcodes
     SMSG_PET_UPDATE_COMBO_POINTS                    = 0x492,
     CMSG_ENABLETAXI                                 = 0x493,
     SMSG_PRE_RESURRECT                              = 0x494,
-    SMSG_AURA_UPDATE_ALL                            = 0x495,
-    SMSG_AURA_UPDATE                                = 0x496,
     CMSG_FLOOD_GRACE_CHEAT                          = 0x497,
     SMSG_SERVER_FIRST_ACHIEVEMENT                   = 0x498,
     SMSG_PET_LEARNED_SPELL                          = 0x499,
@@ -1252,8 +1228,6 @@ enum Opcodes
     SMSG_PAGE_TEXT_QUERY_RESPONSE                       = 0x2B14,
     CMSG_QUEST_QUERY                                    = 0x0D06,
     SMSG_QUEST_QUERY_RESPONSE                           = 0x6936,
-    CMSG_GAMEOBJECT_QUERY                               = 0x4017,
-    SMSG_GAMEOBJECT_QUERY_RESPONSE                      = 0x0915,
     CMSG_CREATURE_QUERY                                 = 0x2706,
     SMSG_CREATURE_QUERY_RESPONSE                        = 0x6024,
     CMSG_WHO                                            = 0x6C15,
@@ -1342,6 +1316,9 @@ enum Opcodes
     CMSG_MOVE_START_ASCEND                              = 0x390A,   // water moving down
     CMSG_MOVE_STOP_ASCEND                               = 0x7B00,   // water moving up
     CMSG_MOVE_START_DESCEND                             = 0x3800,   // water moving down2
+    CMSG_MOVE_TIME_SKIPPED                              = 0x7A0A,   // first enter world while watching intro
+    CMSG_MOVE_SPLINE_DONE                               = 0x790E,
+    CMSG_MOVE_FALL_RESET                                = 0x310A,
 
     // LFG Check packet sending in LfgHandler.cpp
     SMSG_LFG_PLAYER_INFO                                = 0x1370,   // not updated
@@ -1354,6 +1331,9 @@ enum Opcodes
 
     // Interface
     CMSG_SET_ACTIONBAR_TOGGLES                          = 0x2506,
+    CMSG_SETSHEATHED                                    = 0x4326,   //pressing x sitting down
+    SMSG_AURA_UPDATE_ALL                                = 0x6916,
+    SMSG_AURA_UPDATE                                    = 0x4707,
 
     // Instances/Raid/Battlegrounds
     CMSG_REQUEST_RAID_INFO                              = 0x2F26,
@@ -1372,6 +1352,29 @@ enum Opcodes
     // Spells
     CMSG_STANDSTATECHANGE                               = 0x0535,   // not updated (revieved by casting a spell)
     CMSG_CAST_SPELL                                     = 0x4C07,   // not updated
+
+    // GO/Creatures
+    SMSG_MONSTER_MOVE                                   = 0x6E17,
+    SMSG_MONSTER_MOVE_TRANSPORT                         = 0x2004,
+    CMSG_GAMEOBJECT_QUERY                               = 0x4017,
+    SMSG_GAMEOBJECT_QUERY_RESPONSE                      = 0x0915,
+    CMSG_GOSSIP_HELLO                                   = 0x4525,
+    CMSG_GOSSIP_SELECT_OPTION                           = 0x0216,
+    SMSG_GOSSIP_MESSAGE                                 = 0x2035,
+    SMSG_GOSSIP_COMPLETE                                = 0x0806,
+    CMSG_LIST_INVENTORY                                 = 0x2806,
+    SMSG_LIST_INVENTORY                                 = 0x7CB0,
+
+    //Player
+    CMSG_ATTACKSWING                                    = 0x0926,   // unchecked
+    CMSG_ATTACKSTOP                                     = 0x4106,   // unchecked
+    SMSG_ATTACKSTART                                    = 0x2D15,   // unchecked
+    SMSG_ATTACKSTOP                                     = 0x0934,   // unchecked
+    SMSG_ATTACKSWING_NOTINRANGE                         = 0x0B36,   // unchecked
+    SMSG_ATTACKSWING_BADFACING                          = 0x6C07,   // unchecked
+    SMSG_ATTACKSWING_NOTSTANDING                        = 0x2B26,   // unchecked SMSG_ATTACKSWING_DEADTARGET
+    SMSG_ATTACKSWING_CANT_ATTACK                        = 0x0016,   // unchecked
+    SMSG_ATTACKERSTATEUPDATE                            = 0x0B25,   // unchecked
 
     //Unknown packet send by client to server
     //0x3D54 0 bytes

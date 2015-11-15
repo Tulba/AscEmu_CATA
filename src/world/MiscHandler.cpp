@@ -1844,7 +1844,7 @@ void WorldSession::HandleSetSheathedOpcode(WorldPacket& recv_data)
 {
     CHECK_INWORLD_RETURN
 
-        uint32 active;
+    uint32 active;
     recv_data >> active;
     _player->SetByte(UNIT_FIELD_BYTES_2, 0, (uint8)active);
 }

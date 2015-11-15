@@ -10084,6 +10084,10 @@ void Player::SetNoseLevel()
             if (getGender()) m_noseLevel = 2.02f;
             else m_noseLevel = 1.93f;
             break;
+        case RACE_GOBLIN:
+            if (getGender()) m_noseLevel = 1.06f;
+            else m_noseLevel = 1.04f;
+            break;
         case RACE_BLOODELF:
             if (getGender()) m_noseLevel = 1.83f;
             else m_noseLevel = 1.93f;
@@ -10091,6 +10095,12 @@ void Player::SetNoseLevel()
         case RACE_DRAENEI:
             if (getGender()) m_noseLevel = 2.09f;
             else m_noseLevel = 2.36f;
+            break;
+        case RACE_WORGEN:
+            // female
+            if (getGender()) m_noseLevel = 1.72f;
+            // male
+            else m_noseLevel = 1.78f;
             break;
     }
 }
