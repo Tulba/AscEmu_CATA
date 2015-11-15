@@ -133,10 +133,7 @@ void WorldSession::HandleGroupPromote(WorldPacket& recv_data)
 void WorldSession::HandleRequestRaidInfoOpcode(WorldPacket& recv_data)
 {
     CHECK_INWORLD_RETURN
-
-        //          SMSG_RAID_INSTANCE_INFO             = 716,  //(0x2CC)
-        //sInstanceSavingManager.BuildRaidSavedInstancesForPlayer(_player);
-        sInstanceMgr.BuildRaidSavedInstancesForPlayer(_player);
+    sInstanceMgr.BuildRaidSavedInstancesForPlayer(_player);
 }
 
 void WorldSession::HandleReadyCheckOpcode(WorldPacket& recv_data)

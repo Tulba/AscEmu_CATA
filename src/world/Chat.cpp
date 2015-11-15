@@ -962,22 +962,14 @@ int ChatHandler::ParseCommands(const char* text, WorldSession* session)
 
 WorldPacket* ChatHandler::FillMessageData(uint32 type, uint32 language, const char* message, uint64 guid , uint8 flag) const
 {
-    //Packet    structure
-    //uint8        type;
-    //uint32    language;
-    //uint64    guid;
-    //uint64    guid;
-    //uint32    len_of_text;
-    //char        text[];         // not sure ? i think is null terminated .. not null terminated
-    //uint8        afk_state;
     ARCEMU_ASSERT(type != CHAT_MSG_CHANNEL);
     //channels are handled in channel handler and so on
     uint32 messageLength = (uint32)strlen(message) + 1;
 
-    WorldPacket* data = new WorldPacket(SMSG_MESSAGECHAT, messageLength + 30);
+    WorldPacket* data = new WorldPacket(SMSG_MESSAGECHAT, messageLength + 60);
 
-    *data << (uint8)type;
-    *data << language;
+    *data << uint8(type);
+    *data << uint32(language);
 
     *data << guid;
     *data << uint32(0);

@@ -128,9 +128,6 @@ enum Opcodes
     CMSG_GUILD_MOTD                                 = 0x091,
     SMSG_GUILD_COMMAND_RESULT                       = 0x093,
     UMSG_UPDATE_GUILD                               = 0x094,
-    CMSG_MESSAGECHAT                                = 0x095,
-    CMSG_JOIN_CHANNEL                               = 0x0156,
-    CMSG_LEAVE_CHANNEL                              = 0x2D56,
     SMSG_CHANNEL_NOTIFY                             = 0x0825,
     CMSG_CHANNEL_LIST                               = 0x1556,
     SMSG_CHANNEL_LIST                               = 0x2214,
@@ -216,7 +213,6 @@ enum Opcodes
     CMSG_OPENING_CINEMATIC                          = 0x0F9,
     CMSG_NEXT_CINEMATIC_CAMERA                      = 0x0FB,
     CMSG_COMPLETE_CINEMATIC                         = 0x0FC,
-    CMSG_STANDSTATECHANGE                           = 0x101,
     CMSG_AUTOEQUIP_GROUND_ITEM                      = 0x106,
     CMSG_AUTOSTORE_GROUND_ITEM                      = 0x107,
     CMSG_AUTOSTORE_LOOT_ITEM                        = 0x108,
@@ -251,7 +247,6 @@ enum Opcodes
     CMSG_SET_ACTION_BUTTON                          = 0x128,
     SMSG_SUPERCEDED_SPELL                           = 0x12C,
     CMSG_NEW_SPELL_SLOT                             = 0x12D,
-    CMSG_CAST_SPELL                                 = 0x12E,
     CMSG_CANCEL_CAST                                = 0x12F,
     SMSG_CAST_FAILED                                = 0x130,
     SMSG_SPELL_FAILURE                              = 0x133,
@@ -499,9 +494,6 @@ enum Opcodes
     SMSG_SEND_MAIL_RESULT                           = 0x239,
     CMSG_GET_MAIL_LIST                              = 0x23A,
     SMSG_MAIL_LIST_RESULT                           = 0x23B,
-    CMSG_BATTLEFIELD_LIST                           = 0x23C,
-    SMSG_BATTLEFIELD_LIST                           = 0x23D,
-    CMSG_BATTLEFIELD_JOIN                           = 0x23E,
     SMSG_BATTLEFIELD_WIN_OBSOLETE                   = 0x23F,
     SMSG_BATTLEFIELD_LOSE_OBSOLETE                  = 0x240,
     CMSG_TAXICLEARNODE                              = 0x241,
@@ -545,7 +537,6 @@ enum Opcodes
     SMSG_SET_PCT_SPELL_MODIFIER                     = 0x267,
     CMSG_SET_AMMO                                   = 0x268,
     SMSG_CORPSE_RECLAIM_DELAY                       = 0x269,
-    CMSG_SET_ACTIVE_MOVER                           = 0x26A,
     CMSG_PET_CANCEL_AURA                            = 0x26B,
     CMSG_PLAYER_AI_CHEAT                            = 0x26C,
     CMSG_CANCEL_AUTO_REPEAT_SPELL                   = 0x26D,
@@ -571,7 +562,6 @@ enum Opcodes
     CMSG_RESET_FACTION_CHEAT                        = 0x281,
     CMSG_AUTOSTORE_BANK_ITEM                        = 0x282,
     CMSG_AUTOBANK_ITEM                              = 0x283,
-    MSG_QUERY_NEXT_MAIL_TIME                        = 0x284,
     SMSG_RECEIVED_MAIL                              = 0x285,
     SMSG_RAID_GROUP_ONLY                            = 0x286,
     CMSG_SET_DURABILITY_CHEAT                       = 0x287,
@@ -629,7 +619,6 @@ enum Opcodes
     SMSG_PLAYER_SKINNED                             = 0x2BC,
     SMSG_DURABILITY_DAMAGE_DEATH                    = 0x2BD,
     CMSG_SET_EXPLORATION                            = 0x2BE,
-    CMSG_SET_ACTIONBAR_TOGGLES                      = 0x2BF,
     UMSG_DELETE_GUILD_CHARTER                       = 0x2C0,
     MSG_PETITION_RENAME                             = 0x2C1,
     SMSG_INIT_WORLD_STATES                          = 0x2C2,
@@ -643,14 +632,11 @@ enum Opcodes
     CMSG_MOVE_FALL_RESET                            = 0x2CA,
     SMSG_UPDATE_LAST_INSTANCE_CREATED               = 0x2CB,
     SMSG_RAID_INSTANCE_INFO                         = 0x2CC,
-    CMSG_REQUEST_RAID_INFO                          = 0x2CD,
     CMSG_MOVE_TIME_SKIPPED                          = 0x2CE,
     CMSG_MOVE_FEATHER_FALL_ACK                      = 0x2CF,
     CMSG_MOVE_WATER_WALK_ACK                        = 0x2D0,
     CMSG_MOVE_NOT_ACTIVE_MOVER                      = 0x2D1,
     SMSG_PLAY_SOUND                                 = 0x2D2,
-    CMSG_BATTLEFIELD_STATUS                         = 0x2D3,
-    SMSG_BATTLEFIELD_STATUS                         = 0x2D4,
     CMSG_BATTLEFIELD_PORT                           = 0x2D5,
     MSG_INSPECT_HONOR_STATS                         = 0x2D6,
     CMSG_BATTLEMASTER_HELLO                         = 0x2D7,
@@ -970,7 +956,6 @@ enum Opcodes
     CMSG_ALTER_APPEARANCE                           = 0x426,
     SMSG_ENABLE_BARBER_SHOP                         = 0x427,
     SMSG_BARBER_SHOP_RESULT                         = 0x428,
-    CMSG_CALENDAR_GET_CALENDAR                      = 0x429,
     CMSG_CALENDAR_GET_EVENT                         = 0x42A,
     CMSG_CALENDAR_GUILD_FILTER                      = 0x42B,
     CMSG_CALENDAR_ARENA_TEAM                        = 0x42C,
@@ -1215,7 +1200,7 @@ enum Opcodes
     MSG_NULL_ACTION                                     = 0x1001,
     MSG_WOW_CONNECTION                                  = 0x4F57,
     CMSG_READY_FOR_ACCOUNT_DATA_TIMES                   = 0x2B16,
-    CMSG_VIOLENCE_LEVEL                                 = 0x7816,
+    CMSG_VIOLENCE_LEVEL                                 = 0x7816,   // unhandled
     CMSG_LOG_DISCONNECT                                 = 0x446D,
     CMSG_LOAD_SCREEN                                    = 0x2422,
     CMSG_UI_TIME_REQUEST                                = 0x4605,
@@ -1322,22 +1307,25 @@ enum Opcodes
     SMSG_GUILD_QUERY_RESPONSE                           = 0x0E06,
     CMSG_WORLD_TELEPORT                                 = 0x24B2,
     CMSG_TELEPORT_TO_UNIT                               = 0x4206,
+    CMSG_SET_ACTIVE_MOVER                               = 0x3314,
 
     //Chat
-    CMSG_MESSAGECHAT_SAY                                = 0x1154,   // not implemented
-    CMSG_MESSAGECHAT_YELL                               = 0x3544,   // not implemented
-    CMSG_MESSAGECHAT_CHANNEL                            = 0x1D44,   // not implemented
-    CMSG_MESSAGECHAT_WHISPER                            = 0x0D56,   // not implemented
-    CMSG_MESSAGECHAT_GUILD                              = 0x3956,   // not implemented
-    CMSG_MESSAGECHAT_OFFICER                            = 0x1946,   // not implemented
-    CMSG_MESSAGECHAT_AFK                                = 0x0D44,   // not implemented
-    CMSG_MESSAGECHAT_DND                                = 0x2946,   // not implemented
-    CMSG_MESSAGECHAT_EMOTE                              = 0x1156,   // not implemented
-    CMSG_MESSAGECHAT_PARTY                              = 0x1D46,   // not implemented
-    CMSG_MESSAGECHAT_RAID                               = 0x2D44,   // not implemented
-    CMSG_MESSAGECHAT_RAID_WARNING                       = 0x0944,   // not implemented
-    CMSG_MESSAGECHAT_BATTLEGROUND                       = 0x2156,   // not implemented
-    SMSG_MESSAGECHAT                                    = 0x2026,   // not implemented
+    CMSG_MESSAGECHAT_SAY                                = 0x1154,
+    CMSG_MESSAGECHAT_YELL                               = 0x3544,
+    CMSG_MESSAGECHAT_CHANNEL                            = 0x1D44,
+    CMSG_MESSAGECHAT_WHISPER                            = 0x0D56,
+    CMSG_MESSAGECHAT_GUILD                              = 0x3956,
+    CMSG_MESSAGECHAT_OFFICER                            = 0x1946,
+    CMSG_MESSAGECHAT_AFK                                = 0x0D44,
+    CMSG_MESSAGECHAT_DND                                = 0x2946,
+    CMSG_MESSAGECHAT_EMOTE                              = 0x1156,
+    CMSG_MESSAGECHAT_PARTY                              = 0x1D46,
+    CMSG_MESSAGECHAT_RAID                               = 0x2D44,
+    CMSG_MESSAGECHAT_RAID_WARNING                       = 0x0944,
+    CMSG_MESSAGECHAT_BATTLEGROUND                       = 0x2156,
+    SMSG_MESSAGECHAT                                    = 0x2026,
+    CMSG_JOIN_CHANNEL                                   = 0x0156,
+    CMSG_LEAVE_CHANNEL                                  = 0x2D56,
 
     // Movement
     MSG_MOVE_HEARTBEAT                                  = 0x3914,   // forward/backward
@@ -1364,6 +1352,30 @@ enum Opcodes
     SMSG_LFG_UPDATE_SEARCH                              = 0x136A,   // not updated
     SMSG_LFG_ROLE_CHECK_UPDATE                          = 0x1364,   // not updated
 
+    // Interface
+    CMSG_SET_ACTIONBAR_TOGGLES                          = 0x2506,
+
+    // Instances/Raid/Battlegrounds
+    CMSG_REQUEST_RAID_INFO                              = 0x2F26,
+    CMSG_BATTLEFIELD_LIST                               = 0x3814,   // not updated
+    SMSG_BATTLEFIELD_LIST                               = 0x71B5,   // not updated
+    CMSG_BATTLEFIELD_JOIN                               = 0x123F,   // not updated
+    CMSG_BATTLEFIELD_STATUS                             = 0x2500,   // not updated
+    SMSG_BATTLEFIELD_STATUS                             = 0x7DA1,   // not updated
+
+    // Calendar
+    CMSG_CALENDAR_GET_CALENDAR                          = 0x2814,   // not implemented
+
+    //Mails
+    MSG_QUERY_NEXT_MAIL_TIME                            = 0x0F04,   // not updated
+
+    // Spells
+    CMSG_STANDSTATECHANGE                               = 0x0535,   // not updated (revieved by casting a spell)
+    CMSG_CAST_SPELL                                     = 0x4C07,   // not updated
+
+    //Unknown packet send by client to server
+    //0x3D54 0 bytes
+    //0x2581 0 bytes
 
     NUM_MSG_TYPES                                       = 0xFFFF    // End of Opcodes
 };

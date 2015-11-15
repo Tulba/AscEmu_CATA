@@ -2055,13 +2055,14 @@ void WorldSession::HandleInspectOpcode(WorldPacket& recv_data)
     SendPacket(&data);
 }
 
-void WorldSession::HandleSetActionBarTogglesOpcode(WorldPacket & recvPacket)
+void WorldSession::HandleSetActionBarTogglesOpcode(WorldPacket& recvPacket)
 {
     CHECK_INWORLD_RETURN
 
-        uint8 cActionBarId;
+    uint8 cActionBarId;
     recvPacket >> cActionBarId;
-    LOG_DEBUG("Received CMSG_SET_ACTIONBAR_TOGGLES for actionbar id %d.", cActionBarId);
+
+    //LOG_DEBUG("Received CMSG_SET_ACTIONBAR_TOGGLES for actionbar id %d.", cActionBarId);
 
     GetPlayer()->SetByte(PLAYER_FIELD_BYTES, 2, cActionBarId);
 }

@@ -1113,7 +1113,7 @@ void InstanceMgr::BuildSavedInstancesForPlayer(Player* plr)
 
 void InstanceMgr::BuildRaidSavedInstancesForPlayer(Player* plr)
 {
-    WorldPacket data(SMSG_RAID_INSTANCE_INFO, 200);
+    WorldPacket data(SMSG_RAID_INSTANCE_INFO, 4);
     Instance* in;
     InstanceMap::iterator itr;
     InstanceMap* instancemap;
@@ -1121,6 +1121,7 @@ void InstanceMgr::BuildRaidSavedInstancesForPlayer(Player* plr)
     uint32 counter = 0;
 
     data << counter;
+
     m_mapLock.Acquire();
     for (i = 0; i < NUM_MAPS; ++i)
     {
@@ -1134,16 +1135,18 @@ void InstanceMgr::BuildRaidSavedInstancesForPlayer(Player* plr)
 
                 if (in->m_persistent && PlayerOwnsInstance(in, plr))
                 {
-                    data << uint32(in->m_mapId);                        // obviously the mapid
-                    data << uint32(in->m_difficulty);                    // instance difficulty
-                    data << uint64(in->m_instanceId);                    // self-explanatory
-                    data << uint8(1);                                    // expired = 0
-                    data << uint8(0);                                    // extended = 1
+                    data << uint32(in->m_mapId);        // obviously the mapid
+                    data << uint32(in->m_difficulty);   // instance difficulty
+                    data << uint64(in->m_instanceId);   // self-explanatory
+                    data << uint8(1);                   // expired = 0
+                    data << uint8(0);                   // extended = 1
 
                     if (in->m_expiration > UNIXTIME)
                         data << uint32(in->m_expiration - UNIXTIME);
                     else
                         data << uint32(0);
+
+                    data << uint32(0);                  // completed encounters
 
                     ++counter;
                 }
@@ -1152,9 +1155,7 @@ void InstanceMgr::BuildRaidSavedInstancesForPlayer(Player* plr)
     }
     m_mapLock.Release();
 
-
     *(uint32*)&data.contents()[0] = counter;
-
     plr->GetSession()->SendPacket(&data);
 }
 
