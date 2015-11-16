@@ -1386,6 +1386,7 @@ enum Opcodes
     CMSG_REQUEST_CATEGORY_COOLDOWNS                     = 0x7102,   // unknown?
     CMSG_REQUEST_HOTFIX                                 = 0x2401,   // unknown?
     CMSG_REQUEST_CEMETERY_LIST                          = 0x720A,   // unknown?
+    CMSG_REORDER_CHARACTERS                             = 0x0593,   // unknown?
 
     NUM_MSG_TYPES                                       = 0xFFFF    // End of Opcodes
 };
