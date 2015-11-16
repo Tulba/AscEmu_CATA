@@ -1227,31 +1227,31 @@ void WorldSession::FullLogin(Player* plr)
 #endif
 
 
-    //#ifdef WIN32
-    // _player->BroadcastMessage("Server: %sAscEmu - %s-Windows-%s", MSG_COLOR_WHITE, CONFIG, ARCH);
-    //#else
-    // _player->BroadcastMessage("Server: %sAscEmu - %s-%s", MSG_COLOR_WHITE, PLATFORM_TEXT, ARCH);
-    //#endif
+#ifdef WIN32
+    _player->BroadcastMessage("Server: %sAscEmu - %s-Windows-%s", MSG_COLOR_WHITE, CONFIG, ARCH);
+#else
+    _player->BroadcastMessage("Server: %sAscEmu - %s-%s", MSG_COLOR_WHITE, PLATFORM_TEXT, ARCH);
+#endif
 
     // Revision
-    //_player->BroadcastMessage("Build hash: %s%s", MSG_COLOR_CYAN, BUILD_HASH_STR);
+    _player->BroadcastMessage("Build hash: %s%s", MSG_COLOR_CYAN, BUILD_HASH_STR);
     // Shows Online players, and connection peak
-    //_player->BroadcastMessage("Online Players: %s%u |rPeak: %s%u|r Accepted Connections: %s%u",
-    //    MSG_COLOR_SEXGREEN, sWorld.GetSessionCount(), MSG_COLOR_SEXBLUE, sWorld.PeakSessionCount, MSG_COLOR_SEXBLUE, sWorld.mAcceptedConnections);
+    _player->BroadcastMessage("Online Players: %s%u |rPeak: %s%u|r Accepted Connections: %s%u",
+                              MSG_COLOR_SEXGREEN, sWorld.GetSessionCount(), MSG_COLOR_SEXBLUE, sWorld.PeakSessionCount, MSG_COLOR_SEXBLUE, sWorld.mAcceptedConnections);
 
     // Shows Server uptime
-    //_player->BroadcastMessage("Server Uptime: |r%s", sWorld.GetUptimeString().c_str());
+    _player->BroadcastMessage("Server Uptime: |r%s", sWorld.GetUptimeString().c_str());
 
     // server Message Of The Day
     SendMOTD();
 
     //Set current RestState
-    //if (plr->m_isResting)
+    if (plr->m_isResting)
         // We are resting at an inn , turn on Zzz
-    // plr->ApplyPlayerRestState(true);
+        plr->ApplyPlayerRestState(true);
 
     //Calculate rest bonus if there is time between lastlogoff and now
-    /*if (plr->m_timeLogoff > 0 && plr->getLevel() < plr->GetMaxLevel())    // if timelogoff = 0 then it's the first login
+    if (plr->m_timeLogoff > 0 && plr->getLevel() < plr->GetMaxLevel())    // if timelogoff = 0 then it's the first login
     {
         uint32 currenttime = uint32(UNIXTIME);
         uint32 timediff = currenttime - plr->m_timeLogoff;
@@ -1262,7 +1262,7 @@ void WorldSession::FullLogin(Player* plr)
     }
 
     if (info->m_Group)
-        info->m_Group->Update();*/
+        info->m_Group->Update();
 
     if (enter_world && !_player->GetMapMgr())
         plr->AddToWorld();

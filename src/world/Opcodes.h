@@ -520,7 +520,6 @@ enum Opcodes
     SMSG_LFG_OFFER_CONTINUE                         = 0x293,
     CMSG_MEETINGSTONE_CHEAT                         = 0x294,
     SMSG_MEETINGSTONE_SETQUEUE                      = 0x295,
-    CMSG_LFG_GET_STATUS                             = 0x296,
     SMSG_MEETINGSTONE_COMPLETE                      = 0x297,
     SMSG_MEETINGSTONE_IN_PROGRESS                   = 0x298,
     SMSG_MEETINGSTONE_MEMBER_ADDED                  = 0x299,
@@ -773,7 +772,6 @@ enum Opcodes
     SMSG_DISMOUNT                                   = 0x3AC,
     MSG_MOVE_UPDATE_CAN_FLY                         = 0x3AD,
     MSG_RAID_READY_CHECK_CONFIRM                    = 0x3AE,
-    CMSG_VOICE_SESSION_ENABLE                       = 0x3AF,
     SMSG_VOICE_SESSION_ENABLE                       = 0x3B0,
     SMSG_VOICE_PARENTAL_CONTROLS                    = 0x3B1,
     CMSG_GM_WHISPER                                 = 0x3B2,
@@ -1291,6 +1289,7 @@ enum Opcodes
     SMSG_LFG_UPDATE_PARTY                               = 0x1369,   // not updated
     SMSG_LFG_UPDATE_SEARCH                              = 0x136A,   // not updated
     SMSG_LFG_ROLE_CHECK_UPDATE                          = 0x1364,   // not updated
+    CMSG_LFG_GET_STATUS                                 = 0x2581,   // not updated
 
     // Interface
     CMSG_SET_ACTIONBAR_TOGGLES                          = 0x2506,
@@ -1305,6 +1304,7 @@ enum Opcodes
     CMSG_BATTLEFIELD_JOIN                               = 0x123F,   // not updated
     CMSG_BATTLEFIELD_STATUS                             = 0x2500,   // not updated
     SMSG_BATTLEFIELD_STATUS                             = 0x7DA1,   // not updated
+    CMSG_QUERY_BATTLEFIELD_STATE                        = 0x7202,   // unknown
 
     // Calendar
     CMSG_CALENDAR_GET_CALENDAR                          = 0x2814,   // not implemented
@@ -1381,11 +1381,9 @@ enum Opcodes
     SMSG_ITEM_COOLDOWN                                  = 0x4D14,   // 
 
     //Unknown packet send by client to server
-    //0x7202
-    //0x3D54 0 bytes
-    //0x2581 0 bytes
-    //0x2314
-    //0x7102
+    CMSG_UNREGISTER_ALL_ADDON_PREFIXES                  = 0x3D54,   // unknown?
+    CMSG_VOICE_SESSION_ENABLE                           = 0x2314,   // unknown?
+    CMSG_REQUEST_CATEGORY_COOLDOWNS                     = 0x7102,   // unknown?
 
     NUM_MSG_TYPES                                       = 0xFFFF    // End of Opcodes
 };
