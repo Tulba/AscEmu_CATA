@@ -553,6 +553,8 @@ void WorldSession::InitPacketHandlerTable()
     WorldPacketHandlers[CMSG_TIME_SYNC_RESP].handler = &WorldSession::HandleTimeSyncRespOpcode;
     WorldPacketHandlers[CMSG_TIME_SYNC_RESP].status = STATUS_AUTHED;
 
+    WorldPacketHandlers[CMSG_VIOLENCE_LEVEL].handler = &WorldSession::HandleViolenceLevel;
+
     // Queries
     WorldPacketHandlers[MSG_CORPSE_QUERY].handler = &WorldSession::HandleCorpseQueryOpcode;
     WorldPacketHandlers[CMSG_NAME_QUERY].handler = &WorldSession::HandleNameQueryOpcode;

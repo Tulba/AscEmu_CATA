@@ -2639,7 +2639,7 @@ void WorldSession::HandleReadyForAccountDataTimesOpcode(WorldPacket & recv_data)
     SendAccountDataTimes(GLOBAL_CACHE_MASK);
 }
 
-void WorldSession::HandleUITimeRequestOpcode(WorldPacket & recv_data) // 4.3.4 (cmangos)
+void WorldSession::HandleUITimeRequestOpcode(WorldPacket& recv_data)
 {
 	// empty opcode
 	WorldPacket data(SMSG_UI_TIME, 4);
@@ -2647,10 +2647,19 @@ void WorldSession::HandleUITimeRequestOpcode(WorldPacket & recv_data) // 4.3.4 (
 	SendPacket(&data);
 }
 
-void WorldSession::HandleTimeSyncRespOpcode(WorldPacket & recv_data) // 4.3.4 (cmangos)
+void WorldSession::HandleTimeSyncRespOpcode(WorldPacket& recv_data)
 {
     uint32 counter, clientTicks;
     recv_data >> counter >> clientTicks;
 
     // do something with this...
 }
+
+void WorldSession::HandleViolenceLevel(WorldPacket& recvPacket)
+{
+    uint8 violenceLevel;
+    recvPacket >> violenceLevel;
+
+    // do something with this...
+}
+

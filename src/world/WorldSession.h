@@ -398,6 +398,7 @@ class SERVER_DECL WorldSession
         // 4.3.4 15595
         void HandleUITimeRequestOpcode(WorldPacket & recv_data); // empty opcode
         void HandleTimeSyncRespOpcode(WorldPacket & recv_data);
+        void HandleViolenceLevel(WorldPacket& recvPacke);
 
         /// Gm Ticket System in GMTicket.cpp:
         void HandleGMTicketCreateOpcode(WorldPacket& recvPacket);

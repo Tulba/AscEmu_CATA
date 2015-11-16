@@ -874,8 +874,6 @@ enum Opcodes
     CMSG_TOTEM_DESTROYED                            = 0x414,
     CMSG_EXPIRE_RAID_INSTANCE                       = 0x415,
     CMSG_NO_SPELL_VARIANCE                          = 0x416,
-    CMSG_QUESTGIVER_STATUS_MULTIPLE_QUERY           = 0x417,
-    SMSG_QUESTGIVER_STATUS_MULTIPLE                 = 0x418,
     CMSG_SET_PLAYER_DECLINED_NAMES                  = 0x419,
     SMSG_SET_PLAYER_DECLINED_NAMES_RESULT           = 0x41A,
     CMSG_QUERY_SERVER_BUCK_DATA                     = 0x41B,
@@ -920,7 +918,6 @@ enum Opcodes
     SMSG_CALENDAR_EVENT_UPDATED_ALERT               = 0x444,
     SMSG_CALENDAR_EVENT_MODERATOR_STATUS_ALERT      = 0x445,
     CMSG_CALENDAR_COMPLAIN                          = 0x446,
-    CMSG_CALENDAR_GET_NUM_PENDING                   = 0x447,
     SMSG_CALENDAR_SEND_NUM_PENDING                  = 0x448,
     CMSG_SAVE_DANCE                                 = 0x449,
     SMSG_NOTIFY_DANCE                               = 0x44A,
@@ -1308,6 +1305,7 @@ enum Opcodes
 
     // Calendar
     CMSG_CALENDAR_GET_CALENDAR                          = 0x2814,   // not implemented
+    CMSG_CALENDAR_GET_NUM_PENDING                       = 0x4D05,   // not implemented
 
     //Mails
     MSG_QUERY_NEXT_MAIL_TIME                            = 0x0F04,   // not updated
@@ -1344,6 +1342,8 @@ enum Opcodes
     CMSG_QUESTGIVER_CANCEL                              = 0x1191,   // unchecked
     SMSG_QUESTGIVER_QUEST_COMPLETE                      = 0x55A4,   // unchecked
     SMSG_QUESTGIVER_QUEST_FAILED                        = 0x4236,   // unchecked
+    CMSG_QUESTGIVER_STATUS_MULTIPLE_QUERY               = 0x6305,   // unchecked
+    SMSG_QUESTGIVER_STATUS_MULTIPLE                     = 0x4F25,   // unchecked
 
     //Player
     CMSG_ATTACKSWING                                    = 0x0926,   // unchecked
@@ -1384,6 +1384,8 @@ enum Opcodes
     CMSG_UNREGISTER_ALL_ADDON_PREFIXES                  = 0x3D54,   // unknown?
     CMSG_VOICE_SESSION_ENABLE                           = 0x2314,   // unknown?
     CMSG_REQUEST_CATEGORY_COOLDOWNS                     = 0x7102,   // unknown?
+    CMSG_REQUEST_HOTFIX                                 = 0x2401,   // unknown?
+    CMSG_REQUEST_CEMETERY_LIST                          = 0x720A,   // unknown?
 
     NUM_MSG_TYPES                                       = 0xFFFF    // End of Opcodes
 };
