@@ -791,8 +791,7 @@ void WorldSession::HandleSetActiveMoverOpcode(WorldPacket& recv_data)
     if (guid != m_MoverWoWGuid.GetOldGuid())
     {
         // make sure the guid is valid and we aren't cheating
-        if (!(_player->m_CurrentCharm == guid) &&
-            !(_player->GetGUID() == guid))
+        if (!(_player->m_CurrentCharm == guid) && !(_player->GetGUID() == guid))
         {
             if (_player->GetCurrentVehicle()->GetOwner()->GetGUID() != guid)
                 return;
@@ -901,11 +900,11 @@ void MovementInfo::init(WorldPacket& data)
     /*if (flags & MOVEFLAG_REDIRECTED)
     {
         data >> redirectVelocity >> redirectSin >> redirectCos >> redirect2DSpeed;
-    }
-    if (flags & MOVEFLAG_SPLINE_MOVER)
+    }*/
+    if (flags & MOVEFLAG_SPLINE_ELEVATION)
     {
         data >> unk12;
-    }*/
+    }
 
     data >> unklast;
     if (data.rpos() != data.wpos())
@@ -935,10 +934,10 @@ void MovementInfo::write(WorldPacket& data)
     {
         data << redirectVelocity << redirectSin << redirectCos << redirect2DSpeed;
     }
-    /*if (flags & MOVEFLAG_SPLINE_MOVER)
+    if (flags & MOVEFLAG_SPLINE_ELEVATION)
     {
         data << unk12;
-    }*/
+    }
     data << unklast;
     if (unk13)
         data << unk13;
