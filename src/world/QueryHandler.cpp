@@ -101,47 +101,38 @@ void WorldSession::HandleCreatureQueryOpcode(WorldPacket& recv_data)
         if (lcn == NULL)
         {
             sLog.outDetail("WORLD: CMSG_CREATURE_QUERY '%s'", ci->Name);
-            data << (uint32)entry;
+            data << uint32(entry);
             data << ci->Name;
-            data << uint16(0);
-            data << uint16(0);
-            data << uint16(0);
-            data << uint8(0); //some str, never seen it non empty atm
             data << ci->SubName;
         }
         else
         {
             sLog.outDetail("WORLD: CMSG_CREATURE_QUERY '%s' (localized to %s)", ci->Name, lcn->Name);
-            data << (uint32)entry;
+            data << uint32(entry);
             data << lcn->Name;
-            data << uint16(0);
-            data << uint16(0);
-            data << uint16(0);
-            data << uint8(0); //some str, never seen it non empty atm
             data << lcn->SubName;
         }
-        data << ci->info_str; //!!! this is a string in 2.3.0 Example: stormwind guard has : "Direction"
-        data << ci->Flags1;
+        data << ci->info_str;           //Example: stormwind guard has : "Direction"
+        data << uint32(ci->Flags1);
         data << uint32(0);
-        data << ci->Type;
-        data << ci->Family;
-        data << ci->Rank;
-        data << ci->killcredit[0];
-        data << ci->killcredit[1];
-        data << ci->Male_DisplayID;
-        data << ci->Female_DisplayID;
-        data << ci->Male_DisplayID2;
-        data << ci->Female_DisplayID2;
-        data << ci->unkfloat1;
-        data << ci->unkfloat2;
-        data << ci->Leader;
-        data << ci->QuestItems[0];
-        data << ci->QuestItems[1];
-        data << ci->QuestItems[2];
-        data << ci->QuestItems[3];
-        data << ci->QuestItems[4];
-        data << ci->QuestItems[5];
-        data << ci->waypointid;
+        data << uint32(ci->Type);
+        data << uint32(ci->Family);
+        data << uint32(ci->Rank);
+        data << uint32(ci->killcredit[0]);
+        data << uint32(ci->killcredit[1]);
+        data << uint32(ci->Male_DisplayID);
+        data << uint32(ci->Female_DisplayID);
+        data << uint32(ci->Male_DisplayID2);
+        data << uint32(ci->Female_DisplayID2);
+        data << float(ci->unkfloat1);       // health mod
+        data << float(ci->unkfloat2);       // power mod
+        data << uint8(ci->Leader);
+        data << uint32(ci->QuestItems[0]);
+        data << uint32(ci->QuestItems[1]);
+        data << uint32(ci->QuestItems[2]);
+        data << uint32(ci->QuestItems[3]);
+        data << uint32(ci->QuestItems[4]);
+        data << uint32(ci->QuestItems[5]);
         data << uint32(0);
     }
 
@@ -155,7 +146,7 @@ void WorldSession::HandleGameObjectQueryOpcode(WorldPacket& recv_data)
 {
     CHECK_INWORLD_RETURN
 
-        CHECK_PACKET_SIZE(recv_data, 12);
+    CHECK_PACKET_SIZE(recv_data, 12);
     WorldPacket data(SMSG_GAMEOBJECT_QUERY_RESPONSE, sizeof(GameObjectInfo) + 250 * 6); // not sure
 
     uint32 entryID;

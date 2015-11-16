@@ -60,7 +60,6 @@ enum Opcodes
     SMSG_GODMODE                                    = 0x023,
     CMSG_CHEAT_SETMONEY                             = 0x024,
     CMSG_LEVEL_CHEAT                                = 0x025,
-    CMSG_PET_LEVEL_CHEAT                            = 0x026,
     CMSG_SET_WORLDSTATE                             = 0x027,
     CMSG_COOLDOWN_CHEAT                             = 0x028,
     CMSG_USE_SKILL_CHEAT                            = 0x029,
@@ -291,23 +290,6 @@ enum Opcodes
     CMSG_NPC_TEXT_QUERY                             = 0x17F,
     SMSG_NPC_TEXT_UPDATE                            = 0x180,
     SMSG_NPC_WONT_TALK                              = 0x181,
-    CMSG_QUESTGIVER_STATUS_QUERY                    = 0x182,
-    SMSG_QUESTGIVER_STATUS                          = 0x183,
-    CMSG_QUESTGIVER_HELLO                           = 0x184,
-    SMSG_QUESTGIVER_QUEST_LIST                      = 0x185,
-    CMSG_QUESTGIVER_QUERY_QUEST                     = 0x186,
-    CMSG_QUESTGIVER_QUEST_AUTOLAUNCH                = 0x187,
-    SMSG_QUESTGIVER_QUEST_DETAILS                   = 0x188,
-    CMSG_QUESTGIVER_ACCEPT_QUEST                    = 0x189,
-    CMSG_QUESTGIVER_COMPLETE_QUEST                  = 0x18A,
-    SMSG_QUESTGIVER_REQUEST_ITEMS                   = 0x18B,
-    CMSG_QUESTGIVER_REQUEST_REWARD                  = 0x18C,
-    SMSG_QUESTGIVER_OFFER_REWARD                    = 0x18D,
-    CMSG_QUESTGIVER_CHOOSE_REWARD                   = 0x18E,
-    SMSG_QUESTGIVER_QUEST_INVALID                   = 0x18F,
-    CMSG_QUESTGIVER_CANCEL                          = 0x190,
-    SMSG_QUESTGIVER_QUEST_COMPLETE                  = 0x191,
-    SMSG_QUESTGIVER_QUEST_FAILED                    = 0x192,
     CMSG_QUESTLOG_SWAP_QUEST                        = 0x193,
     CMSG_QUESTLOG_REMOVE_QUEST                      = 0x194,
     SMSG_QUESTLOG_FULL                              = 0x195,
@@ -1345,6 +1327,23 @@ enum Opcodes
     SMSG_GOSSIP_COMPLETE                                = 0x0806,
     CMSG_LIST_INVENTORY                                 = 0x2806,
     SMSG_LIST_INVENTORY                                 = 0x7CB0,
+    CMSG_QUESTGIVER_STATUS_QUERY                        = 0x4407,   // unchecked
+    SMSG_QUESTGIVER_STATUS                              = 0x2115,   // unchecked
+    CMSG_QUESTGIVER_HELLO                               = 0x0D17,   // unchecked
+    SMSG_QUESTGIVER_QUEST_LIST                          = 0x0134,   // unchecked
+    CMSG_QUESTGIVER_QUERY_QUEST                         = 0x2F14,   // unchecked
+    CMSG_QUESTGIVER_QUEST_AUTOLAUNCH                    = 0x1188,   // unchecked
+    SMSG_QUESTGIVER_QUEST_DETAILS                       = 0x2425,   // unchecked
+    CMSG_QUESTGIVER_ACCEPT_QUEST                        = 0x6B37,   // unchecked
+    CMSG_QUESTGIVER_COMPLETE_QUEST                      = 0x0114,   // unchecked
+    SMSG_QUESTGIVER_REQUEST_ITEMS                       = 0x6236,   // unchecked
+    CMSG_QUESTGIVER_REQUEST_REWARD                      = 0x2534,   // unchecked
+    SMSG_QUESTGIVER_OFFER_REWARD                        = 0x2427,   // unchecked
+    CMSG_QUESTGIVER_CHOOSE_REWARD                       = 0x2125,   // unchecked
+    SMSG_QUESTGIVER_QUEST_INVALID                       = 0x4016,   // unchecked
+    CMSG_QUESTGIVER_CANCEL                              = 0x1191,   // unchecked
+    SMSG_QUESTGIVER_QUEST_COMPLETE                      = 0x55A4,   // unchecked
+    SMSG_QUESTGIVER_QUEST_FAILED                        = 0x4236,   // unchecked
 
     //Player
     CMSG_ATTACKSWING                                    = 0x0926,   // unchecked
@@ -1357,6 +1356,9 @@ enum Opcodes
     SMSG_ATTACKSWING_CANT_ATTACK                        = 0x0016,   // unchecked
     SMSG_ATTACKERSTATEUPDATE                            = 0x0B25,   // unchecked
     CMSG_INSPECT                                        = 0x0927,
+    CMSG_GUILD_BANK_MONEY_WITHDRAWN                     = 0x1225,   // unhandled
+    SMSG_GUILD_BANK_MONEY_WITHDRAWN                     = 0x5DB4,   // unhandled
+    CMSG_PET_LEVEL_CHEAT                                = 0x1027,
 
     //Item
     CMSG_AUTOEQUIP_GROUND_ITEM                          = 0x1107,   // unchecked
@@ -1379,8 +1381,11 @@ enum Opcodes
     SMSG_ITEM_COOLDOWN                                  = 0x4D14,   // 
 
     //Unknown packet send by client to server
+    //0x7202
     //0x3D54 0 bytes
     //0x2581 0 bytes
+    //0x2314
+    //0x7102
 
     NUM_MSG_TYPES                                       = 0xFFFF    // End of Opcodes
 };
