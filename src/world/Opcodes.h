@@ -146,8 +146,6 @@ enum Opcodes
     CMSG_DESTROY_ITEMS                              = 0x0B2,
     SMSG_GAMEOBJECT_CUSTOM_ANIM                     = 0x0B3,
     CMSG_AREATRIGGER                                = 0x0B4,
-    MSG_MOVE_START_STRAFE_LEFT                      = 0x0B8,
-    MSG_MOVE_START_STRAFE_RIGHT                     = 0x0B9,
     MSG_MOVE_START_PITCH_UP                         = 0x0BF,
     MSG_MOVE_START_PITCH_DOWN                       = 0x0C0,
     MSG_MOVE_STOP_PITCH                             = 0x0C1,
@@ -173,8 +171,6 @@ enum Opcodes
     MSG_MOVE_SET_TURN_RATE_CHEAT                    = 0x0D7,
     MSG_MOVE_SET_TURN_RATE                          = 0x0D8,
     MSG_MOVE_TOGGLE_COLLISION_CHEAT                 = 0x0D9,
-    MSG_MOVE_SET_FACING                             = 0x0DA,
-    MSG_MOVE_SET_PITCH                              = 0x0DB,
     MSG_MOVE_WORLDPORT_ACK                          = 0x0DC,
     SMSG_MOVE_WATER_WALK                            = 0x0DE,
     SMSG_MOVE_LAND_WALK                             = 0x0DF,
@@ -1282,6 +1278,10 @@ enum Opcodes
     CMSG_MOVE_TIME_SKIPPED                              = 0x7A0A,   // first enter world while watching intro
     CMSG_MOVE_SPLINE_DONE                               = 0x790E,
     CMSG_MOVE_FALL_RESET                                = 0x310A,
+    MSG_MOVE_SET_FACING                                 = 0x7914,
+    MSG_MOVE_SET_PITCH                                  = 0x7312,
+    MSG_MOVE_START_STRAFE_LEFT                          = 0x3A16,
+    MSG_MOVE_START_STRAFE_RIGHT                         = 0x3A02,
 
     // LFG Check packet sending in LfgHandler.cpp
     SMSG_LFG_PLAYER_INFO                                = 0x1370,   // not updated
