@@ -205,7 +205,7 @@ void GameObject::Update(uint32 p_time)
                     return;
                 }
 
-                if (spell->EffectImplicitTargetA[0] == 16 || spell->EffectImplicitTargetB[0] == 16)
+                if (spell->eff[0].EffectImplicitTargetA == 16 || spell->eff[0].EffectImplicitTargetB == 16)
                 {
                     return;	 // on area don't continue.
                 }
@@ -450,9 +450,9 @@ void GameObject::InitAI()
 
     for (uint32 i = 0; i < 3; i++)
     {
-        if (sp->Effect[i])
+        if (sp->eff[i].Effect)
         {
-            float t = GetRadius(dbcSpellRadius.LookupEntry(sp->EffectRadiusIndex[i]));
+            float t = GetRadius(dbcSpellRadius.LookupEntry(sp->eff[i].EffectRadiusIndex));
             if (t > r)
                 r = t;
         }

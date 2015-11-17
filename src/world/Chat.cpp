@@ -1434,9 +1434,5 @@ bool ChatHandler::HandleGetPosCommand(const char* args, WorldSession* m_session)
     BlueSystemMessage(m_session, "Creature Position: \nX: %f\nY: %f\nZ: %f\n", creature->GetPositionX(), creature->GetPositionY(), creature->GetPositionZ());
     return true;*/
 
-    uint32 spell = atol(args);
-    SpellEntry* se = dbcSpell.LookupEntryForced(spell);
-    if (se)
-        BlueSystemMessage(m_session, "SpellIcon for %d is %d", se->Id, se->field114);
     return true;
 }

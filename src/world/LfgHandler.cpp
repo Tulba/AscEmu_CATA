@@ -179,11 +179,12 @@ void WorldSession::HandleLfgPlayerLockInfoRequestOpcode(WorldPacket& recv_data)
     uint8 level = GetPlayer()->getLevel();
     uint8 expansion = GetPlayer()->GetSession()->GetFlags();
 
-	for (uint32 i = 0; i < sLFGDungeonStore.GetNumRows(); ++i)
+    for (uint32 i = 0; i < dbcLFGDungeonStore.GetNumRows(); ++i)
     {
-        DBC::Structures::LFGDungeonEntry const* dungeon = sLFGDungeonStore.LookupEntry(i);
+        /*
+        LFGDungeonEntry const* dungeon = dbcLFGDungeonStore.LookupEntry(i);
         if (dungeon && dungeon->type == LFG_TYPE_RANDOM && dungeon->expansion <= expansion && dungeon->minlevel <= level && level <= dungeon->maxlevel)
-            randomDungeons.insert(dungeon->Entry());
+            randomDungeons.insert(dungeon->Entry());*/
  
     }
 
@@ -439,8 +440,9 @@ void WorldSession::SendLfgRoleCheckUpdate(const LfgRoleCheck* pRoleCheck)
     {
         for (LfgDungeonSet::iterator it = dungeons.begin(); it != dungeons.end(); ++it)
         {
-            DBC::Structures::LFGDungeonEntry const* dungeon = sLFGDungeonStore.LookupEntry(*it);
-            data << uint32(dungeon ? dungeon->Entry() : 0); // Dungeon
+            /*
+            LFGDungeonEntry const* dungeon = dbcLFGDungeonStore.LookupEntry(*it);
+            data << uint32(dungeon ? dungeon->Entry() : 0); // Dungeon*/
         }
     }
 
@@ -606,9 +608,9 @@ void WorldSession::SendLfgUpdateProposal(uint32 proposalId, const LfgProposal* p
             dungeonId = (*playerDungeons.begin());
     }
 
-    if (DBC::Structures::LFGDungeonEntry const* dungeon = sLFGDungeonStore.LookupEntry(dungeonId))
+    if (LFGDungeonEntry const* dungeon = dbcLFGDungeonStore.LookupEntry(dungeonId))
     {
-        dungeonId = dungeon->Entry();
+        //dungeonId = dungeon->Entry();
 
         // Select a player inside to be get completed encounters from
         if (grp)
@@ -617,14 +619,14 @@ void WorldSession::SendLfgUpdateProposal(uint32 proposalId, const LfgProposal* p
             for (itx = grp->GetSubGroup(0)->GetGroupMembersBegin(); itx != grp->GetSubGroup(0)->GetGroupMembersEnd(); ++itx)
             {
                 Player* groupMember = (*itx)->m_loggedInPlayer;
-                if (groupMember && groupMember->GetMapId() == uint32(dungeon->map))
-                {
+                //if (groupMember && groupMember->GetMapId() == uint32(dungeon->map))
+                //{
                     /* fiiiix
                     if (InstanceScript* instance = groupMember->GetInstanceScript())
                     completedEncounters = instance->GetCompletedEncounterMask();
                     */
-                    break;
-                }
+                  //  break;
+                //}
             }
         }
     }

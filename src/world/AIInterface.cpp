@@ -1642,7 +1642,7 @@ float AIInterface::_CalcAggroRange(Unit* target)
         {
             // If nearby miners weren't spotted already we'll give them a little surprise.
             Spell* sp = target->GetCurrentSpell();
-            if (sp->GetProto()->Effect[0] == SPELL_EFFECT_OPEN_LOCK && sp->GetProto()->EffectMiscValue[0] == LOCKTYPE_MINING)
+            if (sp->GetProto()->eff[0].Effect == SPELL_EFFECT_OPEN_LOCK && sp->GetProto()->eff[0].EffectMiscValue == LOCKTYPE_MINING)
             {
                 isMining = true;
             }
@@ -2847,12 +2847,12 @@ AI_Spell* AIInterface::getSpell()
                         switch (sp->spell->powerType)
                         {
                             case POWER_TYPE_MANA:
-                                if (m_Unit->GetPower(POWER_TYPE_MANA) < sp->spell->manaCost)
+                                if (m_Unit->GetPower(POWER_TYPE_MANA) < sp->spell->PowerEntry.manaCost)
                                     continue;
                                 break;
 
                             case POWER_TYPE_FOCUS:
-                                if (m_Unit->GetPower(POWER_TYPE_FOCUS) < sp->spell->manaCost)
+                                if (m_Unit->GetPower(POWER_TYPE_FOCUS) < sp->spell->PowerEntry.manaCost)
                                     continue;
                                 break;
                         }

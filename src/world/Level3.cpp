@@ -370,7 +370,7 @@ bool ChatHandler::HandleLearnCommand(const char* args, WorldSession* m_session)
         return true;
     }
 
-    if (!plr->GetSession()->HasGMPermissions() && (sp->Effect[0] == SPELL_EFFECT_INSTANT_KILL || sp->Effect[1] == SPELL_EFFECT_INSTANT_KILL || sp->Effect[2] == SPELL_EFFECT_INSTANT_KILL))
+    if (!plr->GetSession()->HasGMPermissions() && (sp->eff[0].Effect == SPELL_EFFECT_INSTANT_KILL || sp->eff[1].Effect == SPELL_EFFECT_INSTANT_KILL || sp->eff[2].Effect == SPELL_EFFECT_INSTANT_KILL))
     {
         SystemMessage(m_session, "don't be an idiot and teach players instakill spells. this action has been logged.");
         return true;
@@ -2130,7 +2130,7 @@ bool ChatHandler::HandleCastAllCommand(const char* args, WorldSession* m_session
     // this makes sure no moron casts a learn spell on everybody and wrecks the server
     for (int i = 0; i < 3; i++)
     {
-        if (info->Effect[i] == SPELL_EFFECT_LEARN_SPELL)  //SPELL_EFFECT_LEARN_SPELL - 36
+        if (info->eff[i].Effect == SPELL_EFFECT_LEARN_SPELL)  //SPELL_EFFECT_LEARN_SPELL - 36
         {
             sGMLog.writefromsession(m_session, "used wrong / learnall castall command, spellid %u", spellid);
             RedSystemMessage(m_session, "Learn spell specified.");
@@ -4156,7 +4156,7 @@ bool ChatHandler::HandleAddTrainerSpellCommand(const char* args, WorldSession* m
         return true;
     }
 
-    if (pSpell->Effect[0] == SPELL_EFFECT_INSTANT_KILL || pSpell->Effect[1] == SPELL_EFFECT_INSTANT_KILL || pSpell->Effect[2] == SPELL_EFFECT_INSTANT_KILL)
+    if (pSpell->eff[0].Effect == SPELL_EFFECT_INSTANT_KILL || pSpell->eff[1].Effect == SPELL_EFFECT_INSTANT_KILL || pSpell->eff[2].Effect == SPELL_EFFECT_INSTANT_KILL)
     {
         RedSystemMessage(m_session, "No. You're not doing that.");
         return true;

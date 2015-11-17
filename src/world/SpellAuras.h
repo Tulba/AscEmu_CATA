@@ -894,7 +894,7 @@ class AbsorbAura : public Aura
 		uint32 GetSchoolMask()
 		{
 			for (uint8 x = 0; x < 3; ++x)
-				if (GetSpellProto()->Effect[x] == SPELL_EFFECT_APPLY_AURA && GetSpellProto()->EffectApplyAuraName[x] == SPELL_AURA_SCHOOL_ABSORB)
+                if (GetSpellProto()->eff[x].Effect == SPELL_EFFECT_APPLY_AURA && GetSpellProto()->eff[x].EffectApplyAuraName == SPELL_AURA_SCHOOL_ABSORB)
 					return m_modList[x].m_miscValue;
 			return 0;
 		}

@@ -1972,7 +1972,7 @@ void WorldSession::HandleInsertGemOpcode(WorldPacket& recvPacket)
                 }
                 if (ip->ItemLimitCategory)
                 {
-                    ItemLimitCategoryEntry* ile = dbcItemLimitCategory.LookupEntryForced(ip->ItemLimitCategory);
+                    ItemLimitCategory* ile = dbcItemLimitCategory.LookupEntryForced(ip->ItemLimitCategory);
                     if (ile != NULL && itemi->GetEquippedCountByItemLimit(ip->ItemLimitCategory) >= ile->maxAmount)
                     {
                         itemi->BuildInventoryChangeError(it, TargetItem, INV_ERR_ITEM_MAX_COUNT_EQUIPPED_SOCKETED);
@@ -2255,7 +2255,7 @@ void WorldSession::HandleItemRefundRequestOpcode(WorldPacket& recvPacket)
                     _player->GetItemInterface()->AddItemById(ex->item[i], ex->count[i], 0);
                 }
 
-                _player->GetItemInterface()->AddItemById(43308, ex->honor, 0);     // honor points
+                _player->GetItemInterface()->AddItemById(43308, ex->just_0_1, 0);     // honor points
                 _player->GetItemInterface()->AddItemById(43307, ex->arena, 0);    // arena points
                 _player->ModGold(proto->BuyPrice);
 
@@ -2309,7 +2309,7 @@ void WorldSession::HandleItemRefundRequestOpcode(WorldPacket& recvPacket)
     if (error == 0)
     {
         packet << uint32(proto->BuyPrice);
-        packet << uint32(ex->honor);
+        packet << uint32(ex->just_0_1);
         packet << uint32(ex->arena);
 
         for (int i = 0; i < 5; ++i)

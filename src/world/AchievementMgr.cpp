@@ -82,14 +82,14 @@ bool SaveAchievementProgressToDB(const CriteriaProgress* c)
         // these get updated when character logs on, don't save to character progress db
         case ACHIEVEMENT_CRITERIA_TYPE_REACH_LEVEL:
         case ACHIEVEMENT_CRITERIA_TYPE_EXPLORE_AREA:
-        case ACHIEVEMENT_CRITERIA_TYPE_COMPLETE_ACHIEVEMENT:
+        case ACHIEVEMENT_CRITERIA_TYPE_COMPLETE_ARCHIEVEMENT:
         case ACHIEVEMENT_CRITERIA_TYPE_COMPLETE_QUEST_COUNT:
         case ACHIEVEMENT_CRITERIA_TYPE_COMPLETE_QUESTS_IN_ZONE:
         case ACHIEVEMENT_CRITERIA_TYPE_COMPLETE_QUEST:
         case ACHIEVEMENT_CRITERIA_TYPE_GAIN_REPUTATION:
         case ACHIEVEMENT_CRITERIA_TYPE_GAIN_EXALTED_REPUTATION:
         case ACHIEVEMENT_CRITERIA_TYPE_LEARN_SPELL:
-        case ACHIEVEMENT_CRITERIA_TYPE_NUMBER_OF_MOUNTS:
+        //case ACHIEVEMENT_CRITERIA_TYPE_NUMBER_OF_MOUNTS:
         case ACHIEVEMENT_CRITERIA_TYPE_REACH_SKILL_LEVEL:
         case ACHIEVEMENT_CRITERIA_TYPE_LEARN_SKILL_LEVEL:
         case ACHIEVEMENT_CRITERIA_TYPE_BUY_BANK_SLOT:
@@ -562,11 +562,12 @@ void AchievementMgr::UpdateAchievementCriteria(AchievementCriteriaTypes type, in
             continue;
         }
 
-        if ((achievementCriteria->groupFlag & ACHIEVEMENT_CRITERIA_GROUP_NOT_IN_GROUP) && GetPlayer()->GetGroup())
-        {
-            // criteria requires that the player not be in a group, but they are in a group, so don't update it
-            continue;
-        }
+        // not used anymore? do we need it?
+        //if((achievementCriteria->groupFlag & ACHIEVEMENT_CRITERIA_GROUP_NOT_IN_GROUP) && GetPlayer()->GetGroup())
+        //{
+        // criteria requires that the player not be in a group, but they are in a group, so don't update it
+        //	continue;
+        //}
 
         AchievementEntry const* achievement = dbcAchievementStore.LookupEntryForced(achievementCriteria->referredAchievement);
         if (!achievement)
@@ -625,14 +626,14 @@ void AchievementMgr::UpdateAchievementCriteria(AchievementCriteriaTypes type, in
                     SetCriteriaProgress(achievementCriteria, miscvalue2);
                 }
                 break;
-            case ACHIEVEMENT_CRITERIA_TYPE_NUMBER_OF_MOUNTS:
-                // Vanity pets owned - miscvalue1==778
-                // Number of mounts  - miscvalue1==777
-                if (achievementCriteria->number_of_mounts.unknown == static_cast<uint32>(miscvalue1))
-                {
-                    UpdateCriteriaProgress(achievementCriteria, 1);
-                }
-                break;
+            /*case ACHIEVEMENT_CRITERIA_TYPE_NUMBER_OF_MOUNTS:
+				// Vanity pets owned - miscvalue1==778
+				// Number of mounts  - miscvalue1==777
+				if(achievementCriteria->number_of_mounts.unknown == static_cast<uint32>(miscvalue1))
+				{
+					UpdateCriteriaProgress(achievementCriteria, 1);
+				}
+				break;*/
             case ACHIEVEMENT_CRITERIA_TYPE_BE_SPELL_TARGET:
             case ACHIEVEMENT_CRITERIA_TYPE_BE_SPELL_TARGET2:
                 if (achievementCriteria->be_spell_target.spellID == static_cast<uint32>(miscvalue1))
@@ -990,7 +991,7 @@ void AchievementMgr::UpdateAchievementCriteria(AchievementCriteriaTypes type, in
                     }
                 }
                 break;
-            case ACHIEVEMENT_CRITERIA_TYPE_KILLING_BLOW:
+            case ACHIEVEMENT_CRITERIA_TYPE_GET_KILLING_BLOWS:
                 // miscvalue1 contain Map ID
                 switch (achievementCriteria->referredAchievement)
                 {
@@ -1187,7 +1188,7 @@ void AchievementMgr::UpdateAchievementCriteria(AchievementCriteriaTypes type, in
                 break;
 
                 // these achievement criteria types simply update the progress by the value passed in miscvalue1
-            case ACHIEVEMENT_CRITERIA_TYPE_QUEST_REWARD_GOLD:
+            case ACHIEVEMENT_CRITERIA_TYPE_MONEY_FROM_QUEST_REWARD:
             case ACHIEVEMENT_CRITERIA_TYPE_LOOT_MONEY:
             case ACHIEVEMENT_CRITERIA_TYPE_GAIN_EXALTED_REPUTATION:
             case ACHIEVEMENT_CRITERIA_TYPE_COMPLETE_QUEST_COUNT:
@@ -1240,8 +1241,8 @@ void AchievementMgr::UpdateAchievementCriteria(AchievementCriteriaTypes type)
                 {
                     SetCriteriaProgress(achievementCriteria, 1);
                 }
-                break;
-            case ACHIEVEMENT_CRITERIA_TYPE_COMPLETE_ACHIEVEMENT:
+                break; 
+            case ACHIEVEMENT_CRITERIA_TYPE_COMPLETE_ARCHIEVEMENT:
                 if (m_completedAchievements.find(achievementCriteria->complete_achievement.linkedAchievement) != m_completedAchievements.end())
                 {
                     SetCriteriaProgress(achievementCriteria, 1, true);
@@ -1291,6 +1292,7 @@ void AchievementMgr::UpdateAchievementCriteria(AchievementCriteriaTypes type)
                     SetCriteriaProgress(achievementCriteria, 1);
                 }
                 break;
+                /*
             case ACHIEVEMENT_CRITERIA_TYPE_NUMBER_OF_MOUNTS:
             {
                 // achievementCriteria field4 = 777 for mounts, 778 for companion pets
@@ -1319,6 +1321,7 @@ void AchievementMgr::UpdateAchievementCriteria(AchievementCriteriaTypes type)
                 SetCriteriaProgress(achievementCriteria, nm);
             }
             break;
+            */
             case ACHIEVEMENT_CRITERIA_TYPE_REACH_SKILL_LEVEL:
                 SetCriteriaProgress(achievementCriteria, GetPlayer()->_GetSkillLineCurrent(achievementCriteria->reach_skill_level.skillID, true));
                 break;
@@ -1415,14 +1418,14 @@ bool AchievementMgr::IsCompletedCriteria(AchievementCriteriaEntry const* achieve
             return progresscounter >= achievementCriteria->complete_quest_count.totalQuestCount;
         case ACHIEVEMENT_CRITERIA_TYPE_COMPLETE_QUESTS_IN_ZONE:
             return progresscounter >= achievementCriteria->complete_quests_in_zone.questCount;
-        case ACHIEVEMENT_CRITERIA_TYPE_QUEST_REWARD_GOLD:
+        case ACHIEVEMENT_CRITERIA_TYPE_MONEY_FROM_QUEST_REWARD:
             return progresscounter >= achievementCriteria->quest_reward_money.goldInCopper;
         case ACHIEVEMENT_CRITERIA_TYPE_GAIN_REPUTATION:
             return progresscounter >= achievementCriteria->gain_reputation.reputationAmount;
         case ACHIEVEMENT_CRITERIA_TYPE_GAIN_EXALTED_REPUTATION:
             return progresscounter >= achievementCriteria->gain_exalted_reputation.numberOfExaltedFactions;
-        case ACHIEVEMENT_CRITERIA_TYPE_NUMBER_OF_MOUNTS:
-            return progresscounter >= achievementCriteria->number_of_mounts.mountCount;
+            //case ACHIEVEMENT_CRITERIA_TYPE_NUMBER_OF_MOUNTS:
+            //return progresscounter >= achievementCriteria->number_of_mounts.mountCount;
         case ACHIEVEMENT_CRITERIA_TYPE_BE_SPELL_TARGET:
         case ACHIEVEMENT_CRITERIA_TYPE_BE_SPELL_TARGET2:
             return progresscounter >= achievementCriteria->be_spell_target.spellCount;
@@ -1446,9 +1449,9 @@ bool AchievementMgr::IsCompletedCriteria(AchievementCriteriaEntry const* achieve
             return progresscounter >= achievementCriteria->hk_class.count;
         case ACHIEVEMENT_CRITERIA_TYPE_HK_RACE:
             return progresscounter >= achievementCriteria->hk_race.count;
-        case ACHIEVEMENT_CRITERIA_TYPE_COMPLETE_ACHIEVEMENT:
+        case ACHIEVEMENT_CRITERIA_TYPE_COMPLETE_ARCHIEVEMENT:
             return m_completedAchievements.find(achievementCriteria->complete_achievement.linkedAchievement) != m_completedAchievements.end();
-
+         
             // These achievements only require counter to be 1 (or higher)
         case ACHIEVEMENT_CRITERIA_TYPE_EXPLORE_AREA:
         case ACHIEVEMENT_CRITERIA_TYPE_COMPLETE_QUEST:
@@ -1605,7 +1608,7 @@ void AchievementMgr::CompletedAchievement(AchievementEntry const* achievement)
     m_completedAchievements[achievement->ID] = time(NULL);
 
     objmgr.allCompletedAchievements.insert(achievement->ID);
-    UpdateAchievementCriteria(ACHIEVEMENT_CRITERIA_TYPE_COMPLETE_ACHIEVEMENT);
+    UpdateAchievementCriteria(ACHIEVEMENT_CRITERIA_TYPE_COMPLETE_ARCHIEVEMENT);
 
     // check for reward
     GiveAchievementReward(achievement);
@@ -1760,7 +1763,7 @@ void AchievementMgr::GiveAchievementReward(AchievementEntry const* entry)
     {
         if (Reward->titel_A)
         {
-            CharTitlesEntry* title = dbcCharTitlesEntry.LookupEntryForced(Reward->titel_A);
+            CharTitlesEntry* title = dbcCharTitle.LookupEntryForced(Reward->titel_A);
             if (title)
                 GetPlayer()->SetKnownTitle(static_cast< RankTitles >(title->bit_index), true);
         }
@@ -1769,7 +1772,7 @@ void AchievementMgr::GiveAchievementReward(AchievementEntry const* entry)
     {
         if (Reward->titel_H)
         {
-            CharTitlesEntry* title = dbcCharTitlesEntry.LookupEntryForced(Reward->titel_H);
+            CharTitlesEntry* title = dbcCharTitle.LookupEntryForced(Reward->titel_H);
             if (title)
                 GetPlayer()->SetKnownTitle(static_cast< RankTitles >(title->bit_index), true);
         }

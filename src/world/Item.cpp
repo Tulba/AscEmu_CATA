@@ -295,9 +295,9 @@ void Item::ApplyRandomProperties(bool apply)
             int32 Slot;
             for (int k = 0; k < 3; k++)
             {
-                if (rp->spells[k] != 0)
+                if (rp->enchantments[k] != 0)
                 {
-                    EnchantEntry* ee = dbcEnchant.LookupEntry(rp->spells[k]);
+                    EnchantEntry* ee = dbcEnchant.LookupEntry(rp->enchantments[k]);
                     Slot = HasEnchantment(ee->Id);
                     if (Slot < 0)
                     {

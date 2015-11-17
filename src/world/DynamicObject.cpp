@@ -147,10 +147,10 @@ void DynamicObject::UpdateTargets()
                 pAura = sSpellFactoryMgr.NewAura(m_spellProto, m_aliveDuration, u_caster, target, true);
                 for (uint32 i = 0; i < 3; ++i)
                 {
-                    if (m_spellProto->Effect[i] == SPELL_EFFECT_PERSISTENT_AREA_AURA)
+                    if (m_spellProto->eff[i].Effect == SPELL_EFFECT_PERSISTENT_AREA_AURA)
                     {
-                        pAura->AddMod(m_spellProto->EffectApplyAuraName[i],
-                                      m_spellProto->EffectBasePoints[i] + 1, m_spellProto->EffectMiscValue[i], i);
+                        pAura->AddMod(m_spellProto->eff[i].EffectApplyAuraName,
+                            m_spellProto->eff[i].EffectBasePoints + 1, m_spellProto->eff[i].EffectMiscValue, i);
                     }
                 }
                 target->AddAura(pAura);

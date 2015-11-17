@@ -561,10 +561,10 @@ AI_Spell* Pet::CreateAISpell(SpellEntry* info)
     sp->cooldowntime = 0;
 
     if (/* info->Effect[0] == SPELL_EFFECT_APPLY_AURA || */
-        info->Effect[0] == SPELL_EFFECT_APPLY_GROUP_AREA_AURA
-        || info->Effect[0] == SPELL_EFFECT_APPLY_RAID_AREA_AURA
-        || info->EffectImplicitTargetA[0] == 27     //TARGET_MASTER
-        || info->EffectImplicitTargetA[0] == 57)    //TARGET_SINGLE_FRIEND_2
+        info->eff[0].Effect == SPELL_EFFECT_APPLY_GROUP_AREA_AURA
+        || info->eff[0].Effect == SPELL_EFFECT_APPLY_RAID_AREA_AURA
+        || info->eff[0].EffectImplicitTargetA == 27     //TARGET_MASTER
+        || info->eff[0].EffectImplicitTargetA == 57)    //TARGET_SINGLE_FRIEND_2
         sp->spellType = STYPE_BUFF;
     else
         sp->spellType = STYPE_DAMAGE;
@@ -1082,10 +1082,10 @@ void Pet::UpdateSpellList(bool showLearnSpells)
         {
             sls = dbcSkillLineSpell.LookupRow(idx);
             // Update existing spell, or add new "automatic-acquired" spell
-            if ((sls->skilline == s || sls->skilline == s2) && sls->acquireMethod == 2)
+            if ((sls->skillId == s || sls->skillId == s2) && sls->learnOnGetSkill == 2)
             {
-                sp = dbcSpell.LookupEntryForced(sls->spell);
-                if (sp && getLevel() >= sp->baseLevel)
+                sp = dbcSpell.LookupEntryForced(sls->spellId);
+                if (sp /*&& getLevel() >= sp->baseLevel*/)  // what here?
                 {
                     // Pet is able to learn this spell; now check if it already has it, or a higher rank of it
                     bool addThisSpell = true;
@@ -1636,7 +1636,7 @@ void Pet::UpdateAP()
 uint32 Pet::CanLearnSpell(SpellEntry* sp)
 {
     // level requirement
-    if (getLevel() < sp->spellLevel)
+    if (getLevel() < sp->SpellLevel.spellLevel)
         return SPELL_FAILED_LEVEL_REQUIREMENT;
 
     return 0;
@@ -1670,7 +1670,7 @@ AI_Spell* Pet::HandleAutoCastEvent()
         if ((*itr)->autocast_type == AUTOCAST_EVENT_ATTACK)
         {
             // spells still spammed, I think the cooldowntime is being set incorrectly somewhere else
-            if (chance && (*itr)->spell && getMSTime() >= (*itr)->cooldowntime && GetPower((*itr)->spell->powerType) >= (*itr)->spell->manaCost)
+            if (chance && (*itr)->spell && getMSTime() >= (*itr)->cooldowntime && GetPower((*itr)->spell->powerType) >= (*itr)->spell->PowerEntry.manaCost)
             {
                 return *itr;
             }
@@ -1915,7 +1915,7 @@ void Pet::DealDamage(Unit* pVictim, uint32 damage, uint32 targetEvent, uint32 un
                 m_Owner->Reputation_OnKilledUnit(pVictim, false);
 
 #ifdef ENABLE_ACHIEVEMENTS
-                m_Owner->GetAchievementMgr().UpdateAchievementCriteria(ACHIEVEMENT_CRITERIA_TYPE_KILLING_BLOW, GetMapId(), 0, 0);
+                m_Owner->GetAchievementMgr().UpdateAchievementCriteria(ACHIEVEMENT_CRITERIA_TYPE_GET_KILLING_BLOWS, GetMapId(), 0, 0);
 #endif
 
             }
@@ -2099,7 +2099,7 @@ void Pet::Die(Unit* pAttacker, uint32 damage, uint32 spellid)
 
             for (int i = 0; i < 3; i++)
             {
-                if (spl->GetProto()->Effect[i] == SPELL_EFFECT_PERSISTENT_AREA_AURA)
+                if (spl->GetProto()->eff[i].Effect == SPELL_EFFECT_PERSISTENT_AREA_AURA)
                 {
                     uint64 guid = GetChannelSpellTargetGUID();
                     DynamicObject* dObj = GetMapMgr()->GetDynamicObject(Arcemu::Util::GUID_LOPART(guid));

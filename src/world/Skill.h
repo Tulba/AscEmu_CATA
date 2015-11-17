@@ -170,10 +170,6 @@
 #define SKILL_PET_EXOTIC_RHINO        786
 #define SKILL_PET_EXOTIC_CORE_HOUND   787
 #define SKILL_PET_EXOTIC_SPIRIT_BEAST 788
-#define SKILL_RACIAL_WORGEN           789
-#define SKILL_RACIAL_GOLBLIN          790
-#define SKILL_LANG_GILNEAN            791
-#define SKILL_LANG_GOBLIN             792
 
 #define SKILL_TYPE_ATTRIBUTES           5
 #define SKILL_TYPE_WEAPON               6

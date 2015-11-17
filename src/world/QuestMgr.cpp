@@ -1364,7 +1364,7 @@ void QuestMgr::OnQuestFinished(Player* plr, Quest* qst, Object* qst_giver, uint3
 #ifdef ENABLE_ACHIEVEMENTS
         plr->GetAchievementMgr().UpdateAchievementCriteria(ACHIEVEMENT_CRITERIA_TYPE_COMPLETE_QUEST_COUNT, 1, 0, 0);
         if (qst->reward_money)
-            plr->GetAchievementMgr().UpdateAchievementCriteria(ACHIEVEMENT_CRITERIA_TYPE_QUEST_REWARD_GOLD, qst->reward_money, 0, 0);
+            plr->GetAchievementMgr().UpdateAchievementCriteria(ACHIEVEMENT_CRITERIA_TYPE_MONEY_FROM_QUEST_REWARD, qst->reward_money, 0, 0);
         plr->GetAchievementMgr().UpdateAchievementCriteria(ACHIEVEMENT_CRITERIA_TYPE_COMPLETE_QUESTS_IN_ZONE, qst->zone_id, 0, 0);
         plr->GetAchievementMgr().UpdateAchievementCriteria(ACHIEVEMENT_CRITERIA_TYPE_COMPLETE_QUEST, qst->id, 0, 0);
 #endif
@@ -1379,7 +1379,7 @@ void QuestMgr::OnQuestFinished(Player* plr, Quest* qst, Object* qst_giver, uint3
 
     if (qst->MailTemplateId != 0)
     {
-        MailTemplateEntry * mail = dbcMailTemplateEntry.LookupEntryForced(qst->MailTemplateId);
+        MailTemplateEntry * mail = dbcMailTemplate.LookupEntryForced(qst->MailTemplateId);
         if (mail != NULL)
         {
             int mailType = NORMAL;
@@ -1595,7 +1595,7 @@ uint32 QuestMgr::GenerateQuestXP(Player* plr, Quest* qst)
             }
         }
 
-        if (const QuestXP* pXPData = dbcQuestXP.LookupEntry(baseLevel))
+        if (const QuestXPEntry* pXPData = dbcQuestXP.LookupEntry(baseLevel))
         {
             uint32 rawXP = xpMultiplier * pXPData->xpIndex[qst->RewXPId] / 10;
 

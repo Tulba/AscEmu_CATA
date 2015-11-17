@@ -810,7 +810,7 @@ class SERVER_DECL Player : public Unit
             return (GetUInt64Value(PLAYER__FIELD_KNOWN_TITLES + ((title >> 6) << 1)) & (uint64(1) << (title % 64))) != 0;
         }
         void SetKnownTitle(RankTitles title, bool set);
-        void SendAvailSpells(SpellShapeshiftForm* ssf, bool active);
+        void SendAvailSpells(SpellShapeshiftFormEntry* ssf, bool active);
 
         /************************************************************************/
         // Groups

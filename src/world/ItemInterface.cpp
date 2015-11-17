@@ -1913,7 +1913,7 @@ int8 ItemInterface::CanEquipItemInSlot2(int8 DstInvSlot, int8 slot, Item* item, 
                     if (ip->ItemLimitCategory > 0)
                     {
                         uint32 LimitId = ip->ItemLimitCategory;
-                        ItemLimitCategoryEntry* ile = dbcItemLimitCategory.LookupEntryForced(LimitId);
+                        ItemLimitCategory* ile = dbcItemLimitCategory.LookupEntryForced(LimitId);
                         if (ile)
                         {
                             uint32 gemCount = 0;
@@ -2427,7 +2427,7 @@ int8 ItemInterface::CanReceiveItem(ItemPrototype* item, uint32 amount)
 
     if (item->ItemLimitCategory > 0)
     {
-        ItemLimitCategoryEntry* ile = dbcItemLimitCategory.LookupEntryForced(item->ItemLimitCategory);
+        ItemLimitCategory* ile = dbcItemLimitCategory.LookupEntryForced(item->ItemLimitCategory);
         if (ile && !(ile->equippedFlag & ILFLAG_EQUIP_ONLY))
         {
             uint32 count = GetItemCountByLimitId(ile->Id, false);

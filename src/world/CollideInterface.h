@@ -157,13 +157,13 @@ class CCollideInterface
 
             if (wmoArea != NULL)
             {
-                auto area = sAreaStore.LookupEntry(wmoArea->areaId);
+                auto area = dbcArea.LookupEntryForced(wmoArea->areaId);
 
                 if (area != NULL)
                 {
-                    if (area->flags & 0x04000000)  /// outdoor
+                    if (area->AreaFlags & 0x04000000)  /// outdoor
                         return true;
-                    if (area->flags & 0x02000000)  /// indoor
+                    if (area->AreaFlags & 0x02000000)  /// indoor
                         return false;
                 }
 

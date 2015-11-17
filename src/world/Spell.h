@@ -1166,7 +1166,7 @@ bool IsDamagingSpell(SpellEntry* sp);
 
 inline uint32 IsHealingSpell(SpellEntry* sp)
 {
-    switch(sp->Effect[0])
+    switch (sp->eff[0].Effect)
     {
         case SPELL_EFFECT_HEALTH_LEECH:
         case SPELL_EFFECT_HEAL:
@@ -1175,7 +1175,7 @@ inline uint32 IsHealingSpell(SpellEntry* sp)
         default:
             break;
     }
-    switch(sp->Effect[1])
+    switch (sp->eff[1].Effect)
     {
         case SPELL_EFFECT_HEALTH_LEECH:
         case SPELL_EFFECT_HEAL:
@@ -1184,7 +1184,7 @@ inline uint32 IsHealingSpell(SpellEntry* sp)
         default:
             break;
     }
-    switch(sp->Effect[2])
+    switch (sp->eff[2].Effect)
     {
         case SPELL_EFFECT_HEALTH_LEECH:
         case SPELL_EFFECT_HEAL:
@@ -1193,11 +1193,11 @@ inline uint32 IsHealingSpell(SpellEntry* sp)
         default:
             break;
     }
-    if (sp->Effect[0] == SPELL_EFFECT_APPLY_AURA ||
-            sp->Effect[0] == SPELL_EFFECT_APPLY_GROUP_AREA_AURA ||
-            sp->Effect[0] == SPELL_EFFECT_APPLY_RAID_AREA_AURA)
+    if (sp->eff[0].Effect == SPELL_EFFECT_APPLY_AURA ||
+            sp->eff[0].Effect == SPELL_EFFECT_APPLY_GROUP_AREA_AURA ||
+                sp->eff[0].Effect == SPELL_EFFECT_APPLY_RAID_AREA_AURA)
     {
-        switch(sp->EffectApplyAuraName[0])
+        switch (sp->eff[0].EffectApplyAuraName)
         {
             case 8://SPELL_AURA_PERIODIC_HEAL:
             case 62://SPELL_AURA_PERIODIC_HEALTH_FUNNEL:
@@ -1206,11 +1206,11 @@ inline uint32 IsHealingSpell(SpellEntry* sp)
                 break;
         }
     }
-    if (sp->Effect[1] == SPELL_EFFECT_APPLY_AURA ||
-            sp->Effect[1] == SPELL_EFFECT_APPLY_GROUP_AREA_AURA ||
-            sp->Effect[1] == SPELL_EFFECT_APPLY_RAID_AREA_AURA)
+    if (sp->eff[1].Effect == SPELL_EFFECT_APPLY_AURA ||
+            sp->eff[1].Effect == SPELL_EFFECT_APPLY_GROUP_AREA_AURA ||
+                sp->eff[1].Effect == SPELL_EFFECT_APPLY_RAID_AREA_AURA)
     {
-        switch(sp->EffectApplyAuraName[1])
+        switch (sp->eff[1].EffectApplyAuraName)
         {
             case 8://SPELL_AURA_PERIODIC_HEAL:
             case 62://SPELL_AURA_PERIODIC_HEALTH_FUNNEL:
@@ -1219,11 +1219,11 @@ inline uint32 IsHealingSpell(SpellEntry* sp)
                 break;
         }
     }
-    if (sp->Effect[2] == SPELL_EFFECT_APPLY_AURA ||
-            sp->Effect[2] == SPELL_EFFECT_APPLY_GROUP_AREA_AURA ||
-            sp->Effect[2] == SPELL_EFFECT_APPLY_RAID_AREA_AURA)
+    if (sp->eff[2].Effect == SPELL_EFFECT_APPLY_AURA ||
+            sp->eff[2].Effect == SPELL_EFFECT_APPLY_GROUP_AREA_AURA ||
+                sp->eff[2].Effect == SPELL_EFFECT_APPLY_RAID_AREA_AURA)
     {
-        switch(sp->EffectApplyAuraName[2])
+        switch (sp->eff[2].EffectApplyAuraName)
         {
             case 8://SPELL_AURA_PERIODIC_HEAL:
             case 62://SPELL_AURA_PERIODIC_HEALTH_FUNNEL:
@@ -1498,15 +1498,9 @@ typedef enum
 
 inline bool HasTargetType(SpellEntry* sp, uint32 ttype)
 {
-    if (
-        sp->EffectImplicitTargetA[0] == ttype ||
-        sp->EffectImplicitTargetA[1] == ttype ||
-        sp->EffectImplicitTargetA[2] == ttype ||
-        sp->EffectImplicitTargetB[0] == ttype ||
-        sp->EffectImplicitTargetB[1] == ttype ||
-        sp->EffectImplicitTargetB[2] == ttype
-   )
-        return true;
+    for (uint32 i = 0; i<MAX_SPELL_EFFECT_COUNT; i++)
+        if (sp->eff[i].EffectImplicitTargetA == ttype || sp->eff[i].EffectImplicitTargetB == ttype)
+            return true;
     return false;
 }
 
@@ -2144,7 +2138,7 @@ class SERVER_DECL Spell : public EventableObject
         {
             if (bRadSet[i])return Rad[i];
             bRadSet[i] = true;
-            Rad[i] = ::GetRadius(dbcSpellRadius.LookupEntry(GetProto()->EffectRadiusIndex[i]));
+            Rad[i] = ::GetRadius(dbcSpellRadius.LookupEntry(GetProto()->eff[i].EffectRadiusIndex));
             if (u_caster != nullptr)
             {
                 SM_FFValue(u_caster->SM_FRadius, &Rad[i], GetProto()->SpellGroupType);
@@ -2180,12 +2174,12 @@ class SERVER_DECL Spell : public EventableObject
         {
             if (sp->MechanicsType)
                 return sp->MechanicsType;
-            if (sp->EffectMechanic[2])
-                return sp->EffectMechanic[2];
-            if (sp->EffectMechanic[1])
-                return sp->EffectMechanic[1];
-            if (sp->EffectMechanic[0])
-                return sp->EffectMechanic[0];
+            if (sp->eff[2].EffectMechanic)
+                return sp->eff[2].EffectMechanic;
+            if (sp->eff[1].EffectMechanic)
+                return sp->eff[1].EffectMechanic;
+            if (sp->eff[0].EffectMechanic)
+                return sp->eff[0].EffectMechanic;
 
             return 0;
         }

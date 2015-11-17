@@ -370,7 +370,7 @@ void WorldSession::HandleBuyStableSlot(WorldPacket& recv_data)
 {
     CHECK_INWORLD_RETURN
 
-    BankSlotPrice* bsp = dbcStableSlotPrices.LookupEntryForced(_player->GetStableSlotCount() + 1);
+    BankSlotPrice* bsp = dbcBankSlotPrices.LookupEntryForced(_player->GetStableSlotCount() + 1);
     int32 cost = (bsp != NULL) ? bsp->Price : 99999999;
 
     WorldPacket data(SMSG_STABLE_RESULT, 1);

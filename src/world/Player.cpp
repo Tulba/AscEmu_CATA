@@ -653,14 +653,6 @@ uint32 GetSpellForLanguage(uint32 SkillID)
         case SKILL_LANG_DRAENEI:
             return 29932;
             break;
-
-        case SKILL_LANG_GOBLIN:
-            return 69269;
-            break;
-
-        case SKILL_LANG_GILNEAN:
-            return 69270;
-            break;
     }
 
     return 0;
@@ -686,28 +678,24 @@ void Player::CharChange_Looks(uint64 GUID, uint8 gender, uint8 skin, uint8 face,
 //Begining of code for phase two of character customization (Race/Faction) Change.
 void Player::CharChange_Language(uint64 GUID, uint8 race)
 {
-    CharacterDatabase.Execute("DELETE FROM `playerspells` WHERE GUID = '%u' AND SpellID IN ('%u', '%u', '%u', '%u', '%u','%u', '%u', '%u', '%u', '%u');", (uint32)GUID, GetSpellForLanguage(SKILL_LANG_ORCISH), GetSpellForLanguage(SKILL_LANG_TAURAHE), GetSpellForLanguage(SKILL_LANG_TROLL), GetSpellForLanguage(SKILL_LANG_GUTTERSPEAK), GetSpellForLanguage(SKILL_LANG_THALASSIAN), GetSpellForLanguage(SKILL_LANG_COMMON), GetSpellForLanguage(SKILL_LANG_DARNASSIAN), GetSpellForLanguage(SKILL_LANG_DRAENEI), GetSpellForLanguage(SKILL_LANG_DWARVEN), GetSpellForLanguage(SKILL_LANG_GNOMISH), GetSpellForLanguage(SKILL_LANG_GILNEAN), GetSpellForLanguage(SKILL_LANG_GOBLIN));
+    CharacterDatabase.Execute("DELETE FROM `playerspells` WHERE GUID = '%u' AND SpellID IN ('%u', '%u', '%u', '%u', '%u','%u', '%u', '%u', '%u', '%u');", (uint32)GUID, GetSpellForLanguage(SKILL_LANG_ORCISH), GetSpellForLanguage(SKILL_LANG_TAURAHE), GetSpellForLanguage(SKILL_LANG_TROLL), GetSpellForLanguage(SKILL_LANG_GUTTERSPEAK), GetSpellForLanguage(SKILL_LANG_THALASSIAN), GetSpellForLanguage(SKILL_LANG_COMMON), GetSpellForLanguage(SKILL_LANG_DARNASSIAN), GetSpellForLanguage(SKILL_LANG_DRAENEI), GetSpellForLanguage(SKILL_LANG_DWARVEN), GetSpellForLanguage(SKILL_LANG_GNOMISH));
     switch (race)
     {
         case RACE_DWARF:
             CharacterDatabase.Execute("INSERT INTO `playerspells` (GUID, SpellID) VALUES ('%u', '%u')", (uint32)GUID, GetSpellForLanguage(SKILL_LANG_COMMON));
             CharacterDatabase.Execute("INSERT INTO `playerspells` (GUID, SpellID) VALUES ('%u', '%u')", (uint32)GUID, GetSpellForLanguage(SKILL_LANG_DWARVEN));
             break;
-        case RACE_NIGHTELF:
+        case RACE_DRAENEI:
             CharacterDatabase.Execute("INSERT INTO `playerspells` (GUID, SpellID) VALUES ('%u', '%u')", (uint32)GUID, GetSpellForLanguage(SKILL_LANG_COMMON));
-            CharacterDatabase.Execute("INSERT INTO `playerspells` (GUID, SpellID) VALUES ('%u', '%u')", (uint32)GUID, GetSpellForLanguage(SKILL_LANG_DARNASSIAN));
+            CharacterDatabase.Execute("INSERT INTO `playerspells` (GUID, SpellID) VALUES ('%u', '%u')", (uint32)GUID, GetSpellForLanguage(SKILL_LANG_DRAENEI));
             break;
         case RACE_GNOME:
             CharacterDatabase.Execute("INSERT INTO `playerspells` (GUID, SpellID) VALUES ('%u', '%u')", (uint32)GUID, GetSpellForLanguage(SKILL_LANG_COMMON));
             CharacterDatabase.Execute("INSERT INTO `playerspells` (GUID, SpellID) VALUES ('%u', '%u')", (uint32)GUID, GetSpellForLanguage(SKILL_LANG_GNOMISH));
             break;
-        case RACE_DRAENEI:
+        case RACE_NIGHTELF:
             CharacterDatabase.Execute("INSERT INTO `playerspells` (GUID, SpellID) VALUES ('%u', '%u')", (uint32)GUID, GetSpellForLanguage(SKILL_LANG_COMMON));
-            CharacterDatabase.Execute("INSERT INTO `playerspells` (GUID, SpellID) VALUES ('%u', '%u')", (uint32)GUID, GetSpellForLanguage(SKILL_LANG_DRAENEI));
-            break;
-        case RACE_WORGEN:
-            CharacterDatabase.Execute("INSERT INTO `playerspells` (GUID, SpellID) VALUES ('%u', '%u')", (uint32)GUID, GetSpellForLanguage(SKILL_LANG_COMMON));
-            CharacterDatabase.Execute("INSERT INTO `playerspells` (GUID, SpellID) VALUES ('%u', '%u')", (uint32)GUID, GetSpellForLanguage(SKILL_LANG_GILNEAN));
+            CharacterDatabase.Execute("INSERT INTO `playerspells` (GUID, SpellID) VALUES ('%u', '%u')", (uint32)GUID, GetSpellForLanguage(SKILL_LANG_DARNASSIAN));
             break;
         case RACE_UNDEAD:
             CharacterDatabase.Execute("INSERT INTO `playerspells` (GUID, SpellID) VALUES ('%u', '%u')", (uint32)GUID, GetSpellForLanguage(SKILL_LANG_ORCISH));
@@ -720,10 +708,6 @@ void Player::CharChange_Language(uint64 GUID, uint8 race)
         case RACE_TROLL:
             CharacterDatabase.Execute("INSERT INTO `playerspells` (GUID, SpellID) VALUES ('%u', '%u')", (uint32)GUID, GetSpellForLanguage(SKILL_LANG_ORCISH));
             CharacterDatabase.Execute("INSERT INTO `playerspells` (GUID, SpellID) VALUES ('%u', '%u')", (uint32)GUID, GetSpellForLanguage(SKILL_LANG_TROLL));
-            break;
-        case RACE_GOBLIN:
-            CharacterDatabase.Execute("INSERT INTO `playerspells` (GUID, SpellID) VALUES ('%u', '%u')", (uint32)GUID, GetSpellForLanguage(SKILL_LANG_ORCISH));
-            CharacterDatabase.Execute("INSERT INTO `playerspells` (GUID, SpellID) VALUES ('%u', '%u')", (uint32)GUID, GetSpellForLanguage(SKILL_LANG_GOBLIN));
             break;
         case RACE_BLOODELF:
             CharacterDatabase.Execute("INSERT INTO `playerspells` (GUID, SpellID) VALUES ('%u', '%u')", (uint32)GUID, GetSpellForLanguage(SKILL_LANG_ORCISH));
@@ -1749,9 +1733,9 @@ void Player::smsg_InitialSpells()
         }
 
         data << uint32(itr2->second.SpellId);                // spell id
-        data << uint16(itr2->second.ItemId);                 // item id
-        data << uint16(itr2->first);                         // spell category
-        data << uint32(0);                                   // cooldown remaining in ms (for spell)
+        data << uint16(itr2->second.ItemId);                // item id
+        data << uint16(itr2->first);                        // spell category
+        data << uint32(0);                                // cooldown remaining in ms (for spell)
         data << uint32(itr2->second.ExpireTime - mstime);    // cooldown remaining in ms (for category)
 
         ++itemCount;
@@ -1820,7 +1804,7 @@ void Player::ActivateSpec(uint8 spec)
     // remove old glyphs
     for (uint8 i = 0; i < GLYPHS_COUNT; ++i)
     {
-        GlyphPropertyEntry* glyph = dbcGlyphProperty.LookupEntryForced(m_specs[OldSpec].glyphs[i]);
+        GlyphPropertiesEntry* glyph = dbcGlyphPropertiesStore.LookupEntryForced(m_specs[OldSpec].glyphs[i]);
         if (glyph == NULL)
             continue;
 
@@ -1840,7 +1824,7 @@ void Player::ActivateSpec(uint8 spec)
     // add new glyphs
     for (uint8 i = 0; i < GLYPHS_COUNT; ++i)
     {
-        GlyphPropertyEntry* glyph = dbcGlyphProperty.LookupEntryForced(m_specs[m_talentActiveSpec].glyphs[i]);
+        GlyphPropertiesEntry* glyph = dbcGlyphPropertiesStore.LookupEntryForced(m_specs[m_talentActiveSpec].glyphs[i]);
         if (glyph == NULL)
             continue;
 
@@ -2159,9 +2143,9 @@ void Player::addSpell(uint32 spell_id)
     // Add the skill line for this spell if we don't already have it.
     skilllinespell* sk = objmgr.GetSpellSkill(spell_id);
     SpellEntry* spell = dbcSpell.LookupEntry(spell_id);
-    if (sk && !_HasSkillLine(sk->skilline))
+    if (sk && !_HasSkillLine(sk->skillId))
     {
-        skilllineentry* skill = dbcSkillLine.LookupEntry(sk->skilline);
+        skilllineentry* skill = dbcSkillLine.LookupEntry(sk->skillId);
         uint32 max = 1;
         switch (skill->type)
         {
@@ -2182,7 +2166,7 @@ void Player::addSpell(uint32 spell_id)
                 break;
         };
 
-        _AddSkillLine(sk->skilline, 1, max);
+        _AddSkillLine(sk->skillId, 1, max);
         _UpdateMaxSkillCounts();
     }
 #ifdef ENABLE_ACHIEVEMENTS
@@ -2190,15 +2174,15 @@ void Player::addSpell(uint32 spell_id)
     if (spell->MechanicsType == MECHANIC_MOUNTED) // Mounts
     {
         // miscvalue1==777 for mounts, 778 for pets
-        m_achievementMgr.UpdateAchievementCriteria(ACHIEVEMENT_CRITERIA_TYPE_NUMBER_OF_MOUNTS, 777, 0, 0);
+       // m_achievementMgr.UpdateAchievementCriteria(ACHIEVEMENT_CRITERIA_TYPE_NUMBER_OF_MOUNTS, 777, 0, 0);
     }
-    else if (spell->Effect[0] == SPELL_EFFECT_SUMMON) // Companion pet?
+    else if (spell->eff[0].Effect == SPELL_EFFECT_SUMMON) // Companion pet?
     {
         // miscvalue1==777 for mounts, 778 for pets
         // make sure it's a companion pet, not some other summon-type spell
         if (strncmp(spell->Description, "Right Cl", 8) == 0) // "Right Click to summon and dismiss " ...
         {
-            m_achievementMgr.UpdateAchievementCriteria(ACHIEVEMENT_CRITERIA_TYPE_NUMBER_OF_MOUNTS, 778, 0, 0);
+           // m_achievementMgr.UpdateAchievementCriteria(ACHIEVEMENT_CRITERIA_TYPE_NUMBER_OF_MOUNTS, 778, 0, 0);
         }
     }
 #endif
@@ -2695,40 +2679,40 @@ void Player::_SaveQuestLogEntry(QueryBuffer* buf)
 
 bool Player::canCast(SpellEntry* m_spellInfo)
 {
-    if (m_spellInfo->EquippedItemClass != 0)
+    if (m_spellInfo->SpellEquippedItems.EquippedItemClass != 0)
     {
         if (this->GetItemInterface()->GetInventoryItem(EQUIPMENT_SLOT_MAINHAND))
         {
-            if ((int32)this->GetItemInterface()->GetInventoryItem(EQUIPMENT_SLOT_MAINHAND)->GetProto()->Class == m_spellInfo->EquippedItemClass)
+            if ((int32)this->GetItemInterface()->GetInventoryItem(EQUIPMENT_SLOT_MAINHAND)->GetProto()->Class == m_spellInfo->SpellEquippedItems.EquippedItemClass)
             {
-                if (m_spellInfo->EquippedItemSubClass != 0)
+                if (m_spellInfo->SpellEquippedItems.EquippedItemSubClass != 0)
                 {
-                    if (m_spellInfo->EquippedItemSubClass != 173555 && m_spellInfo->EquippedItemSubClass != 96 && m_spellInfo->EquippedItemSubClass != 262156)
+                    if (m_spellInfo->SpellEquippedItems.EquippedItemSubClass != 173555 && m_spellInfo->SpellEquippedItems.EquippedItemSubClass != 96 && m_spellInfo->SpellEquippedItems.EquippedItemSubClass != 262156)
                     {
-                        if (pow(2.0, (this->GetItemInterface()->GetInventoryItem(EQUIPMENT_SLOT_MAINHAND)->GetProto()->SubClass) != m_spellInfo->EquippedItemSubClass))
+                        if (pow(2.0, (this->GetItemInterface()->GetInventoryItem(EQUIPMENT_SLOT_MAINHAND)->GetProto()->SubClass) != m_spellInfo ->SpellEquippedItems.EquippedItemSubClass))
                             return false;
                     }
                 }
             }
         }
-        else if (m_spellInfo->EquippedItemSubClass == 173555)
+        else if (m_spellInfo->SpellEquippedItems.EquippedItemSubClass == 173555)
             return false;
 
         if (this->GetItemInterface()->GetInventoryItem(EQUIPMENT_SLOT_RANGED))
         {
-            if ((int32)this->GetItemInterface()->GetInventoryItem(EQUIPMENT_SLOT_RANGED)->GetProto()->Class == m_spellInfo->EquippedItemClass)
+            if ((int32)this->GetItemInterface()->GetInventoryItem(EQUIPMENT_SLOT_RANGED)->GetProto()->Class == m_spellInfo->SpellEquippedItems.EquippedItemClass)
             {
-                if (m_spellInfo->EquippedItemSubClass != 0)
+                if (m_spellInfo->SpellEquippedItems.EquippedItemSubClass != 0)
                 {
-                    if (m_spellInfo->EquippedItemSubClass != 173555 && m_spellInfo->EquippedItemSubClass != 96 && m_spellInfo->EquippedItemSubClass != 262156)
+                    if (m_spellInfo->SpellEquippedItems.EquippedItemSubClass != 173555 && m_spellInfo->SpellEquippedItems.EquippedItemSubClass != 96 && m_spellInfo->SpellEquippedItems.EquippedItemSubClass != 262156)
                     {
-                        if (pow(2.0, (this->GetItemInterface()->GetInventoryItem(EQUIPMENT_SLOT_RANGED)->GetProto()->SubClass) != m_spellInfo->EquippedItemSubClass))                            return false;
+                        if (pow(2.0, (this->GetItemInterface()->GetInventoryItem(EQUIPMENT_SLOT_RANGED)->GetProto()->SubClass) != m_spellInfo->SpellEquippedItems.EquippedItemSubClass))                            return false;
                     }
                 }
             }
         }
         else if
-            (m_spellInfo->EquippedItemSubClass == 262156)
+            (m_spellInfo->SpellEquippedItems.EquippedItemSubClass == 262156)
             return false;
 
 
@@ -4558,7 +4542,7 @@ void Player::BuildPlayerRepop()
 void Player::RepopRequestedPlayer()
 {
     //if (HasAuraWithName(SPELL_AURA_PREVENT_RESURRECTION))
-    //    return;
+    //	return;
 
     sEventMgr.RemoveEvents(this, EVENT_PLAYER_CHECKFORCHEATS); // cebernic:-> Remove this first
     sEventMgr.RemoveEvents(this, EVENT_PLAYER_FORCED_RESURRECT);   //in case somebody resurrected us before this event happened
@@ -5189,8 +5173,8 @@ float Player::GetDodgeChance()
 
     // Base dodge + dodge from agility
 
-    gtFloat *baseCrit = dbcMeleeCritBase.LookupEntry(pClass - 1);
-    gtFloat *CritPerAgi = dbcMeleeCrit.LookupEntry(level - 1 + (pClass - 1) * 100);
+    gtClassLevelFloat *baseCrit = dbcMeleeCritBase.LookupEntry(pClass - 1);
+    gtClassLevelFloat *CritPerAgi = dbcMeleeCrit.LookupEntry(level - 1 + (pClass - 1) * 100);
     uint32 agi = GetStat(STAT_AGILITY);
 
     float tmp = 100.0f * (baseCrit->val + agi * CritPerAgi->val);
@@ -5285,8 +5269,8 @@ void Player::UpdateChances()
     SetFloatValue(PLAYER_PARRY_PERCENTAGE, tmp);
 
     // Critical
-    gtFloat* baseCrit = dbcMeleeCritBase.LookupEntry(pClass - 1);
-    gtFloat* CritPerAgi = dbcMeleeCrit.LookupEntry(pLevel - 1 + (pClass - 1) * 100);
+    gtClassLevelFloat* baseCrit = dbcMeleeCritBase.LookupEntry(pClass - 1);
+    gtClassLevelFloat* CritPerAgi = dbcMeleeCrit.LookupEntry(pLevel - 1 + (pClass - 1) * 100);
 
     tmp = 100 * (baseCrit->val + GetStat(STAT_AGILITY) * CritPerAgi->val);
 
@@ -5321,8 +5305,8 @@ void Player::UpdateChances()
     float rcr = tmp + CalcRating(PLAYER_RATING_MODIFIER_RANGED_CRIT) + ranged_bonus;
     SetFloatValue(PLAYER_RANGED_CRIT_PERCENTAGE, std::min(rcr, 95.0f));
 
-    gtFloat* SpellCritBase = dbcSpellCritBase.LookupEntry(pClass - 1);
-    gtFloat* SpellCritPerInt = dbcSpellCrit.LookupEntry(pLevel - 1 + (pClass - 1) * 100);
+    gtClassLevelFloat* SpellCritBase = dbcSpellCritBase.LookupEntry(pClass - 1);
+    gtClassLevelFloat* SpellCritPerInt = dbcSpellCrit.LookupEntry(pLevel - 1 + (pClass - 1) * 100);
 
     spellcritperc = 100 * (SpellCritBase->val + GetStat(STAT_INTELLECT) * SpellCritPerInt->val) +
         this->GetSpellCritFromSpell() +
@@ -6564,11 +6548,11 @@ void Player::Reset_Talents()
                 {
                     for (k = 0; k < 3; ++k)
                     {
-                        if (spellInfo->Effect[k] == SPELL_EFFECT_LEARN_SPELL)
+                        if (spellInfo->eff[k].Effect == SPELL_EFFECT_LEARN_SPELL)
                         {
                             // removeSpell(spellInfo->EffectTriggerSpell[k], false, 0, 0);
                             // remove higher ranks of this spell too (like earth shield lvl 1 is talent and the rest is taught from trainer)
-                            spellInfo2 = dbcSpell.LookupEntryForced(spellInfo->EffectTriggerSpell[k]);
+                            spellInfo2 = dbcSpell.LookupEntryForced(spellInfo->eff[k].EffectTriggerSpell);
                             if (spellInfo2 != NULL)
                             {
                                 removeSpellByHashName(spellInfo2->NameHash);
@@ -6985,12 +6969,12 @@ void Player::RemoveSpellsFromLine(uint32 skill_line)
         skilllinespell* sp = dbcSkillLineSpell.LookupRowForced(i);
         if (sp)
         {
-            if (sp->skilline == skill_line)
+            if (sp->skillId == skill_line)
             {
                 // Check ourselves for this spell, and remove it..
-                if (!removeSpell(sp->spell, 0, 0, 0))
+                if (!removeSpell(sp->spellId, 0, 0, 0))
                     // if we didn't unlearned spell check deleted spells
-                    removeDeletedSpell(sp->spell);
+                    removeDeletedSpell(sp->spellId);
             }
         }
     }
@@ -7074,8 +7058,8 @@ void Player::RegenerateHealth(bool inCombat)
     if (cur >= mh)
         return;
 
-    gtFloat* HPRegenBase = dbcHPRegenBase.LookupEntry(getLevel() - 1 + (getClass() - 1) * 100);
-    gtFloat* HPRegen = dbcHPRegen.LookupEntry(getLevel() - 1 + (getClass() - 1) * 100);
+   // gtFloat* HPRegenBase = dbcHPRegenBase.LookupEntry(getLevel() - 1 + (getClass() - 1) * 100);
+    //gtFloat* HPRegen = dbcHPRegen.LookupEntry(getLevel() - 1 + (getClass() - 1) * 100);
 
     uint32 basespirit = m_uint32Values[UNIT_FIELD_SPIRIT];
     uint32 extraspirit = 0;
@@ -7086,7 +7070,9 @@ void Player::RegenerateHealth(bool inCombat)
         basespirit = 50;
     }
 
-    float amt = basespirit * HPRegen->val + extraspirit * HPRegenBase->val;
+    //float amt = basespirit * HPRegen->val + extraspirit * HPRegenBase->val;
+
+    float amt;
 
     if (PctRegenModifier)
         amt += (amt * PctRegenModifier) / 100;
@@ -7407,7 +7393,7 @@ void Player::ClearCooldownsOnLine(uint32 skill_line, uint32 called_from)
             continue;
 
         sk = objmgr.GetSpellSkill((*itr));
-        if (sk && sk->skilline == skill_line)
+        if (sk && sk->skillId == skill_line)
             ClearCooldownForSpell((*itr));
     }
 }
@@ -7629,7 +7615,7 @@ void Player::ProcessPendingUpdates()
         *(uint32*)&update_buffer[c] = ((mOutOfRangeIds.size() > 0) ? (mUpdateCount + 1) : mUpdateCount);
         c += 4;
 
-        //update_buffer[c] = 1;                                                                               ++c;
+        //update_buffer[c] = 1;																			   ++c;
         memcpy(&update_buffer[c], bUpdateBuffer.contents(), bUpdateBuffer.size());
         c += bUpdateBuffer.size();
 
@@ -8496,7 +8482,7 @@ float Player::CalcRating(uint32 index)
     if (level > 100)
         level = 100;
 
-    CombatRatingDBC* pDBCEntry = dbcCombatRating.LookupEntryForced(relative_index * 100 + level - 1);
+    gtClassLevelFloat* pDBCEntry = dbcCombatRating.LookupEntryForced(relative_index * 100 + level - 1);
     if (pDBCEntry == NULL)
         return rating;
     else
@@ -9150,9 +9136,9 @@ void Player::CompleteLoading()
 
         for (uint32 x = 0; x < 3; x++)
         {
-            if (sp->Effect[x] == SPELL_EFFECT_APPLY_AURA)
+            if (sp->eff[x].Effect == SPELL_EFFECT_APPLY_AURA)
             {
-                aura->AddMod(sp->EffectApplyAuraName[x], sp->EffectBasePoints[x] + 1, sp->EffectMiscValue[x], x);
+                aura->AddMod(sp->eff[x].EffectApplyAuraName, sp->eff[x].EffectBasePoints + 1, sp->eff[x].EffectMiscValue, x);
             }
         }
 
@@ -9256,7 +9242,7 @@ void Player::CompleteLoading()
     // add glyphs
     for (uint8 j = 0; j < GLYPHS_COUNT; ++j)
     {
-        GlyphPropertyEntry* glyph = dbcGlyphProperty.LookupEntryForced(m_specs[m_talentActiveSpec].glyphs[j]);
+        GlyphPropertiesEntry* glyph = dbcGlyphPropertiesStore.LookupEntryForced(m_specs[m_talentActiveSpec].glyphs[j]);
         if (glyph == NULL)
             continue;
 
@@ -9566,7 +9552,7 @@ void Player::SaveAuras(std::stringstream & ss)
             Aura* aur = m_auras[x];
             for (uint32 i = 0; i < 3; ++i)
             {
-                if (aur->m_spellProto->Effect[i] == SPELL_EFFECT_APPLY_GROUP_AREA_AURA || aur->m_spellProto->Effect[i] == SPELL_EFFECT_APPLY_RAID_AREA_AURA || aur->m_spellProto->Effect[i] == SPELL_EFFECT_ADD_FARSIGHT)
+                if (aur->m_spellProto->eff[i].Effect == SPELL_EFFECT_APPLY_GROUP_AREA_AURA || aur->m_spellProto->eff[i].Effect == SPELL_EFFECT_APPLY_RAID_AREA_AURA || aur->m_spellProto->eff[i].Effect == SPELL_EFFECT_ADD_FARSIGHT)
                 {
                     continue;
                     break;
@@ -10304,10 +10290,10 @@ void Player::_LearnSkillSpells(uint32 SkillLine, uint32 curr_sk)
     {
         sls = dbcSkillLineSpell.LookupRow(idx);
         // add new "automatic-acquired" spell
-        if ((sls->skilline == SkillLine) && (sls->acquireMethod == 1))
+        if ((sls->skillId == SkillLine) && (sls->learnOnGetSkill == 1))
         {
-            sp = dbcSpell.LookupEntryForced(sls->spell);
-            if (sp && (curr_sk >= sls->minSkillLineRank))
+            sp = dbcSpell.LookupEntryForced(sls->spellId);
+            if (sp && (curr_sk >= sls->grey))
             {
                 // Player is able to learn this spell; check if they already have it, or a higher rank (shouldn't, but just in case)
                 bool addThisSpell = true;
@@ -10331,16 +10317,16 @@ void Player::_LearnSkillSpells(uint32 SkillLine, uint32 curr_sk)
                     for (uint32 idx2 = 0; idx2 < rowcount; ++idx2)
                     {
                         sl2 = dbcSkillLineSpell.LookupRow(idx2);
-                        if ((sl2->skilline == SkillLine) && (sl2->next == sls->spell))
+                        if ((sl2->skillId == SkillLine) && (sl2->forward_spellid == sls->spellId))
                         {
-                            removeSpellId = sl2->spell;
+                            removeSpellId = sl2->spellId;
                             idx2 = rowcount;
                         }
                     }
-                    addSpell(sls->spell);
+                    addSpell(sls->spellId);
                     if (removeSpellId)
                     {
-                        removeSpell(removeSpellId, true, true, sls->next);
+                        removeSpell(removeSpellId, true, true, sls->forward_spellid);
                     }
                     // if passive spell, apply it now
                     if (sp->Attributes & ATTRIBUTES_PASSIVE)
@@ -10504,7 +10490,7 @@ void Player::_AddLanguages(bool All)
     skilllineentry* en;
     uint32 spell_id;
     static uint32 skills[] = { SKILL_LANG_COMMON, SKILL_LANG_ORCISH, SKILL_LANG_DWARVEN, SKILL_LANG_DARNASSIAN, SKILL_LANG_TAURAHE, SKILL_LANG_THALASSIAN,
-        SKILL_LANG_TROLL, SKILL_LANG_GUTTERSPEAK, SKILL_LANG_DRAENEI, SKILL_LANG_GOBLIN, SKILL_LANG_GILNEAN, 0
+        SKILL_LANG_TROLL, SKILL_LANG_GUTTERSPEAK, SKILL_LANG_DRAENEI, 0
     };
 
     if (All)
@@ -10995,9 +10981,9 @@ bool Player::HasSpellWithAuraNameAndBasePoints(uint32 auraname, uint32 basepoint
 
         for (uint32 i = 0; i < 3; i++)
         {
-            if (sp->Effect[i] == SPELL_EFFECT_APPLY_AURA)
+            if (sp->eff[i].Effect == SPELL_EFFECT_APPLY_AURA)
             {
-                if ((sp->EffectApplyAuraName[i] == auraname) && (sp->EffectBasePoints[i] == (basepoints - 1)))
+                if ((sp->eff[i].EffectApplyAuraName == auraname) && (sp->eff[i].EffectBasePoints == (basepoints - 1)))
                     return true;
             }
         }
@@ -11954,9 +11940,9 @@ void Player::UpdateGlyphs()
     {
         GlyphSlotEntry* gse;
         uint32 y = 0;
-        for (uint32 i = 0; i < dbcGlyphSlot.GetNumRows(); ++i)
+        for (uint32 i = 0; i < dbcGlyphSlotStore.GetNumRows(); ++i)
         {
-            gse = dbcGlyphSlot.LookupRow(i);
+            gse = dbcGlyphSlotStore.LookupRow(i);
             if (gse->Slot > 0)
                 SetUInt32Value(PLAYER_FIELD_GLYPH_SLOTS_1 + y++, gse->Id);
         }
@@ -12037,7 +12023,7 @@ void Player::CalcExpertise()
             entry = m_auras[x]->m_spellProto;
             val = m_auras[x]->GetModAmountByMod();
 
-            if (entry->EquippedItemSubClass != 0)
+            if (entry->SpellEquippedItems.EquippedItemSubClass != 0)
             {
                 itMH = GetItemInterface()->GetInventoryItem(EQUIPMENT_SLOT_MAINHAND);
                 itOH = GetItemInterface()->GetInventoryItem(EQUIPMENT_SLOT_OFFHAND);
@@ -12045,9 +12031,9 @@ void Player::CalcExpertise()
                 uint32 reqskillOH = 0;
 
                 if (itMH != NULL)
-                    reqskillMH = entry->EquippedItemSubClass & (((uint32)1) << itMH->GetProto()->SubClass);
+                    reqskillMH = entry->SpellEquippedItems.EquippedItemSubClass & (((uint32)1) << itMH->GetProto()->SubClass);
                 if (itOH != NULL)
-                    reqskillOH = entry->EquippedItemSubClass & (((uint32)1) << itOH->GetProto()->SubClass);
+                    reqskillOH = entry->SpellEquippedItems.EquippedItemSubClass & (((uint32)1) << itOH->GetProto()->SubClass);
 
                 if (reqskillMH != 0 || reqskillOH != 0)
                     modifier = +val;
@@ -12086,7 +12072,7 @@ void Player::RemoveItemByGuid(uint64 GUID)
     this->GetItemInterface()->SafeFullRemoveItemByGuid(GUID);
 }
 
-void Player::SendAvailSpells(SpellShapeshiftForm* ssf, bool active)
+void Player::SendAvailSpells(SpellShapeshiftFormEntry* ssf, bool active)
 {
     if (active)
     {
@@ -12409,10 +12395,11 @@ void Player::LearnTalent(uint32 talentid, uint32 rank, bool isPreviewed)
                 }
             }
 
-            if (spellInfo->Attributes & ATTRIBUTES_PASSIVE || ((spellInfo->Effect[0] == SPELL_EFFECT_LEARN_SPELL ||
-                spellInfo->Effect[1] == SPELL_EFFECT_LEARN_SPELL ||
-                spellInfo->Effect[2] == SPELL_EFFECT_LEARN_SPELL)
-                && ((spellInfo->c_is_flags & SPELL_FLAG_IS_EXPIREING_WITH_PET) == 0 || ((spellInfo->c_is_flags & SPELL_FLAG_IS_EXPIREING_WITH_PET) && GetSummon()))))
+            if (spellInfo->Attributes & ATTRIBUTES_PASSIVE || ((spellInfo->eff[0].Effect == SPELL_EFFECT_LEARN_SPELL ||
+                spellInfo->eff[1].Effect == SPELL_EFFECT_LEARN_SPELL ||
+                spellInfo->eff[2].Effect == SPELL_EFFECT_LEARN_SPELL)
+                && ((spellInfo->c_is_flags & SPELL_FLAG_IS_EXPIREING_WITH_PET) == 0 || ((spellInfo->c_is_flags & SPELL_FLAG_IS_EXPIREING_WITH_PET) && GetSummon())))
+                )
             {
                 if (spellInfo->RequiredShapeShift && !((uint32)1 << (GetShapeShift() - 1) & spellInfo->RequiredShapeShift))
                 {
@@ -12818,7 +12805,7 @@ void Player::DealDamage(Unit* pVictim, uint32 damage, uint32 targetEvent, uint32
                 Reputation_OnKilledUnit(pVictim, false);
 
 #ifdef ENABLE_ACHIEVEMENTS
-                GetAchievementMgr().UpdateAchievementCriteria(ACHIEVEMENT_CRITERIA_TYPE_KILLING_BLOW, GetMapId(), 0, 0);
+                GetAchievementMgr().UpdateAchievementCriteria(ACHIEVEMENT_CRITERIA_TYPE_GET_KILLING_BLOWS, GetMapId(), 0, 0);
 #endif
 
                 if (pVictim->getLevel() >= (getLevel() - 8) && (GetGUID() != pVictim->GetGUID()))
@@ -13091,7 +13078,7 @@ void Player::Die(Unit* pAttacker, uint32 damage, uint32 spellid)
 
             for (int i = 0; i < 3; i++)
             {
-                if (spl->GetProto()->Effect[i] == SPELL_EFFECT_PERSISTENT_AREA_AURA)
+                if (spl->GetProto()->eff[i].Effect == SPELL_EFFECT_PERSISTENT_AREA_AURA)
                 {
                     uint64 guid = GetChannelSpellTargetGUID();
                     DynamicObject* dObj = GetMapMgr()->GetDynamicObject(Arcemu::Util::GUID_LOPART(guid));
@@ -13946,7 +13933,7 @@ void Player::CastSpellArea()
     uint32 ZoneId = at->zone;
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////
-    // Cheks for Casting a Spell in Specified Area / Zone :D                                          //
+    // Cheks for Casting a Spell in Specified Area / Zone :D										  //
     ////////////////////////////////////////////////////////////////////////////////////////////////////
 
     // Spells get Casted in specified Area
@@ -13999,7 +13986,7 @@ void Player::CastSpellArea()
 
                 }
             }*/
-
+    /*
     //Remove of Spells
     for (uint32 i = MAX_TOTAL_AURAS_START; i < MAX_TOTAL_AURAS_END; ++i)
     {
@@ -14013,20 +14000,21 @@ void Player::CastSpellArea()
             }
         }
     }
+    */
 }
 
 void Player::SetGroupUpdateFlags(uint32 flags)
 {
-    if(GetGroup() == NULL)
-        return;
-    GroupUpdateFlags = flags;
+	if(GetGroup() == NULL)
+		return;
+	GroupUpdateFlags = flags;
 }
 
 void Player::AddGroupUpdateFlag(uint32 flag)
 {
-    if(GetGroup() == NULL)
-        return;
-    GroupUpdateFlags |= flag;
+	if(GetGroup() == NULL)
+		return;
+	GroupUpdateFlags |= flag;
 }
 
 uint16 Player::GetGroupStatus()
@@ -14052,11 +14040,11 @@ void Player::SendUpdateToOutOfRangeGroupMembers()
     if (GroupUpdateFlags == GROUP_UPDATE_FLAG_NONE)
         return;
     if (Group* group = GetGroup())
-        group->UpdateOutOfRangePlayer(this, true, NULL);
+		group->UpdateOutOfRangePlayer(this, true, NULL);
 
     GroupUpdateFlags = GROUP_UPDATE_FLAG_NONE;
-    if (Pet* pet = GetSummon())
-        pet->ResetAuraUpdateMaskForRaid();
+	if (Pet* pet = GetSummon())
+		pet->ResetAuraUpdateMaskForRaid();
 }
 
 void Player::SendGuildMOTD()
@@ -14067,7 +14055,7 @@ void Player::SendGuildMOTD()
     data << uint8(GUILD_EVENT_MOTD);
     data << uint8(1);
     data << GetGuild()->GetMOTD();
-    SendPacket(&data);    
+    SendPacket(&data);	
 }
 
 void Player::SetClientControl(Unit* target, uint8 allowMove)

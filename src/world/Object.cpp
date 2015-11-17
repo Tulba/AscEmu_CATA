@@ -2004,7 +2004,7 @@ void Object::SpellNonMeleeDamageLog(Unit* pVictim, uint32 spellID, uint32 damage
             return;
 
         Spell* sp = sSpellFactoryMgr.NewSpell(pl, entry, true, NULL);
-        sp->GetProto()->EffectBasePoints[0] = spellpower;
+        sp->GetProto()->eff[0].EffectBasePoints = spellpower;
         SpellCastTargets targets;
         targets.m_unitTarget = pl->GetGUID();
         sp->prepare(&targets);

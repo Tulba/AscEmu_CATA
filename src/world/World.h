@@ -119,13 +119,13 @@ enum WorldMapInfoFlag
 {
     WMI_INSTANCE_ENABLED            = 0x1,
     WMI_INSTANCE_WELCOME            = 0x2,
-    WMI_INSTANCE_ARENA              = 0x4,
-    WMI_INSTANCE_XPACK_01           = 0x8, //The Burning Crusade expansion
-    WMI_INSTANCE_XPACK_02           = 0x10, //Wrath of the Lich King expansion
-    WMI_INSTANCE_HAS_NORMAL_10MEN   = 0x20,
-    WMI_INSTANCE_HAS_NORMAL_25MEN   = 0x40,
-    WMI_INSTANCE_HAS_HEROIC_10MEN   = 0x80,
-    WMI_INSTANCE_HAS_HEROIC_25MEN   = 0x100
+    WMI_INSTANCE_ARENA                = 0x4,
+    WMI_INSTANCE_XPACK_01            = 0x8, //The Burning Crusade expansion
+    WMI_INSTANCE_XPACK_02            = 0x10, //Wrath of the Lich King expansion
+    WMI_INSTANCE_HAS_NORMAL_10MEN    = 0x20,
+    WMI_INSTANCE_HAS_NORMAL_25MEN    = 0x40,
+    WMI_INSTANCE_HAS_HEROIC_10MEN    = 0x80,
+    WMI_INSTANCE_HAS_HEROIC_25MEN    = 0x100
 };
 
 enum AccountFlags
@@ -135,7 +135,6 @@ enum AccountFlags
     //ACCOUNT_FLAG_XTEND_INFO  = 0x4,
     ACCOUNT_FLAG_XPACK_01    = 0x8,
     ACCOUNT_FLAG_XPACK_02    = 0x10,
-    ACCOUNT_FLAG_XPACK_03    = 0x20,
 };
 
 #pragma pack(push,1)

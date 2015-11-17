@@ -832,16 +832,16 @@ void Aura::Remove()
 
     for (uint32 x = 0; x < 3; x++)
     {
-        if (!m_spellProto->Effect[x])
+        if (!m_spellProto->eff[x].Effect)
             continue;
 
-        if (m_spellProto->Effect[x] == SPELL_EFFECT_TRIGGER_SPELL && !m_spellProto->always_apply)
+        if (m_spellProto->eff[x].Effect == SPELL_EFFECT_TRIGGER_SPELL && !m_spellProto->always_apply)
         {
             // I'm not sure about this! FIX ME!!
-            auto spell_entry = dbcSpell.LookupEntryForced(GetSpellProto()->EffectTriggerSpell[x]);
+            auto spell_entry = dbcSpell.LookupEntryForced(GetSpellProto()->eff[x].EffectTriggerSpell);
             if (spell_entry != nullptr)
                 if (spell_entry->DurationIndex < m_spellProto->DurationIndex)
-                    m_target->RemoveAura(GetSpellProto()->EffectTriggerSpell[x]);
+                    m_target->RemoveAura(GetSpellProto()->eff[x].EffectTriggerSpell);
         }
         else if (IsAreaAura() && m_casterGuid == m_target->GetGUID())
             ClearAATargets();
@@ -905,7 +905,7 @@ void Aura::Remove()
     {
         uint8 j;
         for (j = 0; j < 3; ++j)
-            if (m_spellProto->Effect[j] == SPELL_EFFECT_ADD_FARSIGHT)
+            if (m_spellProto->eff[j].Effect == SPELL_EFFECT_ADD_FARSIGHT)
                 break;
 
         if (j != 3)
@@ -1709,7 +1709,7 @@ void Aura::SpellAuraPeriodicDamage(bool apply)
                     return;
                 if (c != NULL && c->IsPlayer())
                 {
-                    dmg = float2int32(static_cast< Player* >(c)->m_casted_amount[SCHOOL_FIRE] * parentsp->EffectBasePoints[0] / 100.0f);
+                    dmg = float2int32(static_cast< Player* >(c)->m_casted_amount[SCHOOL_FIRE] * parentsp->eff[0].EffectBasePoints / 100.0f);
                 }
                 else if (c != NULL)
                 {
@@ -1723,7 +1723,7 @@ void Aura::SpellAuraPeriodicDamage(bool apply)
                     for (uint8 i = 0; i < 3; i++)
                     {
                         //dmg += parentsp->EffectBasePoints[i]*m_spellProto->EffectBasePoints[0];
-                        dmg += spell->CalculateEffect(i, m_target) * parentsp->EffectBasePoints[0] / 100;
+                        dmg += spell->CalculateEffect(i, m_target) * parentsp->eff[0].EffectBasePoints / 100;
                     }
                     delete spell;
                     spell = NULL;
@@ -1770,7 +1770,7 @@ void Aura::SpellAuraPeriodicDamage(bool apply)
 
         LOG_DEBUG("Adding periodic dmg aura, spellid: %lu", this->GetSpellId());
         sEventMgr.AddEvent(this, &Aura::EventPeriodicDamage, (uint32)dmg,
-                           EVENT_AURA_PERIODIC_DAMAGE, GetSpellProto()->EffectAmplitude[mod->i], 0, EVENT_FLAG_DO_NOT_EXECUTE_IN_WORLD_CONTEXT);
+            EVENT_AURA_PERIODIC_DAMAGE, GetSpellProto()->eff[mod->i].EffectAmplitude, 0, EVENT_FLAG_DO_NOT_EXECUTE_IN_WORLD_CONTEXT);
 
         /*TO< Player* >(c)->GetSession()->SystemMessage("dot will do %u damage every %u seconds (total of %u)", dmg,m_spellProto->EffectAmplitude[mod->i],(GetDuration()/m_spellProto->EffectAmplitude[mod->i])*dmg);
         printf("dot will do %u damage every %u seconds (total of %u)\n", dmg,m_spellProto->EffectAmplitude[mod->i],(GetDuration()/m_spellProto->EffectAmplitude[mod->i])*dmg);*/

@@ -258,8 +258,8 @@ void ObjectMgr::LoadExtraCreatureProtoStuff()
                         continue;
                     }
 
-                    if (sp->spell->Effect[0] == SPELL_EFFECT_LEARN_SPELL || sp->spell->Effect[1] == SPELL_EFFECT_LEARN_SPELL ||
-                            sp->spell->Effect[2] == SPELL_EFFECT_LEARN_SPELL)
+                    if (sp->spell->eff[0].Effect == SPELL_EFFECT_LEARN_SPELL || sp->spell->eff[1].Effect == SPELL_EFFECT_LEARN_SPELL ||
+                            sp->spell->eff[2].Effect == SPELL_EFFECT_LEARN_SPELL)
                     {
                         LOG_DEBUG("Teaching spell %u in ai_agent for %u", (unsigned int)fields[6].GetUInt32(), (unsigned int)sp->entryId);
                         delete sp;
