@@ -653,6 +653,14 @@ uint32 GetSpellForLanguage(uint32 SkillID)
         case SKILL_LANG_DRAENEI:
             return 29932;
             break;
+
+        case SKILL_LANG_GOBLIN:
+            return 69269;
+            break;
+
+        case SKILL_LANG_GILNEAN:
+            return 69270;
+            break;
     }
 
     return 0;
@@ -678,24 +686,28 @@ void Player::CharChange_Looks(uint64 GUID, uint8 gender, uint8 skin, uint8 face,
 //Begining of code for phase two of character customization (Race/Faction) Change.
 void Player::CharChange_Language(uint64 GUID, uint8 race)
 {
-    CharacterDatabase.Execute("DELETE FROM `playerspells` WHERE GUID = '%u' AND SpellID IN ('%u', '%u', '%u', '%u', '%u','%u', '%u', '%u', '%u', '%u');", (uint32)GUID, GetSpellForLanguage(SKILL_LANG_ORCISH), GetSpellForLanguage(SKILL_LANG_TAURAHE), GetSpellForLanguage(SKILL_LANG_TROLL), GetSpellForLanguage(SKILL_LANG_GUTTERSPEAK), GetSpellForLanguage(SKILL_LANG_THALASSIAN), GetSpellForLanguage(SKILL_LANG_COMMON), GetSpellForLanguage(SKILL_LANG_DARNASSIAN), GetSpellForLanguage(SKILL_LANG_DRAENEI), GetSpellForLanguage(SKILL_LANG_DWARVEN), GetSpellForLanguage(SKILL_LANG_GNOMISH));
+    CharacterDatabase.Execute("DELETE FROM `playerspells` WHERE GUID = '%u' AND SpellID IN ('%u', '%u', '%u', '%u', '%u','%u', '%u', '%u', '%u', '%u');", (uint32)GUID, GetSpellForLanguage(SKILL_LANG_ORCISH), GetSpellForLanguage(SKILL_LANG_TAURAHE), GetSpellForLanguage(SKILL_LANG_TROLL), GetSpellForLanguage(SKILL_LANG_GUTTERSPEAK), GetSpellForLanguage(SKILL_LANG_THALASSIAN), GetSpellForLanguage(SKILL_LANG_COMMON), GetSpellForLanguage(SKILL_LANG_DARNASSIAN), GetSpellForLanguage(SKILL_LANG_DRAENEI), GetSpellForLanguage(SKILL_LANG_DWARVEN), GetSpellForLanguage(SKILL_LANG_GNOMISH), GetSpellForLanguage(SKILL_LANG_GILNEAN), GetSpellForLanguage(SKILL_LANG_GOBLIN));
     switch (race)
     {
         case RACE_DWARF:
             CharacterDatabase.Execute("INSERT INTO `playerspells` (GUID, SpellID) VALUES ('%u', '%u')", (uint32)GUID, GetSpellForLanguage(SKILL_LANG_COMMON));
             CharacterDatabase.Execute("INSERT INTO `playerspells` (GUID, SpellID) VALUES ('%u', '%u')", (uint32)GUID, GetSpellForLanguage(SKILL_LANG_DWARVEN));
             break;
-        case RACE_DRAENEI:
+        case RACE_NIGHTELF:
             CharacterDatabase.Execute("INSERT INTO `playerspells` (GUID, SpellID) VALUES ('%u', '%u')", (uint32)GUID, GetSpellForLanguage(SKILL_LANG_COMMON));
-            CharacterDatabase.Execute("INSERT INTO `playerspells` (GUID, SpellID) VALUES ('%u', '%u')", (uint32)GUID, GetSpellForLanguage(SKILL_LANG_DRAENEI));
+            CharacterDatabase.Execute("INSERT INTO `playerspells` (GUID, SpellID) VALUES ('%u', '%u')", (uint32)GUID, GetSpellForLanguage(SKILL_LANG_DARNASSIAN));
             break;
         case RACE_GNOME:
             CharacterDatabase.Execute("INSERT INTO `playerspells` (GUID, SpellID) VALUES ('%u', '%u')", (uint32)GUID, GetSpellForLanguage(SKILL_LANG_COMMON));
             CharacterDatabase.Execute("INSERT INTO `playerspells` (GUID, SpellID) VALUES ('%u', '%u')", (uint32)GUID, GetSpellForLanguage(SKILL_LANG_GNOMISH));
             break;
-        case RACE_NIGHTELF:
+        case RACE_DRAENEI:
             CharacterDatabase.Execute("INSERT INTO `playerspells` (GUID, SpellID) VALUES ('%u', '%u')", (uint32)GUID, GetSpellForLanguage(SKILL_LANG_COMMON));
-            CharacterDatabase.Execute("INSERT INTO `playerspells` (GUID, SpellID) VALUES ('%u', '%u')", (uint32)GUID, GetSpellForLanguage(SKILL_LANG_DARNASSIAN));
+            CharacterDatabase.Execute("INSERT INTO `playerspells` (GUID, SpellID) VALUES ('%u', '%u')", (uint32)GUID, GetSpellForLanguage(SKILL_LANG_DRAENEI));
+            break;
+        case RACE_WORGEN:
+            CharacterDatabase.Execute("INSERT INTO `playerspells` (GUID, SpellID) VALUES ('%u', '%u')", (uint32)GUID, GetSpellForLanguage(SKILL_LANG_COMMON));
+            CharacterDatabase.Execute("INSERT INTO `playerspells` (GUID, SpellID) VALUES ('%u', '%u')", (uint32)GUID, GetSpellForLanguage(SKILL_LANG_GILNEAN));
             break;
         case RACE_UNDEAD:
             CharacterDatabase.Execute("INSERT INTO `playerspells` (GUID, SpellID) VALUES ('%u', '%u')", (uint32)GUID, GetSpellForLanguage(SKILL_LANG_ORCISH));
@@ -708,6 +720,10 @@ void Player::CharChange_Language(uint64 GUID, uint8 race)
         case RACE_TROLL:
             CharacterDatabase.Execute("INSERT INTO `playerspells` (GUID, SpellID) VALUES ('%u', '%u')", (uint32)GUID, GetSpellForLanguage(SKILL_LANG_ORCISH));
             CharacterDatabase.Execute("INSERT INTO `playerspells` (GUID, SpellID) VALUES ('%u', '%u')", (uint32)GUID, GetSpellForLanguage(SKILL_LANG_TROLL));
+            break;
+        case RACE_GOBLIN:
+            CharacterDatabase.Execute("INSERT INTO `playerspells` (GUID, SpellID) VALUES ('%u', '%u')", (uint32)GUID, GetSpellForLanguage(SKILL_LANG_ORCISH));
+            CharacterDatabase.Execute("INSERT INTO `playerspells` (GUID, SpellID) VALUES ('%u', '%u')", (uint32)GUID, GetSpellForLanguage(SKILL_LANG_GOBLIN));
             break;
         case RACE_BLOODELF:
             CharacterDatabase.Execute("INSERT INTO `playerspells` (GUID, SpellID) VALUES ('%u', '%u')", (uint32)GUID, GetSpellForLanguage(SKILL_LANG_ORCISH));
@@ -1733,9 +1749,9 @@ void Player::smsg_InitialSpells()
         }
 
         data << uint32(itr2->second.SpellId);                // spell id
-        data << uint16(itr2->second.ItemId);                // item id
-        data << uint16(itr2->first);                        // spell category
-        data << uint32(0);                                // cooldown remaining in ms (for spell)
+        data << uint16(itr2->second.ItemId);                 // item id
+        data << uint16(itr2->first);                         // spell category
+        data << uint32(0);                                   // cooldown remaining in ms (for spell)
         data << uint32(itr2->second.ExpireTime - mstime);    // cooldown remaining in ms (for category)
 
         ++itemCount;
@@ -4542,7 +4558,7 @@ void Player::BuildPlayerRepop()
 void Player::RepopRequestedPlayer()
 {
     //if (HasAuraWithName(SPELL_AURA_PREVENT_RESURRECTION))
-    //	return;
+    //    return;
 
     sEventMgr.RemoveEvents(this, EVENT_PLAYER_CHECKFORCHEATS); // cebernic:-> Remove this first
     sEventMgr.RemoveEvents(this, EVENT_PLAYER_FORCED_RESURRECT);   //in case somebody resurrected us before this event happened
@@ -7613,7 +7629,7 @@ void Player::ProcessPendingUpdates()
         *(uint32*)&update_buffer[c] = ((mOutOfRangeIds.size() > 0) ? (mUpdateCount + 1) : mUpdateCount);
         c += 4;
 
-        //update_buffer[c] = 1;																			   ++c;
+        //update_buffer[c] = 1;                                                                               ++c;
         memcpy(&update_buffer[c], bUpdateBuffer.contents(), bUpdateBuffer.size());
         c += bUpdateBuffer.size();
 
@@ -10488,7 +10504,7 @@ void Player::_AddLanguages(bool All)
     skilllineentry* en;
     uint32 spell_id;
     static uint32 skills[] = { SKILL_LANG_COMMON, SKILL_LANG_ORCISH, SKILL_LANG_DWARVEN, SKILL_LANG_DARNASSIAN, SKILL_LANG_TAURAHE, SKILL_LANG_THALASSIAN,
-        SKILL_LANG_TROLL, SKILL_LANG_GUTTERSPEAK, SKILL_LANG_DRAENEI, 0
+        SKILL_LANG_TROLL, SKILL_LANG_GUTTERSPEAK, SKILL_LANG_DRAENEI, SKILL_LANG_GOBLIN, SKILL_LANG_GILNEAN, 0
     };
 
     if (All)
@@ -13930,7 +13946,7 @@ void Player::CastSpellArea()
     uint32 ZoneId = at->zone;
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////
-    // Cheks for Casting a Spell in Specified Area / Zone :D										  //
+    // Cheks for Casting a Spell in Specified Area / Zone :D                                          //
     ////////////////////////////////////////////////////////////////////////////////////////////////////
 
     // Spells get Casted in specified Area
@@ -14001,16 +14017,16 @@ void Player::CastSpellArea()
 
 void Player::SetGroupUpdateFlags(uint32 flags)
 {
-	if(GetGroup() == NULL)
-		return;
-	GroupUpdateFlags = flags;
+    if(GetGroup() == NULL)
+        return;
+    GroupUpdateFlags = flags;
 }
 
 void Player::AddGroupUpdateFlag(uint32 flag)
 {
-	if(GetGroup() == NULL)
-		return;
-	GroupUpdateFlags |= flag;
+    if(GetGroup() == NULL)
+        return;
+    GroupUpdateFlags |= flag;
 }
 
 uint16 Player::GetGroupStatus()
@@ -14036,11 +14052,11 @@ void Player::SendUpdateToOutOfRangeGroupMembers()
     if (GroupUpdateFlags == GROUP_UPDATE_FLAG_NONE)
         return;
     if (Group* group = GetGroup())
-		group->UpdateOutOfRangePlayer(this, true, NULL);
+        group->UpdateOutOfRangePlayer(this, true, NULL);
 
     GroupUpdateFlags = GROUP_UPDATE_FLAG_NONE;
-	if (Pet* pet = GetSummon())
-		pet->ResetAuraUpdateMaskForRaid();
+    if (Pet* pet = GetSummon())
+        pet->ResetAuraUpdateMaskForRaid();
 }
 
 void Player::SendGuildMOTD()
@@ -14051,7 +14067,7 @@ void Player::SendGuildMOTD()
     data << uint8(GUILD_EVENT_MOTD);
     data << uint8(1);
     data << GetGuild()->GetMOTD();
-    SendPacket(&data);	
+    SendPacket(&data);    
 }
 
 void Player::SetClientControl(Unit* target, uint8 allowMove)
