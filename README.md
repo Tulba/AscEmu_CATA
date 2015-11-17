@@ -10,16 +10,12 @@ We focus on optimizing the codebase and improving the ingame functionality.
 
 You can help us by contributing. It is completely open source and can be used by everyone.
 
-## Contributing
-Feel free to contribute any corrections but please make shure it is useful.
-
-What are "useful" commits?
- 1. Fixing an open issue.
- 2. Related to the milestones.
- 3. Making the Framework stable/safer
- 4. Adding functions related to "blizzlike" functions 
-
-Anything else like "fun-content" is NOT useful!
+## SetUp
+Currently note the following facts:
+ 1. The most important opcodes are handled
+ 2. use the 3.3.5 world db from our forum
+ 3. use dbc/maps vmaps extracted from an 3.3.5 client
+ 4. Stay tuned, check the issues and open an pull-request if you have a solution.
 
 
 ## Install
